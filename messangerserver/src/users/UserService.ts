@@ -1,5 +1,6 @@
 import * as bcrypt from "bcryptjs";
 import UserModal from "./modals/User";
+import { Types } from "mongoose";
 
 export const registerUser = async (data: any) => {
   try {
@@ -22,6 +23,22 @@ export const registerUser = async (data: any) => {
       password: hashedPassword,
     });
     return newUser;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserByEmail = async (email: string) => {
+  try {
+    return await UserModal.findOne({ email, isDeleted: false, isActive: true });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserById = async (id: string | Types.ObjectId) => {
+  try {
+    return await UserModal.findById(id);
   } catch (error) {
     throw error;
   }

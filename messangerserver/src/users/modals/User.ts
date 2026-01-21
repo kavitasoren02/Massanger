@@ -1,15 +1,17 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUSER extends Document {
-  firstName: String;
-  lastName: String;
-  email: String;
-  mobileNumber: String;
-  password: String;
-  profilePic?: String;
-  status?: String;
-  isOnline?: Boolean;
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobileNumber: string;
+  password: string;
+  profilePic?: string;
+  status?: string;
+  isOnline?: Boolean | null;
   lastSeen?: Date;
+  isActive: boolean;
+  isDeleted: boolean;
 }
 
 const UserSchema: Schema<IUSER> = new Schema(
@@ -74,12 +76,20 @@ const UserSchema: Schema<IUSER> = new Schema(
       type: Date,
       default: null,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const UserModal = mongoose.model<IUSER>('User', UserSchema);
+const UserModal = mongoose.model<IUSER>("User", UserSchema);
 
 export default UserModal;
