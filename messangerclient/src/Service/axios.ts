@@ -50,12 +50,12 @@ export const _get = async <T>(url: string, config?: InternalAxiosRequestConfig):
     return response;
 }
 
-export const _post = async <T>(url: string, data: string, config?: InternalAxiosRequestConfig): Promise<CustomAxiosResponse<T>> => {
+export const _post = async <T>(url: string, data: unknown, config?: InternalAxiosRequestConfig): Promise<CustomAxiosResponse<T>> => {
     const response = await axiosInstance.post(url, data, config);
     return response;
 }
 
-export const _put = async <T>(url: string, data: string, config?: InternalAxiosRequestConfig): Promise<CustomAxiosResponse<T>> => {
+export const _put = async <T>(url: string, data: unknown, config?: InternalAxiosRequestConfig): Promise<CustomAxiosResponse<T>> => {
     const response = await axiosInstance.put(url, data, config);
     return response;
 }

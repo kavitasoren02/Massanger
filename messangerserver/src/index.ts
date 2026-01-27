@@ -1,27 +1,29 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { connectToMongo } from './config/db';
+import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+import cors from "cors";
+import { connectToMongo } from "./config/db";
 
+import mainRoute from "./routes/mainRoute";
 
-import mainRoute from './routes/mainRoute';
 connectToMongo();
 
-dotenv.config();
-
-const app = express()
+const app = express();
 const PORT = process.env.PORT || 5000;
-
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 app.use("/api/v1", mainRoute);
 
 app.get("/health", (req, res) => {
-    res.json({status: "OK"})
-})
-
+  res.json({ status: "OK" });
+});
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-})
+  console.log(`Server running on port ${PORT}`);
+});

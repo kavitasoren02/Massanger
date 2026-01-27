@@ -4,7 +4,7 @@ import { Types } from "mongoose";
 
 export const registerUser = async (data: any) => {
   try {
-    const { firstName, lastName, email, mobileNumber, password } = data;
+    const { fullName, email, countryCode, mobileNumber, password } = data;
 
     const exisistingUser = await UserModal.findOne({ email });
 
@@ -16,9 +16,9 @@ export const registerUser = async (data: any) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = await UserModal.insertOne({
-      firstName,
-      lastName,
+      fullName,
       email,
+      countryCode,
       mobileNumber,
       password: hashedPassword,
     });

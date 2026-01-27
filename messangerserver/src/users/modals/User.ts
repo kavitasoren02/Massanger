@@ -1,9 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUSER extends Document {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
+  countryCode: string;
   mobileNumber: string;
   password: string;
   profilePic?: string;
@@ -16,13 +16,7 @@ export interface IUSER extends Document {
 
 const UserSchema: Schema<IUSER> = new Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    lastName: {
+    fullName: {
       type: String,
       required: true,
       trim: true,
@@ -40,6 +34,11 @@ const UserSchema: Schema<IUSER> = new Schema(
       },
     },
 
+    countryCode: {
+      type: String,
+      required: true,
+    },
+    
     mobileNumber: {
       type: String,
       required: true,
