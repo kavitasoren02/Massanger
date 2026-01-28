@@ -29,9 +29,9 @@ const Input = ({ label, type, error, ...props }: InputProps) => {
             className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
           >
             {showPassword ? (
-              <FaEyeSlash className="text-white text-base sm:text-lg" />
+              <FaEyeSlash className="text-[#329A93] text-base sm:text-lg" />
             ) : (
-              <FaEye className="text-white text-base sm:text-lg" />
+              <FaEye className="text-[#329A93] text-base sm:text-lg" />
             )}
           </div>
         )}

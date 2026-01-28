@@ -90,3 +90,8 @@ export interface ButtonProps {
   disabled?: boolean;
   children: React.ReactNode;
 }
+
+export interface LoginValues {
+  email: string;
+  password: string;
+}

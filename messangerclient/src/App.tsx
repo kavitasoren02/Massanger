@@ -2,7 +2,7 @@ import "./App.css";
 import { Bounce, ToastContainer } from "react-toastify";
 import { Route, Routes } from "react-router-dom";
 import Signup from "./pages/signup/Signup";
-import Login from "./pages/Login";
+import Login from "./pages/login/Login";
 function App() {
   return (
     <>
