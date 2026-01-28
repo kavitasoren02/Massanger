@@ -1,6 +1,7 @@
 import * as bcrypt from "bcryptjs";
 import UserModal from "./modals/User";
 import { Types } from "mongoose";
+import crypto from 'crypto';
 
 export const registerUser = async (data: any) => {
   try {
@@ -40,6 +41,40 @@ export const getUserById = async (id: string | Types.ObjectId) => {
   try {
     return await UserModal.findById(id);
   } catch (error) {
+    throw error;
+  }
+};
+
+export const forgotPassword = async (email: string) => {
+  try {
+    const user = await UserModal.findOne({
+      email,
+      isDeleted: false,
+      isActive: true,
+    });
+
+    if (!user) {
+      throw new Error("User with this email does not exist");
+    }
+    //generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    //hashed token before saving
+    const hashedToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+    //save token & expiry
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000);
+    
+    await user.save();
+    return {
+      resetToken,
+      userId: user._id,
+    };
+  } catch (error: any) {
     throw error;
   }
 };

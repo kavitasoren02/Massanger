@@ -2,17 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 
 export const validateUser = [
-  body("firstName")
+  body("fullName")
     .notEmpty()
-    .withMessage("First name is required")
+    .withMessage("Full name is required")
     .isAlpha()
-    .withMessage("First name should only contain alphabetic letters"),
-
-  body("lastName")
-    .notEmpty()
-    .withMessage("Last name is required")
-    .isAlpha()
-    .withMessage("Last name should only contain alphabetic letters"),
+    .withMessage("Full name should only contain alphabetic letters"),
 
   body("email")
     .notEmpty()
@@ -56,7 +50,9 @@ export const validateUser = [
 (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res
+      .status(400)
+      .json({ detail: errors.array()[0]?.msg, errors: errors.array() });
   }
   next();
 };

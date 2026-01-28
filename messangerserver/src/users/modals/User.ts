@@ -12,6 +12,8 @@ export interface IUSER extends Document {
   lastSeen?: Date;
   isActive: boolean;
   isDeleted: boolean;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
 
 const UserSchema: Schema<IUSER> = new Schema(
@@ -27,7 +29,6 @@ const UserSchema: Schema<IUSER> = new Schema(
       required: true,
       trim: true,
       unique: true,
-      lowercase: true,
       validate: {
         validator: (v: string) => /\S+@\S+\.\S+/.test(v),
         message: (props: any) => `${props.value} is not a valid email`,
@@ -38,7 +39,7 @@ const UserSchema: Schema<IUSER> = new Schema(
       type: String,
       required: true,
     },
-    
+
     mobileNumber: {
       type: String,
       required: true,
@@ -82,6 +83,15 @@ const UserSchema: Schema<IUSER> = new Schema(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
     },
   },
   {

@@ -2,7 +2,6 @@ import * as bcrypt from "bcryptjs";
 import { getUserByEmail, getUserById } from "../users/UserService";
 import JWT from "jsonwebtoken";
 import { removeCookie, setCookie } from "./cookie";
-import UserModal from "../users/modals/User";
 
 export const loginUser = async (req: any, res: any) => {
   const { email, password } = req.body;
@@ -34,8 +33,7 @@ export const loginUser = async (req: any, res: any) => {
       user: {
         id: user._id,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        fullName: user.fullName,
       },
     });
   } catch (error) {
