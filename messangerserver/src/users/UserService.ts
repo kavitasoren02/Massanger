@@ -1,7 +1,7 @@
 import * as bcrypt from "bcryptjs";
 import UserModal from "./modals/User";
 import { Types } from "mongoose";
-import crypto from 'crypto';
+import crypto from "crypto";
 
 export const registerUser = async (data: any) => {
   try {
@@ -57,23 +57,78 @@ export const forgotPassword = async (email: string) => {
       throw new Error("User with this email does not exist");
     }
     //generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetToken = crypto.randomBytes(32).toString("hex");
 
     //hashed token before saving
     const hashedToken = crypto
-    .createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
 
     //save token & expiry
     user.resetPasswordToken = hashedToken;
     user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000);
-    
+
     await user.save();
     return {
       resetToken,
       userId: user._id,
     };
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const validateToken = async (token: string) => {
+  try {
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await UserModal.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: new Date() },
+      isActive: true,
+      isDeleted: false,
+    });
+
+    if (!user) {
+      throw new Error("Invalid or expired reset token");
+    }
+
+    return true;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const changePassword = async (token: string | undefined, newPassword: string) => {
+  try {
+    if (!token) {
+      throw new Error("Invalid or expired reset token");
+    }
+    
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await UserModal.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: new Date() },
+      isActive: true,
+      isDeleted: false,
+    });
+
+    if (!user) {
+      throw new Error("Invalid or expired reset token");
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    user.resetPasswordToken = "";
+    user.resetPasswordExpires = "";
+
+    await user.save();
+
+    return true;
   } catch (error: any) {
     throw error;
   }

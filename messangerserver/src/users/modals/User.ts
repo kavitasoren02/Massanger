@@ -13,7 +13,7 @@ export interface IUSER extends Document {
   isActive: boolean;
   isDeleted: boolean;
   resetPasswordToken?: string;
-  resetPasswordExpires?: Date;
+  resetPasswordExpires?: Date | string;
 }
 
 const UserSchema: Schema<IUSER> = new Schema(
