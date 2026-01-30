@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { useFormik, type FormikHelpers } from "formik";
+import { useFormik } from "formik";
 import type { LoginValues } from "../../Service/interface";
 import { useAuth } from "../../ProtectedRoute/AuthProvider";
 import { toast } from "react-toastify";
@@ -76,7 +76,7 @@ const Login = () => {
             ></InputWithLabel>
           </div>
           <div className="flex justify-end p-1">
-            <Link className="text-[#329A93] text-lg font-bold" to="/login">
+            <Link className="text-[#329A93] text-lg font-bold" to="/forgotpassword">
               Forgot Password
             </Link>
           </div>

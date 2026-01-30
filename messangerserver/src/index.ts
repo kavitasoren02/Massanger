@@ -11,6 +11,7 @@ connectToMongo();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// app.use(cors())
 app.use(
   cors({
     origin: process.env.FRONTEND_URI || "http://localhost:5173",

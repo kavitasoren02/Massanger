@@ -161,7 +161,7 @@ const Signup = () => {
           <div className="flex">
             <InputWithLabel
               placeholder="Re Enter Password"
-              type="confirmPassword"
+              type="password"
               name="confirmPassword"
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
