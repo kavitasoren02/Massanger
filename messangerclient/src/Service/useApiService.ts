@@ -11,3 +11,11 @@ export const SIGNUP_ENDPOINT = '/api/v1/user/register';
 // ForgotPassword endpoints
 
 export const FORGOT_PASSWORD= '/api/v1/user/forgotpassword';
+
+// ValidateToken endpoints
+
+export const VALIDATETOKEN_ENDPOINTS = '/api/v1/user/validate-reset-token';
+
+// PasswordChange endpoints
+
+export const PASSWORDCHANGE_ENDPOINTS = '/api/v1/user/change-password';

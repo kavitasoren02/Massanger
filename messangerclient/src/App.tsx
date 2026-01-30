@@ -3,6 +3,8 @@ import { Bounce, ToastContainer } from "react-toastify";
 import { Route, Routes } from "react-router-dom";
 import Signup from "./pages/signup/Signup";
 import Login from "./pages/login/Login";
+import ForgotPassword from "./pages/forgopassword/ForgotPassword";
+import ResetPassword from "./pages/resetpassword/ResetPassword";
 function App() {
   return (
     <>
@@ -22,6 +24,11 @@ function App() {
       <Routes>
         <Route path="/register" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/forgotpassword" element={<ForgotPassword />}></Route>
+        <Route
+          path="/reset-password/:token"
+          element={<ResetPassword />}
+        ></Route>
       </Routes>
     </>
   );
