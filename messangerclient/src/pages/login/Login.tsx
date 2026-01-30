@@ -76,7 +76,10 @@ const Login = () => {
             ></InputWithLabel>
           </div>
           <div className="flex justify-end p-1">
-            <Link className="text-[#329A93] text-lg font-bold" to="/forgotpassword">
+            <Link
+              className="text-[#329A93] text-lg font-bold"
+              to="/forgotpassword"
+            >
               Forgot Password
             </Link>
           </div>
@@ -89,6 +92,15 @@ const Login = () => {
             Login
           </Button>
         </form>
+
+        <div className="p-[15px]">
+          <p className="w-full flex justify-center text-black fon">
+            I dont have an account &nbsp;
+            <Link className="text-[#329A93] font-bold" to="/register">
+              Register Here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
