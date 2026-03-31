@@ -19,3 +19,6 @@ export const VALIDATETOKEN_ENDPOINTS = '/api/v1/user/validate-reset-token';
 // PasswordChange endpoints
 
 export const PASSWORDCHANGE_ENDPOINTS = '/api/v1/user/change-password';
+
+// Chat list
+export const GET_ALL_USER = "/api/v1/user/all-users";

@@ -1,13 +1,26 @@
-import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from "react";
+import type {
+  InputHTMLAttributes,
+  ReactNode,
+  SelectHTMLAttributes,
+} from "react";
 
 export interface User {
-  id: string;
-  _id?: string;
-  email?: string;
-  fullName?: string;
-  // role?: string;
+  _id: string;
+  email: string;
+  fullName: string;
+  countryCode?: string;
+  mobileNumber: string;
+  profilePic?: string;
+  status?: string;
+  isOnline: boolean;
+  lastSeen?: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: string;
+  createdAt: string;
+  updatedAt: string;
 }
-
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -30,7 +43,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   error?: string;
 }
 
-export interface UserInfoResponse{
+export interface UserInfoResponse {
   msg: string;
   user: User;
 }
@@ -44,11 +57,11 @@ export interface LoginResponse {
   msg: string;
 }
 export interface LogoutResponse {
-  msg: string;  
+  msg: string;
 }
 
-export interface AuthContextType{
-  user: User | null | undefined ;
+export interface AuthContextType {
+  user: User | null | undefined;
   handleLogin: (payload: LoginRequest) => Promise<any>;
   handleLogout: () => Promise<void>;
   loadingAuth: boolean;
@@ -75,8 +88,7 @@ export interface SignUpFormValues {
   countryCode: string;
   mobileNumber: string;
   password: string;
-  confirmPassword: string,
-
+  confirmPassword: string;
 }
 
 export interface SignUpResponse {
@@ -107,4 +119,15 @@ export interface ForgotPasswordResponse {
 export interface ResetPasswordValues {
   password: string;
   retypePassword: string;
+}
+
+export interface Props1 {
+  openSidebar: () => void;
+}
+export interface Props2 {
+  closeSidebar: () => void;
+}
+
+export interface ApiResponse<T>{
+    data: T
 }

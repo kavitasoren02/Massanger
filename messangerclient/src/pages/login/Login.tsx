@@ -34,7 +34,7 @@ const Login = () => {
       try {
         const { data } = await handleLogin(values);
         toast.success(data.msg || "Login Successful");
-        navigate("/chat");
+        navigate("/");
       } catch (error: any) {
         toast.error(error?.response?.data?.detail || "Login failed");
       } finally {
