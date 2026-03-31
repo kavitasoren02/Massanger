@@ -2,11 +2,16 @@ import express, { Request, Response } from "express";
 import {
   changePassword,
   forgotPassword,
+  getAllUser,
   registerUser,
   validateToken,
 } from "./UserService";
 import { validateUser } from "./validation/validateUser";
 import { sendMail } from "../utils/sendEmail";
+import UserModal from "./modals/User";
+import { UserSocketStoreInstance } from "../messages/Socket/UserSocketStore";
+import { AuthSocketMiddleware } from "../middleware/authSocketMiddleware";
+import { authenticate } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -61,7 +66,7 @@ router.post("/forgotpassword", async (req: Request, res: Response) => {
       // resetLink,
     });
   } catch (error: any) {
-    return res.status(400).json({
+    return res.status(500).json({
       detail: error.message || "Forgot password failed",
     });
   }
@@ -83,7 +88,7 @@ router.get(
 
       return res.status(200).json({ message: "Reset token is valid " });
     } catch (error: any) {
-      return res.status(400).json({
+      return res.status(500).json({
         message: "Invalid or expired token",
         detail: error.message || "Invalid or expired token",
       });
@@ -100,10 +105,27 @@ router.post("/change-password/:token", async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Password changed successfully" });
   } catch (error: any) {
-    return res.status(400).json({
+    return res.status(500).json({
       message:  "Password reset failed",
       detail: error.message ||  "Password reset failed",
     });
   }
 });
+
+router.get("/all-users", authenticate, async (req: any, res: Response) => {
+  try{
+    const currentUserId = req.userId;
+    const users = await getAllUser(currentUserId);
+    res.status(200).json({
+      data: users
+    });
+  }
+  catch (error: any) {
+    return res.status(500).json({
+      message: "Internal server error.",
+      details: error.message || "Internal server error."
+    }) 
+  }
+})
+
 export default router;

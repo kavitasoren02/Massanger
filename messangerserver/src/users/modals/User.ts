@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import MessageModel, { IMESSAGE } from "../../messages/modals/Message";
 
 export interface IUSER extends Document {
   fullName: string;
@@ -14,6 +15,7 @@ export interface IUSER extends Document {
   isDeleted: boolean;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date | string;
+  lastMessage: IMESSAGE;
 }
 
 const UserSchema: Schema<IUSER> = new Schema(
@@ -93,6 +95,10 @@ const UserSchema: Schema<IUSER> = new Schema(
       type: Date,
       default: null,
     },
+    lastMessage: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message"
+    }
   },
   {
     timestamps: true,

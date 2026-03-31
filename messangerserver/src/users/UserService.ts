@@ -2,6 +2,8 @@ import * as bcrypt from "bcryptjs";
 import UserModal from "./modals/User";
 import { Types } from "mongoose";
 import crypto from "crypto";
+import { UserSocketStoreInstance } from "../messages/Socket/UserSocketStore";
+import { Response } from "express";
 
 export const registerUser = async (data: any) => {
   try {
@@ -133,3 +135,20 @@ export const changePassword = async (token: string | undefined, newPassword: str
     throw error;
   }
 };
+
+export const getAllUser = async (currentUserId: string) => {
+  const users = await UserModal.find({isActive: true, _id: { $ne: currentUserId }});
+    if (!users || users.length <= 0) {
+      throw new Error("There is no any registered user.");
+    }
+
+    const onlineOfflineUser = users.map((user) => {
+      const isOnline: boolean = !!UserSocketStoreInstance.getSocketId(user.id);
+      return {
+        ...user.toObject(), 
+        isOnline: isOnline
+      }
+    })
+    console.log({onlineOfflineUser})
+    return onlineOfflineUser;
+}
