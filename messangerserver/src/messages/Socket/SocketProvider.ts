@@ -12,11 +12,17 @@ export const SocketProvider = (io: Server) => {
     const currentUserId = socket.data.userId;
     UserSocketStoreInstance.addUser(currentUserId, socket.id);
 
+    socket.broadcast.emit("topic/userConnected", {
+      userId: currentUserId,
+    });
 
     socket.on("disconnect", () => {
       console.log("User Disconnected", socket.id);
       UserSocketStoreInstance.removeUser(socket.id);
-    })
+
+      socket.broadcast.emit("topic/userDisconnected", {
+        userId: currentUserId,
+      });
+    });
   });
-  
 };

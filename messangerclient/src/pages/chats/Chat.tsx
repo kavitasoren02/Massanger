@@ -12,7 +12,7 @@ const Chat = () => {
   // },[]);
   
   return (
-    <div className="min-h-screen flex relative overflow-hidden p-6 bg-[#EDEDED]">
+    <div className="h-screen flex relative overflow-hidden p-6 bg-[#EDEDED]">
   
       {open && (
         <div

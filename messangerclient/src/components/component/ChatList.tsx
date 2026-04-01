@@ -3,9 +3,13 @@ import type { ApiResponse, Props2, User } from "../../Service/interface";
 import { _get } from "../../Service/axios";
 import { GET_ALL_USER } from "../../Service/useApiService";
 import { useEffect, useState } from "react";
+import ChatUserCards from "./ChatUserCards";
+import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
 
 const ChatList = ({ closeSidebar }: Props2) => {
   const [userList, setUserList] = useState<User[]>([]);
+
+  const { socket } = useChatContextProvider();
 
   const getAllUsers = async () => {
     try {
@@ -19,6 +23,34 @@ const ChatList = ({ closeSidebar }: Props2) => {
   useEffect(() => {
     getAllUsers();
   }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("topic/userConnected", (data) => {
+      const { userId } = data;
+      setUserList((prev) => {
+        return prev.map((user) =>{
+          if(user._id == userId){
+            return {...user, isOnline: true }
+          }
+          return user;
+        })
+      })
+    });
+
+    socket.on("topic/userDisconnected", (data) =>{
+      const { userId } = data;
+      setUserList((prev) => {
+        return prev.map((user) => {
+          if(user._id == userId){
+            return {...user, isOnline: false}
+          }
+          return user;
+        })
+      })
+    })
+  }, [socket, setUserList]);
+
   return (
     <div className="flex flex-col h-full md:p-4">
       {/* Header */}
@@ -64,10 +96,17 @@ const ChatList = ({ closeSidebar }: Props2) => {
             No conversations yet
           </p>
         ) : (
-          <div>{userList.map((user) => 
-          <p>
-            {user.fullName}
-          </p>)}</div>
+          <div className="">
+            {userList.map((user) => (
+              <ChatUserCards
+                _id={user._id}
+                fullName={user.fullName}
+                profilePic={user.profilePic}
+                isOnline={user.isOnline}
+                key={user._id}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>
