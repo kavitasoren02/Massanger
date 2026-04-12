@@ -3,7 +3,6 @@ import UserModal from "./modals/User";
 import { Types } from "mongoose";
 import crypto from "crypto";
 import { UserSocketStoreInstance } from "../messages/Socket/UserSocketStore";
-import { Response } from "express";
 
 export const registerUser = async (data: any) => {
   try {
@@ -102,12 +101,15 @@ export const validateToken = async (token: string) => {
   }
 };
 
-export const changePassword = async (token: string | undefined, newPassword: string) => {
+export const changePassword = async (
+  token: string | undefined,
+  newPassword: string,
+) => {
   try {
     if (!token) {
       throw new Error("Invalid or expired reset token");
     }
-    
+
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await UserModal.findOne({
@@ -136,19 +138,29 @@ export const changePassword = async (token: string | undefined, newPassword: str
   }
 };
 
-export const getAllUser = async (currentUserId: string) => {
-  const users = await UserModal.find({isActive: true, _id: { $ne: currentUserId }});
-    if (!users || users.length <= 0) {
-      throw new Error("There is no any registered user.");
-    }
+export const getAllUser = async (currentUserId: string, search?: string) => {
+  let filter: any = {
+    isActive: true,
+    _id: { $ne: currentUserId },
+  };
 
-    const onlineOfflineUser = users.map((user) => {
-      const isOnline: boolean = !!UserSocketStoreInstance.getSocketId(user.id);
-      return {
-        ...user.toObject(), 
-        isOnline: isOnline
-      }
-    })
-    console.log({onlineOfflineUser})
-    return onlineOfflineUser;
-}
+  if (search) {
+    filter.fullName = { $regex: search, $options: "i" };
+  }
+
+  const users = await UserModal.find(filter);
+  
+  // if (!users || users.length <= 0) {
+  //   throw new Error("There is no any registered user.");
+  // }
+
+  const onlineOfflineUser = users.map((user) => {
+    const isOnline: boolean = !!UserSocketStoreInstance.getSocketId(user.id);
+    return {
+      ...user.toObject(),
+      isOnline: isOnline,
+    };
+  });
+  console.log({ onlineOfflineUser });
+  return onlineOfflineUser;
+};

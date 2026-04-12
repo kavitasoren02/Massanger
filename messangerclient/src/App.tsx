@@ -70,6 +70,17 @@ function App() {
           }
         ></Route>
 
+          <Route
+          path="/chat/:id"
+          element={
+            <ProtectedRoutes>
+              <ChatContextProvider>
+                <Chat />
+              </ChatContextProvider>
+            </ProtectedRoutes>
+          }
+        ></Route>
+
         <Route path="*" element={<Navigate to={"/chat"} />}></Route>
       </Routes>
     </>

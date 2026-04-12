@@ -21,4 +21,8 @@ export const VALIDATETOKEN_ENDPOINTS = '/api/v1/user/validate-reset-token';
 export const PASSWORDCHANGE_ENDPOINTS = '/api/v1/user/change-password';
 
 // Chat list
+
 export const GET_ALL_USER = "/api/v1/user/all-users";
+
+// UserById endpoints
+export const GET_USER_BYID = "/api/v1/user/getuserById";

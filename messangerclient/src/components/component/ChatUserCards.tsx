@@ -5,12 +5,12 @@ interface Props {
   fullName: string;
   profilePic?: string;
   isOnline: boolean;
-  className?: string;
+  isSelected: boolean;
 }
 
-const ChatUserCards = ({ _id, fullName, profilePic, isOnline }: Props) => {
+const ChatUserCards = ({ _id, fullName, profilePic, isOnline, isSelected }: Props) => {
   return (
-    <div className="flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition">
+    <div className={`flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition ${isSelected && 'bg-gray-300'}`}>
       {/* Profile Image */}
       <div className="relative">
         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">

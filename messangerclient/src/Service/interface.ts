@@ -3,6 +3,7 @@ import type {
   ReactNode,
   SelectHTMLAttributes,
 } from "react";
+import type { readStatus } from "./enum/ReadStatus";
 
 export interface User {
   _id: string;
@@ -123,11 +124,24 @@ export interface ResetPasswordValues {
 
 export interface Props1 {
   openSidebar: () => void;
+  id?: string;
+  currentUser?: User;
 }
 export interface Props2 {
   closeSidebar: () => void;
 }
 
-export interface ApiResponse<T>{
-    data: T
+export interface ApiResponse<T> {
+  data: T;
+}
+
+export interface IMESSAGE {
+  _id: string;
+  senderId: User;
+  reciverId: User;
+  messageType: String;
+  content: String;
+  fileId?: String;
+  readStatus: readStatus;
+  createdAt: string;
 }

@@ -6,7 +6,7 @@ export interface IMESSAGE extends Document {
     reciverId: mongoose.Types.ObjectId;
     messageType: String;
     content: String;
-    fileId: mongoose.Types.ObjectId;
+    fileId?: mongoose.Types.ObjectId;
     readStatus: readStatus
 }
 

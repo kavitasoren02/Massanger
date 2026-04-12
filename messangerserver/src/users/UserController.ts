@@ -3,6 +3,7 @@ import {
   changePassword,
   forgotPassword,
   getAllUser,
+  getUserById,
   registerUser,
   validateToken,
 } from "./UserService";
@@ -106,26 +107,46 @@ router.post("/change-password/:token", async (req: Request, res: Response) => {
     return res.status(200).json({ message: "Password changed successfully" });
   } catch (error: any) {
     return res.status(500).json({
-      message:  "Password reset failed",
-      detail: error.message ||  "Password reset failed",
+      message: "Password reset failed",
+      detail: error.message || "Password reset failed",
     });
   }
 });
 
 router.get("/all-users", authenticate, async (req: any, res: Response) => {
-  try{
+  try {
     const currentUserId = req.userId;
-    const users = await getAllUser(currentUserId);
+    const { searchTerm } = req.query;
+    console.log(searchTerm);
+
+    const users = await getAllUser(currentUserId, searchTerm);
     res.status(200).json({
-      data: users
+      data: users,
     });
-  }
-  catch (error: any) {
+  } catch (error: any) {
     return res.status(500).json({
       message: "Internal server error.",
-      details: error.message || "Internal server error."
-    }) 
+      details: error.message || "Internal server error.",
+    });
   }
-})
+});
+
+router.get("/getuserById/:id", authenticate, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await getUserById(id);
+    const isOnline = !! UserSocketStoreInstance.getSocketId(id);
+
+    res.status(200).json({
+      data: {...user?.toObject(), isOnline},
+    })
+    console.log(id);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: "Internal server error.",
+      details: error.message || "Internal server error.",
+    });
+  }
+});
 
 export default router;

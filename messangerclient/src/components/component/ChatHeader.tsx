@@ -4,7 +4,7 @@ import { MdCall } from "react-icons/md";
 import { IoMdVideocam } from "react-icons/io";
 import { HiDotsVertical } from "react-icons/hi";
 
-const ChatHeader = ({ openSidebar }: Props1) => {
+const ChatHeader = ({ openSidebar, currentUser }: Props1) => {
   return (
     <div className="h-[65px] w-full bg-[#329A93] flex items-center justify-between px-4 shadow-md rounded-xl">
 
@@ -27,13 +27,12 @@ const ChatHeader = ({ openSidebar }: Props1) => {
 
           <div className="leading-tight">
             <p className="text-white font-semibold text-[12px] md:text-lg">
-              Meera
+              {currentUser?.fullName}
             </p>
             <span className="text-white/80 text-[10px] md:text-sm">
-              Online
+              {currentUser?.isOnline ? "Online" : "Offline"}
             </span>
           </div>
-
         </div>
       </div>
 

@@ -1,0 +1,70 @@
+import MessageModel, { IMESSAGE } from "./modals/Message";
+
+export const getAllMessage = async (
+  senderIdProps: string,
+  reciverIdProps: string,
+) => {
+  try {
+    const allMessage = await MessageModel.find({
+      $or: [
+        { senderId: senderIdProps, recieverId: reciverIdProps },
+        { senderId: reciverIdProps, reciverId: senderIdProps },
+      ],
+    }).sort({ createdAt: -1 });
+    return allMessage;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateMessage = async (
+  id: string,
+  message: IMESSAGE,
+  currentId: string,
+) => {
+  try {
+    const isOwnMessage = await MessageModel.find({
+      _id: id,
+      senderId: currentId,
+    });
+    if (!isOwnMessage) {
+      throw new Error("Access Denied");
+    }
+    const updatedMessage = await MessageModel.findByIdAndUpdate(id, message, {
+      $new: true,
+    });
+    return updatedMessage;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export const deleteMessage = async (id: string, currentId: string) => {
+  try {
+    const isOwnMessage = await MessageModel.find({
+      _id: id,
+      senderId: currentId,
+    });
+    if (!isOwnMessage) {
+      throw new Error("Access Denied");
+    }
+    const deletedMessage = await MessageModel.findByIdAndDelete(id);
+    return deletedMessage;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export const saveMessage = async (message: IMESSAGE) => {
+  try {
+    const userMessage = await MessageModel.insertOne(message);
+    return userMessage;
+  } catch (error) {
+    throw error;
+  }
+};
+

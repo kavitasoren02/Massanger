@@ -1,19 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChatList from "../../components/component/ChatList";
 import ChatWindow from "../../components/component/ChatWindow";
+import type { ApiResponse, User } from "../../Service/interface";
+import { useParams } from "react-router-dom";
+import { GET_USER_BYID } from "../../Service/useApiService";
+import { _get } from "../../Service/axios";
+import { useChatContextProvider } from "./context/ChatContextProvider";
 
 const Chat = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [currentUser, setcurrentUser] = useState<User>();
 
-  // useEffect(() => {
-  //   socket.on("connect", () => {
-  //     console.log("Connected:", socket.id);
-  //   });
-  // },[]);
-  
+  const { id } = useParams();
+
+  const { socket } = useChatContextProvider();
+  const getUserById = async (id: string | undefined) => {
+    if (!id) return;
+    try {
+      const { data } = await _get<ApiResponse<User>>(`${GET_USER_BYID}/${id}`);
+      console.log(data);
+      setcurrentUser(data.data);
+    } catch (error: any) {}
+  };
+  useEffect(() => {
+    getUserById(id);
+  }, [id]);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("topic/userConnected", (data) => {
+      const { userId } = data;
+      if (currentUser?._id == userId) {
+        setcurrentUser((prev) => {
+          if (!prev) return;
+          return { ...prev, isOnline: true };
+        });
+      }
+
+      
+    });
+
+    socket.on("topic/userDisconnected", (data) => {
+      const { userId } = data;
+      if(currentUser?._id == userId){
+        setcurrentUser((prev) =>{
+          if(!prev) return;
+          return{ ...prev, isOnline: false};
+        })
+      }
+    });
+  }, [socket, currentUser, setcurrentUser]);
+
   return (
     <div className="h-screen flex relative overflow-hidden p-6 bg-[#EDEDED]">
-  
       {open && (
         <div
           className="fixed inset-0 bg-black/40 z-40 md:hidden"
@@ -36,7 +75,11 @@ const Chat = () => {
         <ChatList closeSidebar={() => setOpen(false)} />
       </div>
 
-<ChatWindow openSidebar={() => setOpen(true)} />
+      <ChatWindow
+        currentUser={currentUser}
+        id={id}
+        openSidebar={() => setOpen(true)}
+      />
     </div>
   );
 };

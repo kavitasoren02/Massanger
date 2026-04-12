@@ -2,18 +2,29 @@ import { Bell, Search, X } from "lucide-react";
 import type { ApiResponse, Props2, User } from "../../Service/interface";
 import { _get } from "../../Service/axios";
 import { GET_ALL_USER } from "../../Service/useApiService";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import ChatUserCards from "./ChatUserCards";
 import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ChatList = ({ closeSidebar }: Props2) => {
   const [userList, setUserList] = useState<User[]>([]);
+  const [search, setSearch] = useState<string>("");
 
   const { socket } = useChatContextProvider();
 
+  const { id } = useParams();
+  console.log(id);
+
+  const navigate = useNavigate();
+
   const getAllUsers = async () => {
     try {
-      const { data } = await _get<ApiResponse<User[]>>(GET_ALL_USER);
+      const { data } = await _get<ApiResponse<User[]>>(GET_ALL_USER, {
+        params: {
+          searchTerm: search,
+        },
+      });
       setUserList(data.data);
     } catch (error: any) {}
   };
@@ -22,33 +33,33 @@ const ChatList = ({ closeSidebar }: Props2) => {
 
   useEffect(() => {
     getAllUsers();
-  }, []);
+  }, [search]);
 
   useEffect(() => {
     if (!socket) return;
     socket.on("topic/userConnected", (data) => {
       const { userId } = data;
       setUserList((prev) => {
-        return prev.map((user) =>{
-          if(user._id == userId){
-            return {...user, isOnline: true }
+        return prev.map((user) => {
+          if (user._id == userId) {
+            return { ...user, isOnline: true };
           }
           return user;
-        })
-      })
+        });
+      });
     });
 
-    socket.on("topic/userDisconnected", (data) =>{
+    socket.on("topic/userDisconnected", (data) => {
       const { userId } = data;
       setUserList((prev) => {
         return prev.map((user) => {
-          if(user._id == userId){
-            return {...user, isOnline: false}
+          if (user._id == userId) {
+            return { ...user, isOnline: false };
           }
           return user;
-        })
-      })
-    })
+        });
+      });
+    });
   }, [socket, setUserList]);
 
   return (
@@ -75,6 +86,9 @@ const ChatList = ({ closeSidebar }: Props2) => {
         <Search className="w-4 h-4 md:w-5 md:h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
 
         <input
+          onChange={(e : ChangeEvent<HTMLInputElement>) => {  
+            setSearch(e.target.value);
+          }}
           type="text"
           placeholder="Search chats"
           className="
@@ -98,13 +112,20 @@ const ChatList = ({ closeSidebar }: Props2) => {
         ) : (
           <div className="">
             {userList.map((user) => (
-              <ChatUserCards
-                _id={user._id}
-                fullName={user.fullName}
-                profilePic={user.profilePic}
-                isOnline={user.isOnline}
-                key={user._id}
-              />
+              <div
+                onClick={() => {
+                  navigate(`/chat/${user._id}`);
+                }}
+              >
+                <ChatUserCards
+                  _id={user._id}
+                  fullName={user.fullName}
+                  profilePic={user.profilePic}
+                  isOnline={user.isOnline}
+                  key={user._id}
+                  isSelected={user._id === id}
+                />
+              </div>
             ))}
           </div>
         )}
