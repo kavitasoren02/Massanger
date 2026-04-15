@@ -1,4 +1,4 @@
-import React from "react";
+
 
 interface Props {
   _id: string;
@@ -8,7 +8,7 @@ interface Props {
   isSelected: boolean;
 }
 
-const ChatUserCards = ({ _id, fullName, profilePic, isOnline, isSelected }: Props) => {
+const ChatUserCards = ({ fullName, profilePic, isOnline, isSelected }: Props) => {
   return (
     <div className={`flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition ${isSelected && 'bg-gray-300'}`}>
       {/* Profile Image */}

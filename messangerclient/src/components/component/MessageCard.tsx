@@ -1,12 +1,11 @@
-import React from "react";
 import type { MessageCardProps } from "../../Service/interface";
-import { IoCheckmark, IoCheckmarkDone } from "react-icons/io5";
-import { MdOutlineWatchLater } from "react-icons/md";
+import { IoCheckmark } from "react-icons/io5";
+// import { MdOutlineWatchLater } from "react-icons/md";
 
 const MessageCard = ({
   isSended,
   content,
-  status,
+  // status,
   user,
   createdAt,
 }: MessageCardProps) => {
