@@ -20,19 +20,19 @@ export const SocketProvider = (io: Server) => {
     });
 
     // send message & recieve message
-    socket.on("topic/sendMessage", (data: IMESSAGE) => {
+    socket.on("topic/sendMessage", async(data: IMESSAGE) => {
       const recieverSocketId = UserSocketStoreInstance.getSocketId(
-        data.reciverId.toString(),
+        data.receiverId.toString(),
       );
       const senderSocketId = UserSocketStoreInstance.getSocketId(
         data.senderId.toString(),
       );
 
       try {
-        const savedMessage = saveMessage(data);
+        const savedMessage = await saveMessage(data);
         if (recieverSocketId && senderSocketId) {
-          socket.to(recieverSocketId).to(senderSocketId).emit("topic/recieveMessage", savedMessage);
-        }
+          socket.to(recieverSocketId).emit("topic/receiveMessage", savedMessage);
+        } 
         
       } catch (error) {
         if(senderSocketId){

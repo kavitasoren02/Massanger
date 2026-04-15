@@ -136,12 +136,29 @@ export interface ApiResponse<T> {
 }
 
 export interface IMESSAGE {
-  _id: string;
-  senderId: User;
-  reciverId: User;
-  messageType: String;
-  content: String;
-  fileId?: String;
+  _id?: string;
+  senderId: string;
+  receiverId: string;
+  messageType: string;
+  content: string;
+  fileId?: string;
   readStatus: readStatus;
+  createdAt?: string;
+}
+
+export interface ChatInputProps{
+  sendMessage: (message: IMESSAGE) => void;
+}
+
+export interface MessageCardProps {
+  isSended: boolean;
+  content: string;
+  status: readStatus;
+  user: User;
   createdAt: string;
+}
+
+export interface ChatMessageProps {
+  id?: string;
+  messages: IMESSAGE[];
 }

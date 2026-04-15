@@ -6,14 +6,18 @@ const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const { senderId, recieverId } = req.body;
-    const allMessage = await getAllMessage(senderId, recieverId);
+    const { senderId, receiverId } = req.query;
+    
+    if (!senderId || !receiverId) throw new Error("Please provide me Sender and Reciever id");
+
+    const allMessage = await getAllMessage(senderId as string, receiverId as string);
 
     res.status(200).json({
       message: "Messaged fetched successfully",
       data: allMessage,
     });
   } catch (error: any) {
+    console.log({error})
     return res.status(500).json({
       detail: error.message || "Something went wrong",
     });
@@ -55,3 +59,5 @@ router.delete("/:id", async (req: any, res: Response) => {
     });
   }
 });
+
+export default router;

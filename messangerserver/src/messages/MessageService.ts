@@ -2,13 +2,13 @@ import MessageModel, { IMESSAGE } from "./modals/Message";
 
 export const getAllMessage = async (
   senderIdProps: string,
-  reciverIdProps: string,
+  receiverIdProps: string,
 ) => {
   try {
     const allMessage = await MessageModel.find({
       $or: [
-        { senderId: senderIdProps, recieverId: reciverIdProps },
-        { senderId: reciverIdProps, reciverId: senderIdProps },
+        { senderId: senderIdProps, receiverId: receiverIdProps },
+        { senderId: receiverIdProps, receiverId: senderIdProps },
       ],
     }).sort({ createdAt: -1 });
     return allMessage;
