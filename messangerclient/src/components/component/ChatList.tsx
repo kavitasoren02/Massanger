@@ -115,7 +115,9 @@ const ChatList = ({ closeSidebar }: Props2) => {
               <div
                 onClick={() => {
                   navigate(`/chat/${user._id}`);
+                  closeSidebar();
                 }}
+                
               >
                 <ChatUserCards
                   _id={user._id}

@@ -7,6 +7,7 @@ import { _get } from "../../Service/axios";
 import { GET_ALL_MESSAGE } from "../../Service/useApiService";
 import { useAuth } from "../../ProtectedRoute/AuthProvider";
 import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
+import { Logs } from "lucide-react";
 
 const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
   const [messages, setMessages] = useState<IMESSAGE[]>([]);
@@ -17,8 +18,8 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
   const sendMessage = (message: IMESSAGE) => {
     console.log(message);
     setMessages((prev) => [...prev, message]);
-    if(!socket) return;
-    const {createdAt, ...messageObject} = message
+    if (!socket) return;
+    const { createdAt, ...messageObject } = message;
     socket.emit("topic/sendMessage", messageObject);
   };
 
@@ -45,18 +46,29 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
   }, [id, user?._id]);
 
   useEffect(() => {
-    if(!socket) return;
+    if (!socket) return;
     socket.on("topic/receiveMessage", (message: IMESSAGE) => {
-      console.log({message});
-      
+      console.log({ message });
+
       setMessages((prev) => [...prev, message]);
-    })
-  },[socket, setMessages])
+    });
+  }, [socket, setMessages]);
 
   return (
-    <div className="flex-1 flex flex-col h-full rounded-r-2xl pl-2 gap-2 overflow-hidden">
+    <div className="flex-1 flex flex-col h-full lg:rounded-r-2xl rounded-2xl gap-2 overflow-hidden relative">
       {/* Header */}
       {id && <ChatHeader currentUser={currentUser} openSidebar={openSidebar} />}
+      {!id && (
+        <div className="absolute top-2 left-2">
+          {/* Hamburger */}
+          <button
+            onClick={openSidebar}
+            className="md:hidden bg-white p-1 rounded-lg"
+          >
+            <Logs className="w-5 h-5 text-black" />
+          </button>{" "}
+        </div>
+      )}
 
       {/* Messages */}
       <div className="flex-1 bg-[#D9D9D9] overflow-hidden">
