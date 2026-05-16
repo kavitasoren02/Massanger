@@ -18,7 +18,8 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
     console.log(message);
     setMessages((prev) => [...prev, message]);
     if(!socket) return;
-    socket.emit("topic/sendMessage", message);
+    const {createdAt, ...messageObject} = message
+    socket.emit("topic/sendMessage", messageObject);
   };
 
   const getAllMessage = async (senderId: string, receiverId: string) => {

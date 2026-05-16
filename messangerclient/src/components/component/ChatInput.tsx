@@ -34,7 +34,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
         e.preventDefault();
         sendMessage({
           ...message,
-          createdAt: new Date().toLocaleString()
+          createdAt: new Date().toISOString()
         });
         setMessage((prev) => {
           return {
