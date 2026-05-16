@@ -10,7 +10,7 @@ export const getAllMessage = async (
         { senderId: senderIdProps, receiverId: receiverIdProps },
         { senderId: receiverIdProps, receiverId: senderIdProps },
       ],
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: 1 });
     return allMessage;
   } catch (error) {
     throw error;
