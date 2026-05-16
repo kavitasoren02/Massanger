@@ -52,7 +52,7 @@ const Chat = () => {
   }, [socket, currentUser, setcurrentUser]);
 
   return (
-    <div className="h-screen flex relative overflow-hidden p-6 bg-[#EDEDED]">
+    <div className="h-dvh flex relative overflow-hidden p-6 bg-[#EDEDED]">
       {open && (
         <div
           className="fixed inset-0 bg-black/40 z-40 md:hidden"
