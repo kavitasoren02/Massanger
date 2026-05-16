@@ -16,7 +16,7 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
   const { user } = useAuth();
 
   const sendMessage = (message: IMESSAGE) => {
-    console.log(message);
+    // console.log(message);
     setMessages((prev) => [...prev, message]);
     if (!socket) return;
     const { createdAt, ...messageObject } = message;
@@ -48,9 +48,17 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
   useEffect(() => {
     if (!socket) return;
     socket.on("topic/receiveMessage", (message: IMESSAGE) => {
-      console.log({ message });
+      // console.log({ message });
 
       setMessages((prev) => [...prev, message]);
+    });
+
+    socket.on("topic/updateMessage", (recievedmessage: IMESSAGE) => {
+      // console.log({rcv:recievedmessage});
+      setMessages((prev) => {
+        const restMessage = prev.slice(0, prev.length - 1);
+        return [...restMessage, recievedmessage];
+      });
     });
   }, [socket, setMessages]);
 

@@ -10,6 +10,7 @@ const ChatMessage = ({ id , messages}: ChatMessageProps) => {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [id, messages]);
+console.log(messages);
 
   return (
     <div className="h-full flex flex-col bg-[#D9D9D9] px-4 py-2 overflow-y-auto min-h-0">
@@ -22,6 +23,7 @@ const ChatMessage = ({ id , messages}: ChatMessageProps) => {
               status={message.readStatus}
               isSended={message.senderId === user?._id}
               user={user!}
+              id={message._id }
             />
           ))}
           <div ref={bottomRef} />

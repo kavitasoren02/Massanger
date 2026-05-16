@@ -1,14 +1,16 @@
 import type { MessageCardProps } from "../../Service/interface";
-import { IoCheckmark } from "react-icons/io5";
-// import { MdOutlineWatchLater } from "react-icons/md";
+import MessageStatus from "./MessageStatus";
 
 const MessageCard = ({
   isSended,
   content,
-  // status,
+  status,
   user,
   createdAt,
+  id
 }: MessageCardProps) => {
+  
+  
   return (
     <div className={`w-full flex my-1 ${isSended ? "justify-end" : "justify-start"}`}>
       
@@ -45,10 +47,11 @@ const MessageCard = ({
         <div className="flex flex-col items-center justify-end gap-1">
           
           {/* Status*/}
-          <span className="text-xs sm:text-sm text-gray-500">
-            {isSended && 
-            <IoCheckmark/>}
-          </span>
+          {isSended && <span className="text-xs sm:text-sm text-gray-500">
+            <MessageStatus
+            id={id}
+            readStatus={status}/>
+          </span>}
 
           {/* Profile pic*/}
           <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-400 overflow-hidden flex items-center justify-center">
@@ -73,3 +76,4 @@ const MessageCard = ({
 };
 
 export default MessageCard;
+

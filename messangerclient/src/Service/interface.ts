@@ -156,9 +156,15 @@ export interface MessageCardProps {
   status: readStatus;
   user: User;
   createdAt: string;
+  id?: string;
 }
 
 export interface ChatMessageProps {
   id?: string;
   messages: IMESSAGE[];
+}
+
+export interface MessageStatusProps{
+  id?: string;
+  readStatus: readStatus;
 }

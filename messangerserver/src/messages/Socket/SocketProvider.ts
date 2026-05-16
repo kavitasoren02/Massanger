@@ -3,6 +3,7 @@ import { AuthSocketMiddleware } from "../../middleware/authSocketMiddleware";
 import { UserSocketStoreInstance } from "./UserSocketStore";
 import { IMESSAGE } from "../modals/Message";
 import { saveMessage } from "../MessageService";
+import { READ_STATUS } from "../../enums/ReadStatus";
 
 export const SocketProvider = (io: Server) => {
   if (!io) return;
@@ -29,11 +30,16 @@ export const SocketProvider = (io: Server) => {
       );
 
       try {
+        if(recieverSocketId){
+          data.readStatus = READ_STATUS.DOUBLE_TICK;
+        }
         const savedMessage = await saveMessage(data);
-        if (recieverSocketId && senderSocketId) {
+        if (recieverSocketId) {
           socket.to(recieverSocketId).emit("topic/receiveMessage", savedMessage);
-        } 
-        
+        }
+        if(senderSocketId){
+          io.to(senderSocketId).emit("topic/updateMessage", savedMessage);
+        }
       } catch (error) {
         if(senderSocketId){
           socket.to(senderSocketId).emit("topic/messageFailed", null) 
