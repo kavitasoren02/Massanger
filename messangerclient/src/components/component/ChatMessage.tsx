@@ -9,8 +9,8 @@ const ChatMessage = ({ id , messages}: ChatMessageProps) => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [id, messages]);
-console.log(messages);
+  }, [id, messages.length]);
+// console.log(messages);
 
   return (
     <div className="h-full flex flex-col bg-[#D9D9D9] px-4 py-2 overflow-y-auto min-h-0">

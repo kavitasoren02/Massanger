@@ -1,3 +1,4 @@
+import { READ_STATUS } from "../enums/ReadStatus";
 import MessageModel, { IMESSAGE } from "./modals/Message";
 
 export const getAllMessage = async (
@@ -68,3 +69,23 @@ export const saveMessage = async (message: IMESSAGE) => {
   }
 };
 
+export const bluetickMessage = async(ids: string[]) => {
+  if(ids.length <= 0) return;
+
+  try{
+    const id = await MessageModel.updateMany(
+      {
+        _id:{
+          $in: ids
+        }
+      },
+      {
+        $set:{
+          readStatus: READ_STATUS.BLUE_DOUBLE_TICK
+        }
+      }
+    )
+  }catch(error){
+    throw error;
+  }
+}

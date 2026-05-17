@@ -1,6 +1,11 @@
 import ChatMessage from "./ChatMessage";
 import ChatHeader from "./ChatHeader";
-import type { ApiResponse, IMESSAGE, Props1 } from "../../Service/interface";
+import type {
+  ApiResponse,
+  BlueTickProps,
+  IMESSAGE,
+  Props1,
+} from "../../Service/interface";
 import ChatInput from "./ChatInput";
 import { useEffect, useState } from "react";
 import { _get } from "../../Service/axios";
@@ -8,6 +13,7 @@ import { GET_ALL_MESSAGE } from "../../Service/useApiService";
 import { useAuth } from "../../ProtectedRoute/AuthProvider";
 import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
 import { Logs } from "lucide-react";
+import { READ_STATUS } from "../../Service/enum/ReadStatus";
 
 const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
   const [messages, setMessages] = useState<IMESSAGE[]>([]);
@@ -60,7 +66,41 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
         return [...restMessage, recievedmessage];
       });
     });
+
+    socket.on(
+      "topic/updateBluetickMessage",
+      (bluetickmessage: BlueTickProps) => {
+        setMessages((prev) => {
+          const newmessage = prev.map((msg) => {
+            if (bluetickmessage.ids.includes(msg._id ?? "")) {
+              return { ...msg, readStatus: READ_STATUS.BLUE_DOUBLE_TICK };
+            } else {
+              return msg;
+            }
+          });
+          return newmessage;
+        });
+      },
+    );
   }, [socket, setMessages]);
+
+  useEffect(() => {
+    if (messages.length === 0 || !socket) return;
+
+    const ids = messages
+      .filter((msg) => msg.senderId === id && (msg.readStatus === READ_STATUS.DOUBLE_TICK || msg.readStatus === READ_STATUS.SINGLE_TICK))
+      .map((msg) => msg._id);
+    console.log(ids);
+
+    const updateStatus = {
+      recieverId: id,
+      ids: ids,
+    };
+
+    if(ids.length <= 0) return;
+    socket.emit("topic/bluetickMessage", updateStatus);
+  }, [socket, messages]);
+
 
   return (
     <div className="flex-1 flex flex-col h-full lg:rounded-r-2xl rounded-2xl gap-2 overflow-hidden relative">

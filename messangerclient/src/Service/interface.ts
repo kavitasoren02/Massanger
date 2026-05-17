@@ -168,3 +168,8 @@ export interface MessageStatusProps{
   id?: string;
   readStatus: readStatus;
 }
+
+export interface BlueTickProps{
+    recieverId: string;
+    ids: string[];
+}

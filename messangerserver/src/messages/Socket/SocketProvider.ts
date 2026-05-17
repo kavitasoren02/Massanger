@@ -2,8 +2,9 @@ import { Server, Socket } from "socket.io";
 import { AuthSocketMiddleware } from "../../middleware/authSocketMiddleware";
 import { UserSocketStoreInstance } from "./UserSocketStore";
 import { IMESSAGE } from "../modals/Message";
-import { saveMessage } from "../MessageService";
+import { bluetickMessage, saveMessage } from "../MessageService";
 import { READ_STATUS } from "../../enums/ReadStatus";
+import { BlueTickProps } from "../../interface/interface";
 
 export const SocketProvider = (io: Server) => {
   if (!io) return;
@@ -21,7 +22,7 @@ export const SocketProvider = (io: Server) => {
     });
 
     // send message & recieve message
-    socket.on("topic/sendMessage", async(data: IMESSAGE) => {
+    socket.on("topic/sendMessage", async (data: IMESSAGE) => {
       const recieverSocketId = UserSocketStoreInstance.getSocketId(
         data.receiverId.toString(),
       );
@@ -30,24 +31,38 @@ export const SocketProvider = (io: Server) => {
       );
 
       try {
-        if(recieverSocketId){
+        if (recieverSocketId) {
           data.readStatus = READ_STATUS.DOUBLE_TICK;
         }
         const savedMessage = await saveMessage(data);
         if (recieverSocketId) {
-          socket.to(recieverSocketId).emit("topic/receiveMessage", savedMessage);
+          socket
+            .to(recieverSocketId)
+            .emit("topic/receiveMessage", savedMessage);
         }
-        if(senderSocketId){
+        if (senderSocketId) {
           io.to(senderSocketId).emit("topic/updateMessage", savedMessage);
         }
       } catch (error) {
-        if(senderSocketId){
-          socket.to(senderSocketId).emit("topic/messageFailed", null) 
+        if (senderSocketId) {
+          socket.to(senderSocketId).emit("topic/messageFailed", null);
         }
       }
     });
 
-    // disconnect socket 
+    // blue tick message
+    socket.on("topic/bluetickMessage", async (data: BlueTickProps) => {
+      const recieverSocketId = UserSocketStoreInstance.getSocketId(
+        data.recieverId,
+      );
+
+      if (recieverSocketId) {
+        socket.to(recieverSocketId).emit("topic/updateBluetickMessage", data);
+      }
+      
+      await bluetickMessage(data.ids);
+    });
+    // disconnect socket
     socket.on("disconnect", () => {
       console.log("User Disconnected", socket.id);
       UserSocketStoreInstance.removeUser(socket.id);
