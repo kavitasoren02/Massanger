@@ -3,6 +3,7 @@ import ChatHeader from "./ChatHeader";
 import type {
   ApiResponse,
   BlueTickProps,
+  doubleTickProps,
   IMESSAGE,
   Props1,
 } from "../../Service/interface";
@@ -82,7 +83,23 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
         });
       },
     );
+
+    socket.on(
+      "topic/updatedoubletickmessage",
+      (doubletickmessage: doubleTickProps) => {
+        console.log(doubletickmessage);
+        
+        setMessages((prev) => {
+          return prev.map((msg) => {
+            return {
+              ...msg, readStatus: doubletickmessage.messageIds.includes(msg._id ?? "") ? READ_STATUS.DOUBLE_TICK : msg.readStatus
+            }
+          })
+        })
+      }
+    )
   }, [socket, setMessages]);
+
 
   useEffect(() => {
     if (messages.length === 0 || !socket) return;

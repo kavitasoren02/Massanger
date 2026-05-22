@@ -1,5 +1,7 @@
+import mongoose, { PipelineStage } from "mongoose";
 import { READ_STATUS } from "../enums/ReadStatus";
 import MessageModel, { IMESSAGE } from "./modals/Message";
+import { doubleTickProps } from "../interface/interface";
 
 export const getAllMessage = async (
   senderIdProps: string,
@@ -40,8 +42,6 @@ export const updateMessage = async (
   }
 };
 
-
-
 export const deleteMessage = async (id: string, currentId: string) => {
   try {
     const isOwnMessage = await MessageModel.find({
@@ -58,8 +58,6 @@ export const deleteMessage = async (id: string, currentId: string) => {
   }
 };
 
-
-
 export const saveMessage = async (message: IMESSAGE) => {
   try {
     const userMessage = await MessageModel.insertOne(message);
@@ -69,23 +67,66 @@ export const saveMessage = async (message: IMESSAGE) => {
   }
 };
 
-export const bluetickMessage = async(ids: string[]) => {
-  if(ids.length <= 0) return;
+export const bluetickMessage = async (ids: string[]) => {
+  if (ids.length <= 0) return;
 
-  try{
+  try {
     const id = await MessageModel.updateMany(
       {
-        _id:{
-          $in: ids
-        }
+        _id: {
+          $in: ids,
+        },
       },
       {
-        $set:{
-          readStatus: READ_STATUS.BLUE_DOUBLE_TICK
-        }
-      }
-    )
-  }catch(error){
+        $set: {
+          readStatus: READ_STATUS.BLUE_DOUBLE_TICK,
+        },
+      },
+    );
+  } catch (error) {
     throw error;
   }
-}
+};
+
+export const getAllRecievedMessage = async (receiverId: string):Promise<doubleTickProps[]> => {
+  try {
+    const pipeline: PipelineStage[] = [
+      {
+        $match: {
+          receiverId: new mongoose.Types.ObjectId(receiverId),
+          readStatus: READ_STATUS.SINGLE_TICK,
+        },
+      },
+      {
+        $group: {
+          _id: "$senderId",
+          receiverId: { $first: "$receiverId" },
+          messageIds: {
+            $push: "$_id",
+          },
+        },
+      },
+    ];
+    const result = await MessageModel.aggregate(pipeline);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatedoubleTick = async (messageIds: string[]) => {
+  if (messageIds.length <= 0) return;
+
+  const ids = await MessageModel.updateMany(
+    {
+      _id: {
+        $in: messageIds,
+      },
+    },
+    {
+      $set: {
+        readStatus: READ_STATUS.DOUBLE_TICK,
+      },
+    },
+  );
+};

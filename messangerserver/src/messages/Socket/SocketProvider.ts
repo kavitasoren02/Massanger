@@ -2,7 +2,12 @@ import { Server, Socket } from "socket.io";
 import { AuthSocketMiddleware } from "../../middleware/authSocketMiddleware";
 import { UserSocketStoreInstance } from "./UserSocketStore";
 import { IMESSAGE } from "../modals/Message";
-import { bluetickMessage, saveMessage } from "../MessageService";
+import {
+  bluetickMessage,
+  getAllRecievedMessage,
+  saveMessage,
+  updatedoubleTick,
+} from "../MessageService";
 import { READ_STATUS } from "../../enums/ReadStatus";
 import { BlueTickProps } from "../../interface/interface";
 
@@ -12,7 +17,7 @@ export const SocketProvider = (io: Server) => {
   io.use(AuthSocketMiddleware);
 
   //socket connection
-  io.on("connection", (socket: Socket) => {
+  io.on("connection", async (socket: Socket) => {
     console.log("User connected:", socket.id);
     const currentUserId = socket.data.userId;
     UserSocketStoreInstance.addUser(currentUserId, socket.id);
@@ -21,6 +26,27 @@ export const SocketProvider = (io: Server) => {
       userId: currentUserId,
     });
 
+    const messageIds = await getAllRecievedMessage(currentUserId);
+    const events = messageIds.map((msg) => {
+      const sendersocketId = UserSocketStoreInstance.getSocketId(msg._id.toString());
+      console.log("sendersocketid", sendersocketId, msg._id);
+      
+      if (!sendersocketId) return;
+
+      socket.to(sendersocketId).emit("topic/updatedoubletickmessage", msg);
+    });
+
+
+    Promise.all(events);
+
+    const DBevents = messageIds.map( async (msg) => {
+      if(msg.messageIds.length <= 0) return;
+
+      await updatedoubleTick(msg.messageIds);
+    }) 
+
+    Promise.all(DBevents);
+    
     // send message & recieve message
     socket.on("topic/sendMessage", async (data: IMESSAGE) => {
       const recieverSocketId = UserSocketStoreInstance.getSocketId(
@@ -59,7 +85,7 @@ export const SocketProvider = (io: Server) => {
       if (recieverSocketId) {
         socket.to(recieverSocketId).emit("topic/updateBluetickMessage", data);
       }
-      
+
       await bluetickMessage(data.ids);
     });
     // disconnect socket
