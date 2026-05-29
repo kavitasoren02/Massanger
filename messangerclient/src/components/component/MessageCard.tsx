@@ -1,4 +1,5 @@
 import type { MessageCardProps } from "../../Service/interface";
+import TypingLoader from "../ui/TypingLoader";
 import MessageStatus from "./MessageStatus";
 
 const MessageCard = ({
@@ -7,13 +8,13 @@ const MessageCard = ({
   status,
   user,
   createdAt,
-  id
+  id,
+  isLoading,
 }: MessageCardProps) => {
-  
-  
   return (
-    <div className={`w-full flex my-1 ${isSended ? "justify-end" : "justify-start"}`}>
-      
+    <div
+      className={`w-full flex my-1 ${isSended ? "justify-end" : "justify-start"}`}
+    >
       <div
         className={`
           flex items-end gap-2 
@@ -21,7 +22,6 @@ const MessageCard = ({
           ${isSended ? "flex-row" : "flex-row-reverse"}
         `}
       >
-        
         {/* Message */}
         <div className="flex flex-col">
           <div
@@ -31,27 +31,31 @@ const MessageCard = ({
               ${isSended ? "bg-[#329A93] text-white" : "bg-gray-200 text-black"}
             `}
           >
-            {content}
+            {!isLoading && content}
+            {isLoading && <TypingLoader/>}
           </div>
 
           {/* Time */}
-          <span className={`text-[10px] sm:text-xs text-gray-500 mt-1 px-1 flex ${!isSended ? 'justify-end' : 'justify-start'}`}>
-            {new Date(createdAt).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </span>
+          {!isLoading && (
+            <span
+              className={`text-[10px] sm:text-xs text-gray-500 mt-1 px-1 flex ${!isSended ? "justify-end" : "justify-start"}`}
+            >
+              {new Date(createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          )}
         </div>
 
         {/* Status + Profile pic */}
         <div className="flex flex-col items-center justify-end gap-1">
-          
           {/* Status*/}
-          {isSended && <span className="text-xs sm:text-sm text-gray-500">
-            <MessageStatus
-            id={id}
-            readStatus={status}/>
-          </span>}
+          {isSended && (
+            <span className="text-xs sm:text-sm text-gray-500">
+              <MessageStatus id={id} readStatus={status} />
+            </span>
+          )}
 
           {/* Profile pic*/}
           <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-400 overflow-hidden flex items-center justify-center">
@@ -67,13 +71,10 @@ const MessageCard = ({
               </span>
             )}
           </div>
-
         </div>
-
       </div>
     </div>
   );
 };
 
 export default MessageCard;
-

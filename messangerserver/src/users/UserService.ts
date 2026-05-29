@@ -164,3 +164,12 @@ export const getAllUser = async (currentUserId: string, search?: string) => {
   console.log({ onlineOfflineUser });
   return onlineOfflineUser;
 };
+
+export const updateLastSeen = async(id: string, lastSeen: Date) =>{
+  try{
+    const user = UserModal.findByIdAndUpdate(id, {lastSeen});
+    return user;
+  }catch(error){
+    throw error;
+  }
+}

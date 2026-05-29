@@ -6,9 +6,10 @@ interface Props {
   profilePic?: string;
   isOnline: boolean;
   isSelected: boolean;
+  isTyping: boolean;
 }
 
-const ChatUserCards = ({ fullName, profilePic, isOnline, isSelected }: Props) => {
+const ChatUserCards = ({ fullName, profilePic, isOnline, isSelected, isTyping }: Props) => {
   return (
     <div className={`flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition ${isSelected && 'bg-gray-300'}`}>
       {/* Profile Image */}
@@ -40,7 +41,8 @@ const ChatUserCards = ({ fullName, profilePic, isOnline, isSelected }: Props) =>
         </h2>
 
         <p className="text-xs sm:text-sm text-gray-500 truncate">
-          {isOnline ? "Online" : "Offline"}
+          {/* {isOnline ? isTyping ? "Typing": "Online" : "Offline"} */}
+          {isTyping ? "Typing..." : isOnline ? "Online" : "Offline"}
         </p>
       </div>
     </div>

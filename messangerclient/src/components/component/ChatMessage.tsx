@@ -3,14 +3,14 @@ import { useAuth } from "../../ProtectedRoute/AuthProvider";
 import type { ChatMessageProps } from "../../Service/interface";
 import MessageCard from "./MessageCard";
 
-const ChatMessage = ({ id , messages}: ChatMessageProps) => {
+const ChatMessage = ({ id, messages, currentUser }: ChatMessageProps) => {
   const { user } = useAuth();
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [id, messages.length]);
-// console.log(messages);
+  }, [id, messages.length, currentUser?.isTyping]);
+  // console.log(messages);
 
   return (
     <div className="h-full flex flex-col bg-[#D9D9D9] px-4 py-2 overflow-y-auto min-h-0">
@@ -23,9 +23,22 @@ const ChatMessage = ({ id , messages}: ChatMessageProps) => {
               status={message.readStatus}
               isSended={message.senderId === user?._id}
               user={user!}
-              id={message._id }
+              id={message._id}
             />
           ))}
+          {currentUser?.isTyping && (
+            <div>
+              <MessageCard
+                content=""
+                createdAt=""
+                status="single_tick"
+                isSended={false}
+                user={user!}
+                isLoading={true}
+              />
+            </div>
+          )}
+
           <div ref={bottomRef} />
         </div>
       ) : (

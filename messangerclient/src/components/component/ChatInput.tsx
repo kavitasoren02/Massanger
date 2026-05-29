@@ -2,14 +2,17 @@ import { GrAttachment } from "react-icons/gr";
 import { RiBearSmileFill } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
 import type { ChatInputProps, IMESSAGE } from "../../Service/interface";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { READ_STATUS } from "../../Service/enum/ReadStatus";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../ProtectedRoute/AuthProvider";
+import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
 
 const ChatInput = ({ sendMessage }: ChatInputProps) => {
   const { id } = useParams();
   const { user } = useAuth();
+  const { socket } = useChatContextProvider();
+  const typingRef = useRef<number>(0);
 
   const [message, setMessage] = useState<IMESSAGE>({
     content: "",
@@ -26,6 +29,16 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
         content: e.target.value,
       };
     });
+
+    const now = Date.now();
+    if (now - typingRef.current > 2000) {
+      if (!socket) return;
+      socket.emit("topic/typing", {
+        senderId: user?._id ?? "",
+        receiverId: id ?? "",
+      });
+      typingRef.current = now;
+    }
   };
 
   return (
@@ -34,7 +47,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
         e.preventDefault();
         sendMessage({
           ...message,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         });
         setMessage((prev) => {
           return {

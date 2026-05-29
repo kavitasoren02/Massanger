@@ -3,6 +3,7 @@ import type { Props1 } from "../../Service/interface";
 import { MdCall } from "react-icons/md";
 import { IoMdVideocam } from "react-icons/io";
 import { HiDotsVertical } from "react-icons/hi";
+import { formatLastSeen } from "../../utils/date";
 
 const ChatHeader = ({ openSidebar, currentUser }: Props1) => {
   return (
@@ -30,7 +31,8 @@ const ChatHeader = ({ openSidebar, currentUser }: Props1) => {
               {currentUser?.fullName}
             </p>
             <span className="text-white/80 text-[10px] md:text-sm">
-              {currentUser?.isOnline ? "Online" : "Offline"}
+
+              {currentUser?.isOnline ? "Online" :currentUser?.lastSeen ? formatLastSeen(currentUser?.lastSeen): ""}
             </span>
           </div>
         </div>

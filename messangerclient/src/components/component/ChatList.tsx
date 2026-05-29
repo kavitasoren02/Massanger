@@ -1,5 +1,10 @@
 import { Bell, Search, X } from "lucide-react";
-import type { ApiResponse, Props2, User } from "../../Service/interface";
+import type {
+  ApiResponse,
+  Props2,
+  typingProps,
+  User,
+} from "../../Service/interface";
 import { _get } from "../../Service/axios";
 import { GET_ALL_USER } from "../../Service/useApiService";
 import { useEffect, useState, type ChangeEvent } from "react";
@@ -7,7 +12,7 @@ import ChatUserCards from "./ChatUserCards";
 import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 
-const ChatList = ({ closeSidebar }: Props2) => {
+const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
   const [userList, setUserList] = useState<User[]>([]);
   const [search, setSearch] = useState<string>("");
 
@@ -37,6 +42,8 @@ const ChatList = ({ closeSidebar }: Props2) => {
 
   useEffect(() => {
     if (!socket) return;
+
+    // user connected
     socket.on("topic/userConnected", (data) => {
       const { userId } = data;
       setUserList((prev) => {
@@ -49,6 +56,28 @@ const ChatList = ({ closeSidebar }: Props2) => {
       });
     });
 
+    // typing
+    socket.on("topic/isTyping", (data: typingProps) => {
+      console.log({ data });
+
+      setUserList((prev) => {
+        return prev.map((user) => {
+          return {
+            ...user,
+            isTyping: user._id === data.senderId ? data.isTyping : false,
+          };
+        });
+      });
+      setCurrentUser((prev) => {
+        if (!prev) return;
+        return {
+          ...prev,
+          isTyping: prev._id === data.senderId ? data.isTyping : false,
+        };
+      });
+    });
+
+    // user disconnected
     socket.on("topic/userDisconnected", (data) => {
       const { userId } = data;
       setUserList((prev) => {
@@ -86,7 +115,7 @@ const ChatList = ({ closeSidebar }: Props2) => {
         <Search className="w-4 h-4 md:w-5 md:h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
 
         <input
-          onChange={(e : ChangeEvent<HTMLInputElement>) => {  
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setSearch(e.target.value);
           }}
           type="text"
@@ -117,7 +146,6 @@ const ChatList = ({ closeSidebar }: Props2) => {
                   navigate(`/chat/${user._id}`);
                   closeSidebar();
                 }}
-                
               >
                 <ChatUserCards
                   _id={user._id}
@@ -126,6 +154,7 @@ const ChatList = ({ closeSidebar }: Props2) => {
                   isOnline={user.isOnline}
                   key={user._id}
                   isSelected={user._id === id}
+                  isTyping={user.isTyping}
                 />
               </div>
             ))}

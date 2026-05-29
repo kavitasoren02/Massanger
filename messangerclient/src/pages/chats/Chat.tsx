@@ -36,16 +36,16 @@ const Chat = () => {
           return { ...prev, isOnline: true };
         });
       }
-
-      
     });
+
+ 
 
     socket.on("topic/userDisconnected", (data) => {
       const { userId } = data;
       if(currentUser?._id == userId){
         setcurrentUser((prev) =>{
           if(!prev) return;
-          return{ ...prev, isOnline: false};
+          return{ ...prev, isOnline: false, lastSeen: data.lastSeenDate};
         })
       }
     });
@@ -72,7 +72,9 @@ const Chat = () => {
         md:translate-x-0
       `}
       >
-        <ChatList closeSidebar={() => setOpen(false)} />
+        <ChatList closeSidebar={() => setOpen(false)}
+        currentUser={currentUser!}
+        setCurrentUser={setcurrentUser} />
       </div>
 
       <ChatWindow

@@ -2,6 +2,7 @@ import type {
   InputHTMLAttributes,
   ReactNode,
   SelectHTMLAttributes,
+  SetStateAction,
 } from "react";
 import type { readStatus } from "./enum/ReadStatus";
 
@@ -19,6 +20,7 @@ export interface User {
   isDeleted: boolean;
   resetPasswordToken?: string;
   resetPasswordExpires?: string;
+  isTyping: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -129,6 +131,8 @@ export interface Props1 {
 }
 export interface Props2 {
   closeSidebar: () => void;
+  setCurrentUser: React.Dispatch<SetStateAction<User | undefined>> ;
+  currentUser: User | undefined;
 }
 
 export interface ApiResponse<T> {
@@ -146,7 +150,7 @@ export interface IMESSAGE {
   createdAt?: string;
 }
 
-export interface ChatInputProps{
+export interface ChatInputProps {
   sendMessage: (message: IMESSAGE) => void;
 }
 
@@ -157,21 +161,23 @@ export interface MessageCardProps {
   user: User;
   createdAt: string;
   id?: string;
+  isLoading?: boolean;
 }
 
 export interface ChatMessageProps {
   id?: string;
   messages: IMESSAGE[];
+  currentUser?: User;
 }
 
-export interface MessageStatusProps{
+export interface MessageStatusProps {
   id?: string;
   readStatus: readStatus;
 }
 
-export interface BlueTickProps{
-    recieverId: string;
-    ids: string[];
+export interface BlueTickProps {
+  recieverId: string;
+  ids: string[];
 }
 
 export interface doubleTickProps {
@@ -179,3 +185,10 @@ export interface doubleTickProps {
   receiverId: string;
   messageIds: string[];
 }
+
+export interface typingProps {
+  senderId: string;
+  recieverId: string;
+  isTyping: boolean;
+}
+

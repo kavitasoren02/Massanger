@@ -55,8 +55,8 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
   useEffect(() => {
     if (!socket) return;
     socket.on("topic/receiveMessage", (message: IMESSAGE) => {
-      // console.log({ message });
-
+      // console.log({ message , id});
+      // if(id !== message.senderId) return;
       setMessages((prev) => [...prev, message]);
     });
 
@@ -98,7 +98,7 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
         })
       }
     )
-  }, [socket, setMessages]);
+  }, [socket, setMessages, id]);
 
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
 
       {/* Messages */}
       <div className="flex-1 bg-[#D9D9D9] overflow-hidden">
-        <ChatMessage messages={messages} id={id} />
+        <ChatMessage messages={messages} id={id} currentUser={currentUser}/>
       </div>
 
       {/* Input Wrapper */}

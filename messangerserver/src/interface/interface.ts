@@ -8,3 +8,8 @@ export interface doubleTickProps {
   receiverId: string;
   messageIds: string[];
 }
+
+export interface typingProps {
+  senderId: string;
+  receiverId: string;
+}
