@@ -54,19 +54,28 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("topic/receiveMessage", (message: IMESSAGE) => {
-      // console.log({ message , id});
-      // if(id !== message.senderId) return;
-      setMessages((prev) => [...prev, message]);
-    });
+    const recieveMessagehandler = (message: IMESSAGE) => {
+      console.log({ message, id });
+      if (message.senderId === id) {
+        console.log("Running");
 
-    socket.on("topic/updateMessage", (recievedmessage: IMESSAGE) => {
-      // console.log({rcv:recievedmessage});
-      setMessages((prev) => {
-        const restMessage = prev.slice(0, prev.length - 1);
-        return [...restMessage, recievedmessage];
-      });
-    });
+        setMessages((prev) => [...prev, message]);
+      }
+    };
+    socket.on("topic/receiveMessage", recieveMessagehandler);
+
+    const updateMessagehandler = (recievedmessage: IMESSAGE) => {
+      console.log({rcv:recievedmessage, id});
+      if (
+        recievedmessage.receiverId === id
+      ) {
+        setMessages((prev) => {
+          const restMessage = prev.slice(0, prev.length - 1);
+          return [...restMessage, recievedmessage];
+        });
+      }
+    };
+    socket.on("topic/updateMessage", updateMessagehandler);
 
     socket.on(
       "topic/updateBluetickMessage",
@@ -87,25 +96,38 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
     socket.on(
       "topic/updatedoubletickmessage",
       (doubletickmessage: doubleTickProps) => {
-        console.log(doubletickmessage);
-        
+        // console.log(doubletickmessage);
+
         setMessages((prev) => {
           return prev.map((msg) => {
             return {
-              ...msg, readStatus: doubletickmessage.messageIds.includes(msg._id ?? "") ? READ_STATUS.DOUBLE_TICK : msg.readStatus
-            }
-          })
-        })
-      }
-    )
-  }, [socket, setMessages, id]);
+              ...msg,
+              readStatus: doubletickmessage.messageIds.includes(msg._id ?? "")
+                ? READ_STATUS.DOUBLE_TICK
+                : msg.readStatus,
+            };
+          });
+        });
+      },
+    );
 
+    return () => {
+      socket.off("topic/receiveMessage", recieveMessagehandler);
+
+      socket.off("topic/updateMessage", updateMessagehandler);
+    };
+  }, [socket, setMessages, id]);
 
   useEffect(() => {
     if (messages.length === 0 || !socket) return;
 
     const ids = messages
-      .filter((msg) => msg.senderId === id && (msg.readStatus === READ_STATUS.DOUBLE_TICK || msg.readStatus === READ_STATUS.SINGLE_TICK))
+      .filter(
+        (msg) =>
+          msg.senderId === id &&
+          (msg.readStatus === READ_STATUS.DOUBLE_TICK ||
+            msg.readStatus === READ_STATUS.SINGLE_TICK),
+      )
       .map((msg) => msg._id);
     console.log(ids);
 
@@ -114,10 +136,9 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
       ids: ids,
     };
 
-    if(ids.length <= 0) return;
+    if (ids.length <= 0) return;
     socket.emit("topic/bluetickMessage", updateStatus);
   }, [socket, messages]);
-
 
   return (
     <div className="flex-1 flex flex-col h-full lg:rounded-r-2xl rounded-2xl gap-2 overflow-hidden relative">
@@ -137,7 +158,7 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
 
       {/* Messages */}
       <div className="flex-1 bg-[#D9D9D9] overflow-hidden">
-        <ChatMessage messages={messages} id={id} currentUser={currentUser}/>
+        <ChatMessage messages={messages} id={id} currentUser={currentUser} />
       </div>
 
       {/* Input Wrapper */}

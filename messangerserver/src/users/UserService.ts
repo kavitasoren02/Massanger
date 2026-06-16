@@ -161,7 +161,7 @@ export const getAllUser = async (currentUserId: string, search?: string) => {
       isOnline: isOnline,
     };
   });
-  console.log({ onlineOfflineUser });
+  // console.log({ onlineOfflineUser });
   return onlineOfflineUser;
 };
 

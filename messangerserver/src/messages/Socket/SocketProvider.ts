@@ -66,10 +66,21 @@ export const SocketProvider = (io: Server) => {
         }
         const savedMessage = await saveMessage(data);
         if (recieverSocketId) {
+          const payload = {
+            senderId: data.senderId,
+            recieverId: data.receiverId,
+            isTyping: false,
+          };
+          socket
+            .to(recieverSocketId)
+            .emit("topic/isTyping", payload);
+
           socket
             .to(recieverSocketId)
             .emit("topic/receiveMessage", savedMessage);
         }
+        console.log({senderSocketId, savedMessage});
+        
         if (senderSocketId) {
           io.to(senderSocketId).emit("topic/updateMessage", savedMessage);
         }
@@ -87,14 +98,20 @@ export const SocketProvider = (io: Server) => {
       );
 
       if (!recieverSocketId) return;
-      const payload = { senderId: data.senderId, recieverId: data.receiverId, isTyping: true };
+      const payload = {
+        senderId: data.senderId,
+        recieverId: data.receiverId,
+        isTyping: true,
+      };
       socket.to(recieverSocketId).emit("topic/isTyping", payload);
 
       // debounce for stop typing effect
       const debounceFunction = debounce(() => {
         console.log("debounce", recieverSocketId);
-        
-        socket.to(recieverSocketId).emit("topic/isTyping", {...payload, isTyping: false});
+
+        socket
+          .to(recieverSocketId)
+          .emit("topic/isTyping", { ...payload, isTyping: false });
       }, 2500);
       debounceFunction();
     });
@@ -118,10 +135,10 @@ export const SocketProvider = (io: Server) => {
       UserSocketStoreInstance.removeUser(socket.id);
 
       const lastSeenDate = new Date();
-      
+
       socket.broadcast.emit("topic/userDisconnected", {
         userId: currentUserId,
-        lastSeenDate
+        lastSeenDate,
       });
       updateLastSeen(currentUserId, lastSeenDate);
     });
