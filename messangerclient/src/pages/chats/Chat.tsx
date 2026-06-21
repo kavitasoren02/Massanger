@@ -61,22 +61,33 @@ const Chat = () => {
       )}
 
       {/* Sidebar */}
-      <div
-        className={`
-           min-h-full bg-white rounded-r-2xl md:rounded-none p-2
-        fixed md:static top-0 left-0 z-50
-        w-[80%] sm:w-[60%] md:w-1/2 lg:w-1/3 xl:w-1/4
-        transform transition-transform duration-300 ease-in-out
-      
-        ${open ? "translate-x-0" : "-translate-x-full"}
-        md:translate-x-0
-      `}
-      >
-        <ChatList closeSidebar={() => setOpen(false)}
-        currentUser={currentUser!}
-        setCurrentUser={setcurrentUser} />
-      </div>
+<div
+  className={`
+    h-full
+    bg-white
+    rounded-r-3xl md:rounded-3xl
+    p-4 sm:p-5
 
+    fixed md:static top-0 left-0 z-50
+
+    w-[85%]
+    sm:w-[70%]
+    md:w-[40%]
+    lg:w-[32%]
+    xl:w-[26%]
+
+    transform transition-transform duration-300 ease-in-out
+
+    ${open ? "translate-x-0" : "-translate-x-full"}
+    md:translate-x-0
+  `}
+>
+  <ChatList
+    closeSidebar={() => setOpen(false)}
+    currentUser={currentUser!}
+    setCurrentUser={setcurrentUser}
+  />
+</div>
       <ChatWindow
         currentUser={currentUser}
         id={id}

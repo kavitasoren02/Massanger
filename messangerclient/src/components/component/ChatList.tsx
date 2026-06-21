@@ -95,8 +95,8 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
   }, [socket, setUserList]);
 
 return (
-  <div className="flex flex-col h-screen md:h-full md:p-4">
-    {/* Header */}
+<div className="flex flex-col h-full">
+      {/* Header */}
     <div className="flex items-center justify-between">
       <h1 className="text-xl md:text-2xl font-semibold">
         Massenger
@@ -138,7 +138,7 @@ return (
     </div>
 
     {/* Users List */}
-    <div className="flex-1 overflow-y-auto mt-4">
+  <div className="flex-1 overflow-y-auto mt-4 pr-1">
       {userList.length <= 0 ? (
         <p className="text-gray-400 text-center mt-10">
           No conversations yet
@@ -168,57 +168,87 @@ return (
     </div>
 
     {/* Bottom Profile Section */}
-    <div className="mt-auto border-t border-gray-200 pt-4 relative">
-      <div className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-100 cursor-pointer">
-        {/* Profile */}
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-semibold text-gray-700">
-            KS
-          </div>
+<div className="mt-auto border-t border-gray-200 pt-4 relative">
+  <div className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-100">
 
-          <div>
-            <h3 className="font-semibold text-gray-800">
-              Kavita Soren
-            </h3>
-            <p className="text-sm text-gray-500">
-              View Profile
-            </p>
-          </div>
-        </div>
+    {/* Left Section */}
+    <div className="flex items-center gap-3 min-w-0">
 
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowLogoutModal(!showLogoutModal);
-          }}
-        >
-          <ChevronRight className="w-5 h-5 text-gray-500" />
-        </button>
+      <div
+        className="
+          w-10 h-10
+          sm:w-11 sm:h-11
+          md:w-12 md:h-12
+          rounded-full bg-gray-200
+          flex items-center justify-center
+          font-semibold text-gray-700
+          shrink-0
+        "
+      >
+        KS
       </div>
 
-      {/* Logout Modal */}
-      {showLogoutModal && (
-        <div className="absolute bottom-20 left-0 right-0 mx-3 bg-white border border-gray-200 rounded-xl shadow-lg p-2 z-50">
-          <button
-            className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 transition"
-            onClick={handleLogout}
-          >
-            <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-              <LogOut className="w-5 h-5 text-red-600" />
-            </div>
+      <div className="min-w-0">
+        <h3 className="font-semibold text-sm sm:text-base truncate">
+          Kavita Soren
+        </h3>
 
-            <div className="text-left">
-              <h3 className="font-semibold text-red-600">
-                Logout
-              </h3>
-              <p className="text-sm text-gray-500">
-                Sign out from account
-              </p>
-            </div>
-          </button>
-        </div>
-      )}
+        <p className="text-xs sm:text-sm text-gray-500 truncate">
+          View Profile
+        </p>
+      </div>
     </div>
+
+    {/* Arrow */}
+    <button
+      className="p-2 rounded-lg hover:bg-gray-200 shrink-0"
+      onClick={(e) => {
+        e.stopPropagation();
+        setShowLogoutModal(!showLogoutModal);
+      }}
+    >
+      <ChevronRight className="w-5 h-5 text-gray-500" />
+    </button>
+  </div>
+
+  {/* Logout Modal */}
+  {showLogoutModal && (
+    <div
+      className="
+        absolute
+        bottom-20
+        left-0
+        right-0
+        mx-2
+        bg-white
+        border border-gray-200
+        rounded-xl
+        shadow-lg
+        p-2
+        z-50
+      "
+    >
+      <button
+        className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-red-50"
+        onClick={handleLogout}
+      >
+        <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+          <LogOut className="w-5 h-5 text-red-600" />
+        </div>
+
+        <div className="text-left">
+          <h3 className="font-semibold text-red-600">
+            Logout
+          </h3>
+
+          <p className="text-sm text-gray-500">
+            Sign out from account
+          </p>
+        </div>
+      </button>
+    </div>
+  )}
+</div>
   </div>
 );
 };
