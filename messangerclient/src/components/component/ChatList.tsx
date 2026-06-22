@@ -7,7 +7,7 @@ import type {
 } from "../../Service/interface";
 import { _get } from "../../Service/axios";
 import { GET_ALL_USER } from "../../Service/useApiService";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, useState, useRef, type ChangeEvent } from "react";
 import ChatUserCards from "./ChatUserCards";
 import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,12 +17,13 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
   const [userList, setUserList] = useState<User[]>([]);
   const [search, setSearch] = useState<string>("");
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const { socket } = useChatContextProvider();
   const { handleLogout, user } = useAuth();
 
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
 
   const navigate = useNavigate();
 
@@ -37,7 +38,23 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
     } catch (error: any) {}
   };
 
-  console.log({ userList });
+  // console.log({ userList });
+
+  // click outside modal will close
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if(modalRef.current && 
+        !modalRef.current.contains(event.target as Node)
+      ){
+        setShowLogoutModal(false);
+      };
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return  () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+  });
 
   useEffect(() => {
     getAllUsers();
@@ -167,7 +184,12 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
 
       {/* Bottom Profile Section */}
       <div className="mt-auto border-t border-gray-200 pt-4 relative">
-        <div className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-100">
+        <div className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-100"
+          onClick={(e) => {
+              e.stopPropagation();
+              setShowLogoutModal(!showLogoutModal);
+            }}
+        >
           {/* Left Section */}
           <div className="flex items-center gap-3 min-w-0">
             <div
@@ -202,10 +224,10 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
           {/* Arrow */}
           <button
             className="p-2 rounded-lg hover:bg-gray-200 shrink-0"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowLogoutModal(!showLogoutModal);
-            }}
+            // onClick={(e) => {
+            //   e.stopPropagation();
+            //   setShowLogoutModal(!showLogoutModal);
+            // }}
           >
             <ChevronRight className="w-5 h-5 text-gray-500" />
           </button>
@@ -214,6 +236,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
         {/* Logout Modal */}
         {showLogoutModal && (
           <div
+          ref={modalRef}
             className="
         absolute
         bottom-20
