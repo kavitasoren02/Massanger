@@ -1,5 +1,3 @@
-
-
 interface Props {
   _id: string;
   fullName: string;
@@ -9,9 +7,17 @@ interface Props {
   isTyping: boolean;
 }
 
-const ChatUserCards = ({ fullName, profilePic, isOnline, isSelected, isTyping }: Props) => {
+const ChatUserCards = ({
+  fullName,
+  profilePic,
+  isOnline,
+  isSelected,
+  isTyping,
+}: Props) => {
   return (
-    <div className={`flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition ${isSelected && 'bg-gray-300'}`}>
+    <div
+      className={`flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition ${isSelected && "bg-gray-300"}`}
+    >
       {/* Profile Image */}
       <div className="relative">
         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
@@ -23,7 +29,11 @@ const ChatUserCards = ({ fullName, profilePic, isOnline, isSelected, isTyping }:
             />
           ) : (
             <p className="font-semibold text-lg sm:text-xl text-gray-700">
-              {fullName.charAt(0).toUpperCase()}
+              {fullName
+                .split(" ")
+                ?.map((name) => name[0])
+                .join("")
+                .toUpperCase()}
             </p>
           )}
         </div>
