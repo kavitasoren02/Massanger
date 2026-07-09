@@ -4,12 +4,12 @@ import type {
   IMESSAGE,
   Props2,
   typingProps,
-  User,
+  // User,
   UserDetails,
 } from "../../Service/interface";
 import { _get } from "../../Service/axios";
 import { GET_ALL_USER } from "../../Service/useApiService";
-import { useEffect, useState, useRef, type ChangeEvent, use } from "react";
+import { useEffect, useState, useRef, type ChangeEvent } from "react";
 import ChatUserCards from "./ChatUserCards";
 import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
