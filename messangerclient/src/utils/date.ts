@@ -1,3 +1,5 @@
+// for last seen
+
 export const formatLastSeen = (date: Date | string): string => {
   const lastSeen = new Date(date);
   const now = new Date();
@@ -43,4 +45,42 @@ export const formatLastSeen = (date: Date | string): string => {
     month: "short",
     year: "numeric",
   })}`;
+};
+
+// for last message date time
+
+export const formatLastMessageDate = (
+  date: Date | string
+): string => {
+  const messageDate = new Date(date);
+  const now = new Date();
+
+  if (messageDate.toDateString() === now.toDateString()) {
+    return messageDate.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  }
+
+  const yesterday = new Date();
+  yesterday.setDate(now.getDate() - 1);
+
+  if (
+    messageDate.toDateString() === yesterday.toDateString()
+  ) {
+    return "Yesterday";
+  }
+
+  const diffDays = Math.floor(
+    (now.getTime() - messageDate.getTime()) /
+      (1000 * 60 * 60 * 24)
+  );
+
+  if (diffDays < 7) {
+    return messageDate.toLocaleDateString([], {
+      weekday: "long",
+    });
+  }
+
+  return messageDate.toLocaleDateString();
 };

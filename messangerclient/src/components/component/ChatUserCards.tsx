@@ -1,3 +1,6 @@
+import type { IMESSAGE } from "../../Service/interface";
+import { formatLastMessageDate } from "../../utils/date";
+
 interface Props {
   _id: string;
   fullName: string;
@@ -5,6 +8,7 @@ interface Props {
   isOnline: boolean;
   isSelected: boolean;
   isTyping: boolean;
+  lastMessage?: IMESSAGE;
 }
 
 const ChatUserCards = ({
@@ -13,6 +17,7 @@ const ChatUserCards = ({
   isOnline,
   isSelected,
   isTyping,
+  lastMessage,
 }: Props) => {
   return (
     <div
@@ -46,14 +51,23 @@ const ChatUserCards = ({
 
       {/* User Info */}
       <div className="flex flex-col flex-1 min-w-0">
-        <h2 className="text-sm sm:text-base font-medium text-gray-900 truncate">
-          {fullName}
-        </h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-sm sm:text-base font-medium text-gray-900 truncate">
+            {fullName}
+          </h2>
+          <p className="text-xs sm:text-sm text-gray-500">
+            {formatLastMessageDate(lastMessage?.createdAt ?? "")}
+          </p>
+        </div>
 
-        <p className="text-xs sm:text-sm text-gray-500 truncate">
+        <div className="text-xs sm:text-sm text-gray-500 truncate">
           {/* {isOnline ? isTyping ? "Typing": "Online" : "Offline"} */}
-          {isTyping ? "Typing..." : isOnline ? "Online" : "Offline"}
-        </p>
+          {isTyping ? (
+            <p>Typing...</p>
+          ) : (
+            <p className="truncate">{lastMessage?.content}</p>
+          )}
+        </div>
       </div>
     </div>
   );

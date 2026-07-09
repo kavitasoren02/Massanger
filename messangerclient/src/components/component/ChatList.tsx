@@ -1,20 +1,22 @@
 import { Bell, Search, X, ChevronRight, LogOut } from "lucide-react";
 import type {
   ApiResponse,
+  IMESSAGE,
   Props2,
   typingProps,
   User,
+  UserDetails,
 } from "../../Service/interface";
 import { _get } from "../../Service/axios";
 import { GET_ALL_USER } from "../../Service/useApiService";
-import { useEffect, useState, useRef, type ChangeEvent } from "react";
+import { useEffect, useState, useRef, type ChangeEvent, use } from "react";
 import ChatUserCards from "./ChatUserCards";
 import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../ProtectedRoute/AuthProvider";
 
 const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
-  const [userList, setUserList] = useState<User[]>([]);
+  const [userList, setUserList] = useState<UserDetails[]>([]);
   const [search, setSearch] = useState<string>("");
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -29,7 +31,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
 
   const getAllUsers = async () => {
     try {
-      const { data } = await _get<ApiResponse<User[]>>(GET_ALL_USER, {
+      const { data } = await _get<ApiResponse<UserDetails[]>>(GET_ALL_USER, {
         params: {
           searchTerm: search,
         },
@@ -43,17 +45,18 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
   // click outside modal will close
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if(modalRef.current && 
+      if (
+        modalRef.current &&
         !modalRef.current.contains(event.target as Node)
-      ){
+      ) {
         setShowLogoutModal(false);
-      };
-    }
+      }
+    };
     document.addEventListener("mousedown", handleClickOutside);
 
-    return  () => {
+    return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-    }
+    };
   });
 
   useEffect(() => {
@@ -78,7 +81,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
 
     // typing
     socket.on("topic/isTyping", (data: typingProps) => {
-      console.log({ data });
+      // console.log({ data });
 
       setUserList((prev) => {
         return prev.map((user) => {
@@ -109,7 +112,55 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
         });
       });
     });
-  }, [socket, setUserList]);
+  }, [socket, setUserList, id]);
+
+  // to show  last message
+
+  const handleLastMessage = (msg: IMESSAGE) => {
+    setUserList((prev) => {
+      return prev.map((user) => {
+        if (user._id === msg.senderId) {
+          return {
+            ...user,
+            lastMessage: msg,
+          };
+        } else {
+          return user;
+        }
+      });
+    });
+  };
+
+  const updateLastMessage = (msg: IMESSAGE) => {
+  
+    
+    setUserList((prev) => {
+        console.log({msg, prev});
+      return prev.map((user) => {
+        if (msg.receiverId === user._id) {
+          return {
+            ...user,
+            lastMessage: msg,
+          };
+        } else {
+          return user;
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("topic/receiveMessage", handleLastMessage);
+
+    socket.on("topic/updateMessage", updateLastMessage);
+
+    return () => {
+      socket.off("topic/receiveMessage", handleLastMessage);
+
+      socket.off("topic/updateMessage", updateLastMessage);
+    };
+  }, [socket, setUserList,]);
 
   return (
     <div className="flex flex-col h-full">
@@ -175,6 +226,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
                   isOnline={user.isOnline}
                   isSelected={user._id === id}
                   isTyping={user.isTyping}
+                  lastMessage={user.lastMessage}
                 />
               </div>
             ))}
@@ -184,11 +236,12 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
 
       {/* Bottom Profile Section */}
       <div className="mt-auto border-t border-gray-200 pt-4 relative">
-        <div className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-100"
+        <div
+          className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-100"
           onClick={(e) => {
-              e.stopPropagation();
-              setShowLogoutModal(!showLogoutModal);
-            }}
+            e.stopPropagation();
+            setShowLogoutModal(!showLogoutModal);
+          }}
         >
           {/* Left Section */}
           <div className="flex items-center gap-3 min-w-0">
@@ -236,7 +289,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
         {/* Logout Modal */}
         {showLogoutModal && (
           <div
-          ref={modalRef}
+            ref={modalRef}
             className="
         absolute
         bottom-20

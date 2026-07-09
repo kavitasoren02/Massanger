@@ -10,6 +10,7 @@ const MessageCard = ({
   createdAt,
   id,
   isLoading,
+  
 }: MessageCardProps) => {
   return (
     <div

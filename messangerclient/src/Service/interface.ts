@@ -192,3 +192,6 @@ export interface typingProps {
   isTyping: boolean;
 }
 
+export interface UserDetails extends User{
+  lastMessage?: IMESSAGE;
+}

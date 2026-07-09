@@ -47,6 +47,8 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
         e.preventDefault();
         sendMessage({
           ...message,
+          senderId: user?._id ?? "",
+          receiverId: id ?? "",
           createdAt: new Date().toISOString(),
         });
         setMessage((prev) => {

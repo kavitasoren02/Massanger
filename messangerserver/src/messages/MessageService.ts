@@ -88,7 +88,9 @@ export const bluetickMessage = async (ids: string[]) => {
   }
 };
 
-export const getAllRecievedMessage = async (receiverId: string):Promise<doubleTickProps[]> => {
+export const getAllRecievedMessage = async (
+  receiverId: string,
+): Promise<doubleTickProps[]> => {
   try {
     const pipeline: PipelineStage[] = [
       {
@@ -129,4 +131,28 @@ export const updatedoubleTick = async (messageIds: string[]) => {
       },
     },
   );
+};
+
+export const lastMessageByUserId = async (
+  receiverId: string,
+  senderId: string,
+) => {
+  try {
+    const lastMessage = await MessageModel.findOne({
+      $or: [
+        {
+          senderId,
+          receiverId,
+        },
+        {
+          senderId: receiverId,
+          receiverId: senderId,
+        },
+      ],
+    }).sort({ createdAt: -1 });
+
+    return lastMessage;
+  } catch (error) {
+    throw error;
+  }
 };
