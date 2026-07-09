@@ -55,9 +55,11 @@ const ChatUserCards = ({
           <h2 className="text-sm sm:text-base font-medium text-gray-900 truncate">
             {fullName}
           </h2>
-          <p className="text-xs sm:text-sm text-gray-500">
-            {formatLastMessageDate(lastMessage?.createdAt ?? "")}
-          </p>
+          {lastMessage?.createdAt && (
+            <p className="text-xs sm:text-sm text-gray-500">
+              {formatLastMessageDate(lastMessage?.createdAt ?? "")}
+            </p>
+          )}
         </div>
 
         <div className="text-xs sm:text-sm text-gray-500 truncate">
