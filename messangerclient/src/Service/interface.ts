@@ -142,7 +142,7 @@ export interface ApiResponse<T> {
 export interface IMESSAGE {
   _id?: string;
   senderId: string;
-  receiverId: string;
+  recieverId: string;
   messageType: string;
   content: string;
   fileId?: string;
@@ -182,7 +182,7 @@ export interface BlueTickProps {
 
 export interface doubleTickProps {
   _id: string;
-  receiverId: string;
+  recieverId: string;
   messageIds: string[];
 }
 

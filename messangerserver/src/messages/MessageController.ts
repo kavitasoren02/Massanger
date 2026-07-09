@@ -6,11 +6,11 @@ const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const { senderId, receiverId } = req.query;
+    const { senderId, recieverId } = req.query;
     
-    if (!senderId || !receiverId) throw new Error("Please provide me Sender and Reciever id");
+    if (!senderId || !recieverId) throw new Error("Please provide me Sender and Reciever id");
 
-    const allMessage = await getAllMessage(senderId as string, receiverId as string);
+    const allMessage = await getAllMessage(senderId as string, recieverId as string);
 
     res.status(200).json({
       message: "Messaged fetched successfully",

@@ -5,13 +5,13 @@ import { doubleTickProps } from "../interface/interface";
 
 export const getAllMessage = async (
   senderIdProps: string,
-  receiverIdProps: string,
+  recieverIdProps: string,
 ) => {
   try {
     const allMessage = await MessageModel.find({
       $or: [
-        { senderId: senderIdProps, receiverId: receiverIdProps },
-        { senderId: receiverIdProps, receiverId: senderIdProps },
+        { senderId: senderIdProps, recieverId: recieverIdProps },
+        { senderId: recieverIdProps, recieverId: senderIdProps },
       ],
     }).sort({ createdAt: 1 });
     return allMessage;
@@ -89,20 +89,20 @@ export const bluetickMessage = async (ids: string[]) => {
 };
 
 export const getAllRecievedMessage = async (
-  receiverId: string,
+  recieverId: string,
 ): Promise<doubleTickProps[]> => {
   try {
     const pipeline: PipelineStage[] = [
       {
         $match: {
-          receiverId: new mongoose.Types.ObjectId(receiverId),
+          recieverId: new mongoose.Types.ObjectId(recieverId),
           readStatus: READ_STATUS.SINGLE_TICK,
         },
       },
       {
         $group: {
           _id: "$senderId",
-          receiverId: { $first: "$receiverId" },
+          recieverId: { $first: "$recieverId" },
           messageIds: {
             $push: "$_id",
           },
@@ -134,7 +134,7 @@ export const updatedoubleTick = async (messageIds: string[]) => {
 };
 
 export const lastMessageByUserId = async (
-  receiverId: string,
+  recieverId: string,
   senderId: string,
 ) => {
   try {
@@ -142,11 +142,11 @@ export const lastMessageByUserId = async (
       $or: [
         {
           senderId,
-          receiverId,
+          recieverId,
         },
         {
-          senderId: receiverId,
-          receiverId: senderId,
+          senderId: recieverId,
+          recieverId: senderId,
         },
       ],
     }).sort({ createdAt: -1 });

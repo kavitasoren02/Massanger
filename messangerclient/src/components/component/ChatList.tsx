@@ -137,7 +137,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
     setUserList((prev) => {
         console.log({msg, prev});
       return prev.map((user) => {
-        if (msg.receiverId === user._id) {
+        if (msg.recieverId === user._id) {
           return {
             ...user,
             lastMessage: msg,

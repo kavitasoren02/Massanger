@@ -19,7 +19,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
     messageType: "text",
     readStatus: READ_STATUS.SINGLE_TICK,
     senderId: user?._id ?? "",
-    receiverId: id ?? "",
+    recieverId: id ?? "",
   });
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +35,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
       if (!socket) return;
       socket.emit("topic/typing", {
         senderId: user?._id ?? "",
-        receiverId: id ?? "",
+        recieverId: id ?? "",
       });
       typingRef.current = now;
     }
@@ -48,7 +48,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
         sendMessage({
           ...message,
           senderId: user?._id ?? "",
-          receiverId: id ?? "",
+          recieverId: id ?? "",
           createdAt: new Date().toISOString(),
         });
         setMessage((prev) => {

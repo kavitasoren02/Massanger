@@ -3,7 +3,7 @@ import { READ_STATUS, readStatus } from "../../enums/ReadStatus";
 
 export interface IMESSAGE extends Document {
   senderId: mongoose.Types.ObjectId;
-  receiverId: mongoose.Types.ObjectId;
+  recieverId: mongoose.Types.ObjectId;
   messageType: String;
   content: String;
   fileId?: mongoose.Types.ObjectId;
@@ -18,7 +18,7 @@ const MessageSchema: Schema<IMESSAGE> = new Schema(
       required: true,
     },
 
-    receiverId: {
+    recieverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,

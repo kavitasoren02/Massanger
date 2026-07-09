@@ -30,12 +30,12 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
     socket.emit("topic/sendMessage", messageObject);
   };
 
-  const getAllMessage = async (senderId: string, receiverId: string) => {
+  const getAllMessage = async (senderId: string, recieverId: string) => {
     try {
       const { data } = await _get<ApiResponse<IMESSAGE[]>>(GET_ALL_MESSAGE, {
         params: {
           senderId,
-          receiverId,
+          recieverId,
         },
       });
       console.log({ data });
@@ -67,7 +67,7 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
     const updateMessagehandler = (recievedmessage: IMESSAGE) => {
       console.log({rcv:recievedmessage, id});
       if (
-        recievedmessage.receiverId === id
+        recievedmessage.recieverId === id
       ) {
         setMessages((prev) => {
           const restMessage = prev.slice(0, prev.length - 1);

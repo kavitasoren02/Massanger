@@ -54,7 +54,7 @@ export const SocketProvider = (io: Server) => {
     // send message & recieve message
     socket.on("topic/sendMessage", async (data: IMESSAGE) => {
       const recieverSocketId = UserSocketStoreInstance.getSocketId(
-        data.receiverId.toString(),
+        data.recieverId.toString(),
       );
       const senderSocketId = UserSocketStoreInstance.getSocketId(
         data.senderId.toString(),
@@ -68,7 +68,7 @@ export const SocketProvider = (io: Server) => {
         if (recieverSocketId) {
           const payload = {
             senderId: data.senderId,
-            recieverId: data.receiverId,
+            recieverId: data.recieverId,
             isTyping: false,
           };
           socket
@@ -94,13 +94,13 @@ export const SocketProvider = (io: Server) => {
     // typing effect
     socket.on("topic/typing", (data: typingProps) => {
       const recieverSocketId = UserSocketStoreInstance.getSocketId(
-        data.receiverId,
+        data.recieverId,
       );
 
       if (!recieverSocketId) return;
       const payload = {
         senderId: data.senderId,
-        recieverId: data.receiverId,
+        recieverId: data.recieverId,
         isTyping: true,
       };
       socket.to(recieverSocketId).emit("topic/isTyping", payload);

@@ -5,11 +5,11 @@ export interface BlueTickProps {
 
 export interface doubleTickProps {
   _id: string;
-  receiverId: string;
+  recieverId: string;
   messageIds: string[];
 }
 
 export interface typingProps {
   senderId: string;
-  receiverId: string;
+  recieverId: string;
 }
