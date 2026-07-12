@@ -28,7 +28,7 @@ const MessageCard = ({
           <div
             className={`
               px-3 py-2 sm:px-4 sm:py-3 rounded-xl shadow-sm break-words
-              text-sm sm:text-base
+              text-sm sm:text-base break-all
               ${isSended ? "bg-[#329A93] text-white" : "bg-gray-200 text-black"}
             `}
           >
