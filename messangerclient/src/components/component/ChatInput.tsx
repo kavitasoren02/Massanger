@@ -80,7 +80,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
 
           <button
             type="submit"
-            disabled={message.content === ""}
+            disabled={message.content.trim() === ""}
             className="flex items-center justify-center h-10 w-10 bg-[#329A93] rounded-full cursor-pointer hover:scale-105 transition disabled:cursor-not-allowed disabled:opacity-70"
           >
             <IoSend className="text-white text-lg" />
