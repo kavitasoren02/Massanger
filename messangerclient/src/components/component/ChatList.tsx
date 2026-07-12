@@ -115,7 +115,6 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
   }, [socket, setUserList, id]);
 
   // to show  last message
-
   const handleLastMessage = (msg: IMESSAGE) => {
     setUserList((prev) => {
       return prev.map((user) => {
@@ -123,6 +122,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
           return {
             ...user,
             lastMessage: msg,
+            count: msg.senderId === id ? 0 : (user.count || 0) + 1,
           };
         } else {
           return user;
@@ -132,10 +132,8 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
   };
 
   const updateLastMessage = (msg: IMESSAGE) => {
-  
-    
     setUserList((prev) => {
-        console.log({msg, prev});
+      // console.log({ msg, prev });
       return prev.map((user) => {
         if (msg.recieverId === user._id) {
           return {
@@ -160,7 +158,25 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
 
       socket.off("topic/updateMessage", updateLastMessage);
     };
-  }, [socket, setUserList,]);
+  }, [socket, setUserList,id]);
+
+  //  to update count
+
+  useEffect(() => {
+    if (!id) return;
+    setUserList((prev) => {
+      return prev.map((user) => {
+        if (user._id === id) {
+          return {
+            ...user,
+            count: 0,
+          };
+        } else {
+          return user;
+        }
+      });
+    });
+  }, [id]);
 
   return (
     <div className="flex flex-col h-full">
@@ -227,6 +243,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
                   isSelected={user._id === id}
                   isTyping={user.isTyping}
                   lastMessage={user.lastMessage}
+                  count={user.count}
                 />
               </div>
             ))}

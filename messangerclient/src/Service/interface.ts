@@ -131,7 +131,7 @@ export interface Props1 {
 }
 export interface Props2 {
   closeSidebar: () => void;
-  setCurrentUser: React.Dispatch<SetStateAction<User | undefined>> ;
+  setCurrentUser: React.Dispatch<SetStateAction<User | undefined>>;
   currentUser: User | undefined;
 }
 
@@ -192,6 +192,18 @@ export interface typingProps {
   isTyping: boolean;
 }
 
-export interface UserDetails extends User{
+export interface UserDetails extends User {
   lastMessage?: IMESSAGE;
+  count?: number;
+}
+
+export interface ChatUserCardProps {
+  _id: string;
+  fullName: string;
+  profilePic?: string;
+  isOnline: boolean;
+  isSelected: boolean;
+  isTyping: boolean;
+  lastMessage?: IMESSAGE;
+  count?: number;
 }

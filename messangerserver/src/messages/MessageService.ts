@@ -156,3 +156,23 @@ export const lastMessageByUserId = async (
     throw error;
   }
 };
+
+export const getUnseenMessageCount = async (
+  recieverId: string,
+  senderId: string,
+) => {
+  try{
+    const unseenMessage = await MessageModel.find({
+      senderId,
+      recieverId,
+      readStatus: {
+        $in: [
+          READ_STATUS.DOUBLE_TICK, READ_STATUS.SINGLE_TICK
+        ]
+      }
+    })
+    return unseenMessage.length;
+  }catch(error){
+    throw error;
+  }
+};

@@ -1,15 +1,5 @@
-import type { IMESSAGE } from "../../Service/interface";
+import type { ChatUserCardProps } from "../../Service/interface";
 import { formatLastMessageDate } from "../../utils/date";
-
-interface Props {
-  _id: string;
-  fullName: string;
-  profilePic?: string;
-  isOnline: boolean;
-  isSelected: boolean;
-  isTyping: boolean;
-  lastMessage?: IMESSAGE;
-}
 
 const ChatUserCards = ({
   fullName,
@@ -18,7 +8,8 @@ const ChatUserCards = ({
   isSelected,
   isTyping,
   lastMessage,
-}: Props) => {
+  count,
+}: ChatUserCardProps) => {
   return (
     <div
       className={`flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer transition ${isSelected && "bg-gray-300"}`}
@@ -55,19 +46,36 @@ const ChatUserCards = ({
           <h2 className="text-sm sm:text-base font-medium text-gray-900 truncate">
             {fullName}
           </h2>
+
           {lastMessage?.createdAt && (
-            <p className="text-xs sm:text-sm text-gray-500">
+            <p
+              className={`text-xs sm:text-sm ${Number(count) > 0 ? "text-[#329A93] font-bold" : "text-gray-500"}`}
+            >
               {formatLastMessageDate(lastMessage?.createdAt ?? "")}
             </p>
           )}
         </div>
 
-        <div className="text-xs sm:text-sm text-gray-500 truncate">
+        <div className="text-xs sm:text-sm text-gray-500 truncate flex justify-between items-center">
           {/* {isOnline ? isTyping ? "Typing": "Online" : "Offline"} */}
           {isTyping ? (
-            <p>Typing...</p>
+            <p className="text-[#329A93] font-bold">Typing...</p>
           ) : (
             <p className="truncate">{lastMessage?.content}</p>
+          )}
+
+          {Number(count) > 0 && (
+            <p
+              className="
+    flex items-center justify-center
+    min-w-[20px] h-[20px] px-1
+    sm:min-w-[24px] sm:h-[24px]
+    rounded-full bg-[#329A93] text-black
+    text-[10px] sm:text-xs font-medium
+  "
+            >
+              {count?.toString()}
+            </p>
           )}
         </div>
       </div>
