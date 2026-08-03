@@ -9,7 +9,17 @@ import Chat from "./pages/chats/Chat";
 import { ChatContextProvider } from "./pages/chats/context/ChatContextProvider";
 import ProtectedRoutes from "./ProtectedRoute/ProtectedRoute";
 import NoAuthRoute from "./ProtectedRoute/NoAuth";
+import { useAuth } from "./ProtectedRoute/AuthProvider";
+import { useEffect } from "react";
+import { subscribedUser } from "./hooks/useNotification";
 function App() {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user) return;
+    subscribedUser();
+  }, [user]);
+
   return (
     <>
       <ToastContainer
@@ -26,8 +36,8 @@ function App() {
         transition={Bounce}
       />
       <Routes>
-        <Route 
-          path="/register" 
+        <Route
+          path="/register"
           element={
             <NoAuthRoute>
               <Signup />
@@ -35,22 +45,22 @@ function App() {
           }
         ></Route>
 
-        <Route 
-          path="/login" 
+        <Route
+          path="/login"
           element={
             <NoAuthRoute>
               <Login />
             </NoAuthRoute>
           }
         ></Route>
-        <Route 
-          path="/forgotpassword" 
+        <Route
+          path="/forgotpassword"
           element={
-              <NoAuthRoute>
-                <ForgotPassword />
-              </NoAuthRoute>
-            }
-          ></Route>
+            <NoAuthRoute>
+              <ForgotPassword />
+            </NoAuthRoute>
+          }
+        ></Route>
         <Route
           path="/reset-password/:token"
           element={
@@ -70,7 +80,7 @@ function App() {
           }
         ></Route>
 
-          <Route
+        <Route
           path="/chat/:id"
           element={
             <ProtectedRoutes>

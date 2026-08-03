@@ -31,3 +31,7 @@ export const GET_USER_BYID = "/api/v1/user/getuserById";
 //  Get All Message
 
 export const GET_ALL_MESSAGE = "/api/v1/messages";
+
+// Subscribe Notification
+
+export const SUBSCRIBE_NOTIFICATION = "/api/v1/notifications/subscribe";

@@ -129,7 +129,7 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
             msg.readStatus === READ_STATUS.SINGLE_TICK),
       )
       .map((msg) => msg._id);
-    console.log(ids);
+    // console.log(ids);
 
     const updateStatus = {
       recieverId: id,

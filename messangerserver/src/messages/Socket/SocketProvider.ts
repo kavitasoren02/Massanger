@@ -12,6 +12,7 @@ import { READ_STATUS } from "../../enums/ReadStatus";
 import { BlueTickProps, typingProps } from "../../interface/interface";
 import { debounce } from "../../utils/debounce";
 import { updateLastSeen } from "../../users/UserService";
+import { sendNotification } from "../../notifications/NotificationService";
 
 export const SocketProvider = (io: Server) => {
   if (!io) return;
@@ -71,19 +72,18 @@ export const SocketProvider = (io: Server) => {
             recieverId: data.recieverId,
             isTyping: false,
           };
-          socket
-            .to(recieverSocketId)
-            .emit("topic/isTyping", payload);
+          socket.to(recieverSocketId).emit("topic/isTyping", payload);
 
           socket
             .to(recieverSocketId)
             .emit("topic/receiveMessage", savedMessage);
         }
-        console.log({senderSocketId, savedMessage});
-        
+        // console.log({ senderSocketId, savedMessage });
+
         if (senderSocketId) {
           io.to(senderSocketId).emit("topic/updateMessage", savedMessage);
         }
+        sendNotification(data.recieverId.toString(), data.content);
       } catch (error) {
         if (senderSocketId) {
           socket.to(senderSocketId).emit("topic/messageFailed", null);

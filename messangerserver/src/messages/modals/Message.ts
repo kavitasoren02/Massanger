@@ -4,8 +4,8 @@ import { READ_STATUS, readStatus } from "../../enums/ReadStatus";
 export interface IMESSAGE extends Document {
   senderId: mongoose.Types.ObjectId;
   recieverId: mongoose.Types.ObjectId;
-  messageType: String;
-  content: String;
+  messageType: string;
+  content: string;
   fileId?: mongoose.Types.ObjectId;
   readStatus: readStatus;
 }
