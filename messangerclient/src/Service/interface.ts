@@ -5,6 +5,7 @@ import type {
   SetStateAction,
 } from "react";
 import type { readStatus } from "./enum/ReadStatus";
+import type { EmojiClickData } from "emoji-picker-react";
 
 export interface User {
   _id: string;
@@ -206,4 +207,9 @@ export interface ChatUserCardProps {
   isTyping: boolean;
   lastMessage?: IMESSAGE;
   count?: number;
+}
+
+export interface EmojiPickerProps{
+  isOpen: boolean;
+  onEmojiClick: (emoji: EmojiClickData) => void;
 }
