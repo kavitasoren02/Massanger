@@ -109,12 +109,12 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
   </button>
 
   {/* Emoji */}
-  <div className="relative">
+  <div className="relative" ref={pickerRef}>
     <button
       type="button"
       onClick={() => setIsOpenEmojiPicker((prev) => !prev)}
     >
-      <RiBearSmileFill className="text-2xl text-gray-500 hover:text-gray-700" />
+      <RiBearSmileFill className="text-2xl text-gray-500 hover:text-gray-700 cursor-pointer" />
     </button>
 
     <EmojiPicker
