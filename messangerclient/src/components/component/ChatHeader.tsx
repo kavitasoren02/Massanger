@@ -5,13 +5,11 @@ import { IoMdVideocam } from "react-icons/io";
 import { HiDotsVertical } from "react-icons/hi";
 import { formatLastSeen } from "../../utils/date";
 
-const ChatHeader = ({ openSidebar, currentUser }: Props1) => {
+const ChatHeader = ({ openSidebar, currentUser, setProfileOpen }: Props1) => {
   return (
     <div className="h-[65px] w-full bg-[#329A93] flex items-center justify-between px-4 shadow-md rounded-xl">
-
       {/* LEFT SECTION */}
       <div className="flex items-center gap-3">
-
         {/* Hamburger */}
         <button
           onClick={openSidebar}
@@ -21,18 +19,31 @@ const ChatHeader = ({ openSidebar, currentUser }: Props1) => {
         </button>
 
         <div className="flex items-center gap-3">
-
-          <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-black overflow-hidden">
-         
-          </div>
+          {currentUser?.profilePic ? (
+            <img
+              src={currentUser?.profilePic}
+              alt="Profile pic"
+              className="h-8 w-8 md:h-10 md:w-10 rounded-full overflow-hidden flex justify-center items-center cursor-pointer"
+            />
+          ) : (
+            <div
+              onClick={setProfileOpen}
+              className="h-8 w-8 md:h-10 md:w-10 rounded-full overflow-hidden flex justify-center items-center bg-gray-200 text-xl font-semibold cursor-pointer"
+            >
+              {currentUser?.fullName.charAt(0)}
+            </div>
+          )}
 
           <div className="leading-tight">
             <p className="text-white font-semibold text-[12px] md:text-lg">
               {currentUser?.fullName}
             </p>
             <span className="text-white/80 text-[10px] md:text-sm">
-
-              {currentUser?.isOnline ? "Online" :currentUser?.lastSeen ? formatLastSeen(currentUser?.lastSeen): ""}
+              {currentUser?.isOnline
+                ? "Online"
+                : currentUser?.lastSeen
+                  ? formatLastSeen(currentUser?.lastSeen)
+                  : ""}
             </span>
           </div>
         </div>
@@ -44,7 +55,6 @@ const ChatHeader = ({ openSidebar, currentUser }: Props1) => {
         <IoMdVideocam className="cursor-pointer hover:scale-110 transition duration-150" />
         <HiDotsVertical className="cursor-pointer hover:scale-110 transition duration-150" />
       </div>
-
     </div>
   );
 };

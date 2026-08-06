@@ -37,7 +37,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
   });
 
   //for emoji modal close
-   useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         pickerRef.current &&
@@ -102,47 +102,44 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
 
   return (
     <form className="relative w-full" onSubmit={handleSubmit}>
-     <div className="flex items-center gap-2 sm:gap-3 h-14 px-2 sm:px-4 bg-white border-t">
-  {/* Attachment */}
-  <button type="button">
-    <GrAttachment className="text-xl text-gray-500 hover:text-gray-700" />
-  </button>
+      <div className="flex items-center gap-2 sm:gap-3 h-14 px-2 sm:px-4 bg-white">
+        {/* Attachment */}
+        <button type="button">
+          <GrAttachment className="text-xl text-gray-500 hover:text-gray-700" />
+        </button>
 
-  {/* Emoji */}
-  <div className="relative" ref={pickerRef}>
-    <button
-      type="button"
-      onClick={() => setIsOpenEmojiPicker((prev) => !prev)}
-    >
-      <RiBearSmileFill className="text-2xl text-gray-500 hover:text-gray-700 cursor-pointer" />
-    </button>
+        {/* Emoji */}
+        <div className="relative" ref={pickerRef}>
+          <button
+            type="button"
+            onClick={() => setIsOpenEmojiPicker((prev) => !prev)}
+          >
+            <RiBearSmileFill className="text-2xl text-gray-500 hover:text-gray-700 cursor-pointer" />
+          </button>
 
-    <EmojiPicker
-      isOpen={isOpenEmojiPicker}
-      onEmojiClick={onEmojiClick}
-    />
-  </div>
+          <EmojiPicker isOpen={isOpenEmojiPicker} onEmojiClick={onEmojiClick} />
+        </div>
 
-  {/* Input */}
-  <div className="flex-1">
-    <input
-      value={message.content}
-      onChange={onChangeHandler}
-      type="text"
-      placeholder="Type a message..."
-      className="w-full bg-transparent outline-none text-sm sm:text-base text-gray-700 placeholder-gray-400"
-    />
-  </div>
+        {/* Input */}
+        <div className="flex-1">
+          <input
+            value={message.content}
+            onChange={onChangeHandler}
+            type="text"
+            placeholder="Type a message..."
+            className="w-full bg-transparent outline-none text-sm sm:text-base text-gray-700 placeholder-gray-400"
+          />
+        </div>
 
-  {/* Send */}
-  <button
-    type="submit"
-    disabled={!message.content.trim()}
-    className="flex items-center justify-center h-10 w-10 rounded-full bg-[#329A93] hover:scale-105 transition disabled:opacity-60"
-  >
-    <IoSend className="text-white text-lg" />
-  </button>
-</div>
+        {/* Send */}
+        <button
+          type="submit"
+          disabled={!message.content.trim()}
+          className="flex items-center justify-center h-10 w-10 rounded-full bg-[#329A93] hover:scale-105 transition disabled:opacity-60"
+        >
+          <IoSend className="text-white text-lg" />
+        </button>
+      </div>
     </form>
   );
 };

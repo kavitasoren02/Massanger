@@ -6,10 +6,12 @@ import { useParams } from "react-router-dom";
 import { GET_USER_BYID } from "../../Service/useApiService";
 import { _get } from "../../Service/axios";
 import { useChatContextProvider } from "./context/ChatContextProvider";
+import ProfileScreen from "../../components/component/ProfileScreen";
 
 const Chat = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [currentUser, setcurrentUser] = useState<User>();
+  const [profileOpen, setProfileOpen] = useState<boolean>(false);
 
   const { id } = useParams();
 
@@ -38,15 +40,13 @@ const Chat = () => {
       }
     });
 
- 
-
     socket.on("topic/userDisconnected", (data) => {
       const { userId } = data;
-      if(currentUser?._id == userId){
-        setcurrentUser((prev) =>{
-          if(!prev) return;
-          return{ ...prev, isOnline: false, lastSeen: data.lastSeenDate};
-        })
+      if (currentUser?._id == userId) {
+        setcurrentUser((prev) => {
+          if (!prev) return;
+          return { ...prev, isOnline: false, lastSeen: data.lastSeenDate };
+        });
       }
     });
   }, [socket, currentUser, setcurrentUser]);
@@ -61,8 +61,8 @@ const Chat = () => {
       )}
 
       {/* Sidebar */}
-<div
-  className={`
+      <div
+        className={`
     h-full
     bg-white
     rounded-r-3xl md:rounded-3xl
@@ -81,18 +81,33 @@ const Chat = () => {
     ${open ? "translate-x-0" : "-translate-x-full"}
     md:translate-x-0
   `}
->
-  <ChatList
-    closeSidebar={() => setOpen(false)}
-    currentUser={currentUser!}
-    setCurrentUser={setcurrentUser}
-  />
-</div>
+      >
+        <ChatList
+          closeSidebar={() => setOpen(false)}
+          currentUser={currentUser!}
+          setCurrentUser={setcurrentUser}
+        />
+      </div>
       <ChatWindow
+        setProfileOpen={() => {
+          setProfileOpen(true);
+        }}
         currentUser={currentUser}
         id={id}
         openSidebar={() => setOpen(true)}
       />
+      <div
+        className={`absolute top-4 right-0 bottom-4 w-full max-w-[500px]
+    transition-transform duration-300 ease-in-out p-2
+    ${profileOpen ? "translate-x-0" : "translate-x-full"}`}
+      >
+        <div className="h-full shadow-lg overflow-hidden rounded-l-2xl">
+          <ProfileScreen
+            currentUser={currentUser}
+            setProfileOpen={() => setProfileOpen(false)}
+          />
+        </div>
+      </div>
     </div>
   );
 };

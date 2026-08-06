@@ -191,7 +191,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
           </div>
 
           {/* Close icon (mobile only) */}
-          <button onClick={closeSidebar} className="md:hidden">
+          <button onClick={closeSidebar} className="md:hidden" title="Close">
             <X className="w-7 h-7 text-gray-800" />
           </button>
         </div>

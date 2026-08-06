@@ -16,7 +16,7 @@ import { useChatContextProvider } from "../../pages/chats/context/ChatContextPro
 import { Logs } from "lucide-react";
 import { READ_STATUS } from "../../Service/enum/ReadStatus";
 
-const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
+const ChatWindow = ({ openSidebar, id, currentUser, setProfileOpen }: Props1) => {
   const [messages, setMessages] = useState<IMESSAGE[]>([]);
   const { socket } = useChatContextProvider();
 
@@ -143,7 +143,7 @@ const ChatWindow = ({ openSidebar, id, currentUser }: Props1) => {
   return (
     <div className="flex-1 flex flex-col h-full lg:rounded-r-2xl rounded-2xl gap-2 overflow-hidden relative">
       {/* Header */}
-      {id && <ChatHeader currentUser={currentUser} openSidebar={openSidebar} />}
+      {id && <ChatHeader currentUser={currentUser} openSidebar={openSidebar} setProfileOpen={setProfileOpen} />}
       {!id && (
         <div className="absolute top-2 left-2">
           {/* Hamburger */}

@@ -129,6 +129,7 @@ export interface Props1 {
   openSidebar: () => void;
   id?: string;
   currentUser?: User;
+  setProfileOpen: () => void;
 }
 export interface Props2 {
   closeSidebar: () => void;
@@ -209,7 +210,12 @@ export interface ChatUserCardProps {
   count?: number;
 }
 
-export interface EmojiPickerProps{
+export interface EmojiPickerProps {
   isOpen: boolean;
   onEmojiClick: (emoji: EmojiClickData) => void;
+}
+
+export interface ProfileProps {
+  setProfileOpen: () => void;
+  currentUser?: User;
 }
