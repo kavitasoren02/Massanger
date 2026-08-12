@@ -9,19 +9,26 @@ import type {
 } from "../../Service/interface";
 import ChatInput from "./ChatInput";
 import { useEffect, useState } from "react";
-import { _get } from "../../Service/axios";
+import { _get, _delete } from "../../Service/axios";
 import { GET_ALL_MESSAGE } from "../../Service/useApiService";
 import { useAuth } from "../../ProtectedRoute/AuthProvider";
 import { useChatContextProvider } from "../../pages/chats/context/ChatContextProvider";
 import { Logs } from "lucide-react";
 import { READ_STATUS } from "../../Service/enum/ReadStatus";
 
-const ChatWindow = ({ openSidebar, id, currentUser, setProfileOpen }: Props1) => {
+const ChatWindow = ({
+  openSidebar,
+  id,
+  currentUser,
+  setProfileOpen,
+}: Props1) => {
   const [messages, setMessages] = useState<IMESSAGE[]>([]);
+  const [updateMessage, setUpdateMessage] = useState<number>(0);
+
   const { socket } = useChatContextProvider();
 
   const { user } = useAuth();
-
+  // SEND MSG
   const sendMessage = (message: IMESSAGE) => {
     // console.log(message);
     setMessages((prev) => [...prev, message]);
@@ -38,7 +45,7 @@ const ChatWindow = ({ openSidebar, id, currentUser, setProfileOpen }: Props1) =>
           recieverId,
         },
       });
-      console.log({ data });
+      // console.log({ data });
       setMessages(data.data);
     } catch (error: unknown) {
       // Do Nothing
@@ -50,7 +57,7 @@ const ChatWindow = ({ openSidebar, id, currentUser, setProfileOpen }: Props1) =>
 
     setMessages([]);
     getAllMessage(user._id, id);
-  }, [id, user?._id]);
+  }, [id, user?._id, updateMessage]);
 
   useEffect(() => {
     if (!socket) return;
@@ -65,10 +72,8 @@ const ChatWindow = ({ openSidebar, id, currentUser, setProfileOpen }: Props1) =>
     socket.on("topic/receiveMessage", recieveMessagehandler);
 
     const updateMessagehandler = (recievedmessage: IMESSAGE) => {
-      console.log({rcv:recievedmessage, id});
-      if (
-        recievedmessage.recieverId === id
-      ) {
+      console.log({ rcv: recievedmessage, id });
+      if (recievedmessage.recieverId === id) {
         setMessages((prev) => {
           const restMessage = prev.slice(0, prev.length - 1);
           return [...restMessage, recievedmessage];
@@ -143,7 +148,14 @@ const ChatWindow = ({ openSidebar, id, currentUser, setProfileOpen }: Props1) =>
   return (
     <div className="flex-1 flex flex-col h-full lg:rounded-r-2xl rounded-2xl gap-2 overflow-hidden relative">
       {/* Header */}
-      {id && <ChatHeader currentUser={currentUser} openSidebar={openSidebar} setProfileOpen={setProfileOpen} />}
+      {id && (
+        <ChatHeader
+          currentUser={currentUser}
+          openSidebar={openSidebar}
+          setProfileOpen={setProfileOpen}
+          setUpdateMessage={setUpdateMessage}
+        />
+      )}
       {!id && (
         <div className="absolute top-2 left-2">
           {/* Hamburger */}

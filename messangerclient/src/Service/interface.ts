@@ -130,7 +130,9 @@ export interface Props1 {
   id?: string;
   currentUser?: User;
   setProfileOpen: () => void;
+  setUpdateMessage: React.Dispatch<SetStateAction<number>>;
 }
+
 export interface Props2 {
   closeSidebar: () => void;
   setCurrentUser: React.Dispatch<SetStateAction<User | undefined>>;
@@ -170,6 +172,7 @@ export interface ChatMessageProps {
   id?: string;
   messages: IMESSAGE[];
   currentUser?: User;
+  // deleteMessage: (messageId: string) => Promise<void>;
 }
 
 export interface MessageStatusProps {
@@ -218,4 +221,9 @@ export interface EmojiPickerProps {
 export interface ProfileProps {
   setProfileOpen: () => void;
   currentUser?: User;
+}
+
+export interface DeleteMessage {
+  message: string;
+  data: IMESSAGE[];
 }

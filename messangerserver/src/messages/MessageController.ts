@@ -1,5 +1,10 @@
 import express, { Request, Response } from "express";
-import { deleteMessage, getAllMessage, updateMessage } from "./MessageService";
+import {
+  deleteAllMessage,
+  deleteMessage,
+  getAllMessage,
+  updateMessage,
+} from "./MessageService";
 import { IMESSAGE } from "./modals/Message";
 
 const router = express.Router();
@@ -7,17 +12,21 @@ const router = express.Router();
 router.get("/", async (req: Request, res: Response) => {
   try {
     const { senderId, recieverId } = req.query;
-    
-    if (!senderId || !recieverId) throw new Error("Please provide me Sender and Reciever id");
 
-    const allMessage = await getAllMessage(senderId as string, recieverId as string);
+    if (!senderId || !recieverId)
+      throw new Error("Please provide me Sender and Reciever id");
+
+    const allMessage = await getAllMessage(
+      senderId as string,
+      recieverId as string,
+    );
 
     res.status(200).json({
       message: "Messaged fetched successfully",
       data: allMessage,
     });
   } catch (error: any) {
-    console.log({error})
+    console.log({ error });
     return res.status(500).json({
       detail: error.message || "Something went wrong",
     });
@@ -35,6 +44,22 @@ router.put("/:id", async (req: any, res: Response) => {
     res.status(200).json({
       message: "Message updated successfully",
       data: updatedMessage,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      detail: error.message || "Something went wrong",
+    });
+  }
+});
+router.delete("/", async (req: any, res: Response) => {
+  try {
+    const { recieverId } = req.query;
+    const currentUserId = req.userId;
+
+    const deleteAllMessages = await deleteAllMessage(currentUserId, recieverId);
+    res.status(200).json({
+      message: "Message deleted successfully",
+      data: deleteAllMessages,
     });
   } catch (error: any) {
     return res.status(500).json({

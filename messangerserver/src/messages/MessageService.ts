@@ -44,7 +44,7 @@ export const updateMessage = async (
 
 export const deleteMessage = async (id: string, currentId: string) => {
   try {
-    const isOwnMessage = await MessageModel.find({
+    const isOwnMessage = await MessageModel.findOne({
       _id: id,
       senderId: currentId,
     });
@@ -161,18 +161,33 @@ export const getUnseenMessageCount = async (
   recieverId: string,
   senderId: string,
 ) => {
-  try{
+  try {
     const unseenMessage = await MessageModel.find({
       senderId,
       recieverId,
       readStatus: {
-        $in: [
-          READ_STATUS.DOUBLE_TICK, READ_STATUS.SINGLE_TICK
-        ]
-      }
-    })
+        $in: [READ_STATUS.DOUBLE_TICK, READ_STATUS.SINGLE_TICK],
+      },
+    });
     return unseenMessage.length;
-  }catch(error){
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteAllMessage = async (
+  senderId: string,
+  recieverId: string,
+) => {
+  try {
+    const deleteMessage = await MessageModel.deleteMany({
+      $or: [
+        { senderId, recieverId },
+        { senderId: recieverId, recieverId: senderId },
+      ],
+    });
+    return deleteMessage;
+  } catch (error) {
     throw error;
   }
 };
