@@ -10,7 +10,6 @@ import {
   Image,
 } from "lucide-react";
 import type {
-  ApiResponse,
   DeleteMessage,
   Props1,
 } from "../../Service/interface";

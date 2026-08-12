@@ -132,6 +132,12 @@ export interface Props1 {
   setProfileOpen: () => void;
   setUpdateMessage: React.Dispatch<SetStateAction<number>>;
 }
+export interface ChatWindowProps {
+  openSidebar: () => void;
+  id?: string;
+  currentUser?: User;
+  setProfileOpen: () => void;
+}
 
 export interface Props2 {
   closeSidebar: () => void;

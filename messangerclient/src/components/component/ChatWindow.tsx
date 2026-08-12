@@ -3,9 +3,9 @@ import ChatHeader from "./ChatHeader";
 import type {
   ApiResponse,
   BlueTickProps,
+  ChatWindowProps,
   doubleTickProps,
   IMESSAGE,
-  Props1,
 } from "../../Service/interface";
 import ChatInput from "./ChatInput";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ const ChatWindow = ({
   id,
   currentUser,
   setProfileOpen,
-}: Props1) => {
+}: ChatWindowProps) => {
   const [messages, setMessages] = useState<IMESSAGE[]>([]);
   const [updateMessage, setUpdateMessage] = useState<number>(0);
 
