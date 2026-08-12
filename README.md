@@ -56,17 +56,13 @@ The interface is designed to be **responsive, clean, and user-friendly**, making
 ---
 
 ## 🖼️ Screenshots / Demo
-
 ### Login / Authentication
 
-```text
-![Login Screen](./screenshots/Login.png)```
+![Login Screen](./screenshots/Login.png)
 
 ### One-to-One Chat
 
-```text
-[ Add Chat Screenshot Here ](./screenshots/ChatScreen.png)
-```
+![Chat Screen](./screenshots/ChatScreen.png)
 
 ### Responsive Mobile View
 ### 📱 Mobile View
