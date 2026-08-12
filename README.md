@@ -60,32 +60,28 @@ The interface is designed to be **responsive, clean, and user-friendly**, making
 ### Login / Authentication
 
 ```text
-[ Add Login Screenshot Here ]
-```
-
-### Chat List
-
-```text
-[ Add Chat List Screenshot Here ]
-```
+![Login Screen](./screenshots/Login.png)```
 
 ### One-to-One Chat
 
 ```text
-[ Add Chat Screenshot Here ]
+[ Add Chat Screenshot Here ](./screenshots/ChatScreen.png)
 ```
 
 ### Responsive Mobile View
+### 📱 Mobile View
 
-```text
-[ Add Mobile Screenshot Here ]
-```
+![Mobile Screenshot 1](./screenshots/Register%20Screen.jpg)
+
+![Mobile Screenshot 2](./screenshots/LoginScreen.jpg)
+
+![Mobile Screenshot 3](./screenshots/MobileChatScreen.jpg)
 
 ### 🎥 Live Demo
 
-**Demo:** `<YOUR_DEPLOYED_APP_URL>`
+**Demo:** `https://massengers.netlify.app`
 
-**Repository:** `<YOUR_GITHUB_REPOSITORY_URL>`
+**Repository:** `https://github.com/kavitasoren02/Massanger`
 
 ---
 
