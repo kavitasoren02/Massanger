@@ -532,6 +532,1510 @@ The application is designed to provide a responsive chat experience across diffe
 
 ---
 
+# Messenger Server API Documentation
+
+## Overview
+
+This document describes the REST API and Socket.IO events implemented by
+the `messangerserver` application in the `Massanger` repository.
+
+-   **Repository:** `https://github.com/kavitasoren02/Massanger`
+-   **Server directory:** `messangerserver`
+-   **API prefix:** `/api/v1`
+-   **Default HTTP port:** `5000` in `src/index.ts`; the example
+    environment file uses `5001`.
+-   **Database:** MongoDB / Mongoose
+-   **Authentication:** JWT stored in an HTTP-only `token` cookie
+-   **Real-time communication:** Socket.IO
+-   **Push notifications:** Web Push
+-   **Email:** Nodemailer
+
+The server mounts the main router at `/api/v1`, while the health
+endpoint is exposed directly at `/health`.
+
+------------------------------------------------------------------------
+
+## Base URL
+
+For local development:
+
+``` text
+http://localhost:5000
+```
+
+Therefore, REST endpoints are normally accessed as:
+
+``` text
+http://localhost:5000/api/v1/...
+```
+
+If `PORT` is configured differently, replace `5000` with the configured
+port.
+
+------------------------------------------------------------------------
+
+# Authentication
+
+The API uses a JWT authentication cookie named:
+
+``` text
+token
+```
+
+After a successful login, the server creates a JWT containing:
+
+``` json
+{
+  "userId": "USER_ID",
+  "email": "user@example.com"
+}
+```
+
+The token expires after **1 day**.
+
+Protected REST routes read the JWT from `req.cookies.token`. Socket.IO
+authentication also reads the `token` cookie from the Socket.IO
+handshake.
+
+The server's cookie configuration currently uses:
+
+-   `httpOnly: true`
+-   `secure: true`
+-   `sameSite: "none"`
+-   `path: "/"`
+-   `maxAge: 9000000`
+
+Because `secure` is enabled, HTTPS is required for the cookie to be sent
+by a browser in normal production use.
+
+------------------------------------------------------------------------
+
+# Common HTTP Responses
+
+The API commonly uses these status codes:
+
+  Status   Meaning
+  -------- --------------------------------------
+  `200`    Request completed successfully
+  `201`    Resource created successfully
+  `400`    Invalid request or validation error
+  `401`    Authentication failed / unauthorized
+  `404`    Resource or user not found
+  `500`    Internal server error
+
+------------------------------------------------------------------------
+
+# 1. Health Check
+
+## GET `/health`
+
+Checks whether the HTTP server is running.
+
+### Authentication
+
+Not required.
+
+### Request
+
+``` http
+GET /health
+```
+
+### Response
+
+**200 OK**
+
+``` json
+{
+  "status": "OK"
+}
+```
+
+------------------------------------------------------------------------
+
+# 2. User APIs
+
+User routes are mounted under:
+
+``` text
+/api/v1/user
+```
+
+## 2.1 Register User
+
+### POST `/api/v1/user/register`
+
+Creates a new user account.
+
+### Authentication
+
+Not required.
+
+### Request Body
+
+``` json
+{
+  "fullName": "John",
+  "email": "john@example.com",
+  "countryCode": "+91",
+  "mobileNumber": "9876543210",
+  "password": "password123"
+}
+```
+
+Optional fields accepted by the validation layer include:
+
+``` json
+{
+  "profilePic": "https://example.com/profile.jpg",
+  "status": "Available",
+  "isOnline": false,
+  "lastSeen": "2026-08-15T10:00:00.000Z"
+}
+```
+
+### Validation
+
+The current validation layer requires:
+
+-   `fullName` --- required and alphabetic
+-   `email` --- required and valid email
+-   `mobileNumber` --- required, exactly 10 digits
+-   `password` --- required, minimum 8 characters
+
+### Success Response
+
+**201 Created**
+
+``` json
+{
+  "message": "User registered successfully",
+  "user": {
+    "...": "created user document"
+  }
+}
+```
+
+### Error Response
+
+**400 Bad Request**
+
+``` json
+{
+  "detail": "Email is required",
+  "errors": []
+}
+```
+
+**500 Internal Server Error**
+
+``` json
+{
+  "message": "Failed to register user",
+  "error": "Error message"
+}
+```
+
+------------------------------------------------------------------------
+
+## 2.2 Forgot Password
+
+### POST `/api/v1/user/forgotpassword`
+
+Creates a password reset token and sends a reset email.
+
+### Authentication
+
+Not required.
+
+### Request Body
+
+``` json
+{
+  "email": "john@example.com"
+}
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Password reset link sent successfully"
+}
+```
+
+The reset link is generated using:
+
+``` text
+FRONTEND_URI/reset-password/{resetToken}
+```
+
+The reset token is stored hashed in the database and expires after **15
+minutes**.
+
+### Missing Email
+
+**400 Bad Request**
+
+``` json
+{
+  "detail": "Email is required"
+}
+```
+
+------------------------------------------------------------------------
+
+## 2.3 Validate Password Reset Token
+
+### GET `/api/v1/user/validate-reset-token/:token`
+
+Checks whether a password reset token is valid and has not expired.
+
+### Path Parameter
+
+  Parameter   Type     Required   Description
+  ----------- -------- ---------- ----------------------
+  `token`     string   Yes        Password reset token
+
+### Example
+
+``` http
+GET /api/v1/user/validate-reset-token/RESET_TOKEN
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Reset token is valid "
+}
+```
+
+### Invalid/Expired Token
+
+The current implementation returns:
+
+**500 Internal Server Error**
+
+``` json
+{
+  "message": "Invalid or expired token",
+  "detail": "Invalid or expired reset token"
+}
+```
+
+------------------------------------------------------------------------
+
+## 2.4 Change Password
+
+### POST `/api/v1/user/change-password/:token`
+
+Changes the user's password using a valid password reset token.
+
+### Path Parameter
+
+  Parameter   Type     Required   Description
+  ----------- -------- ---------- ----------------------
+  `token`     string   Yes        Password reset token
+
+### Request Body
+
+``` json
+{
+  "password": "newPassword123"
+}
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Password changed successfully"
+}
+```
+
+### Error Response
+
+**500 Internal Server Error**
+
+``` json
+{
+  "message": "Password reset failed",
+  "detail": "Invalid or expired reset token"
+}
+```
+
+------------------------------------------------------------------------
+
+## 2.5 Get All Users
+
+### GET `/api/v1/user/all-users`
+
+Returns active users except the currently authenticated user.
+
+The response also contains online/offline state, the latest message and
+unseen message count for each user.
+
+### Authentication
+
+Required.
+
+### Query Parameters
+
+  Parameter      Type     Required   Description
+  -------------- -------- ---------- ------------------------------
+  `searchTerm`   string   No         Searches users by `fullName`
+
+### Example
+
+``` http
+GET /api/v1/user/all-users
+```
+
+With search:
+
+``` http
+GET /api/v1/user/all-users?searchTerm=john
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "data": [
+    {
+      "_id": "USER_ID",
+      "fullName": "John",
+      "email": "john@example.com",
+      "countryCode": "+91",
+      "mobileNumber": "9876543210",
+      "profilePic": "",
+      "status": "Hey there!, I'm Using Messanger",
+      "isOnline": true,
+      "lastSeen": null,
+      "isActive": true,
+      "isDeleted": false,
+      "lastMessage": {},
+      "count": 2
+    }
+  ]
+}
+```
+
+### Response Fields
+
+  -----------------------------------------------------------------------
+  Field                               Description
+  ----------------------------------- -----------------------------------
+  `isOnline`                          Whether a socket connection
+                                      currently exists for the user
+
+  `lastMessage`                       Latest message exchanged with the
+                                      current user
+
+  `count`                             Unseen message count
+  -----------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## 2.6 Get User By ID
+
+### GET `/api/v1/user/getuserById/:id`
+
+Returns a specific user and their current online status.
+
+### Authentication
+
+Required.
+
+### Path Parameter
+
+  Parameter   Type               Required
+  ----------- ------------------ ----------
+  `id`        MongoDB ObjectId   Yes
+
+### Example
+
+``` http
+GET /api/v1/user/getuserById/64f123456789abcdef123456
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "data": {
+    "_id": "64f123456789abcdef123456",
+    "fullName": "John",
+    "email": "john@example.com",
+    "countryCode": "+91",
+    "mobileNumber": "9876543210",
+    "profilePic": "",
+    "status": "Available",
+    "isOnline": true,
+    "lastSeen": null,
+    "isActive": true,
+    "isDeleted": false
+  }
+}
+```
+
+------------------------------------------------------------------------
+
+# 3. Authentication APIs
+
+Authentication routes are mounted under:
+
+``` text
+/api/v1/auth
+```
+
+## 3.1 Login
+
+### POST `/api/v1/auth/login`
+
+Authenticates a user and creates a JWT.
+
+### Authentication
+
+Not required.
+
+### Request Body
+
+``` json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Login successful",
+  "token": "JWT_TOKEN",
+  "user": {
+    "id": "USER_ID",
+    "email": "john@example.com",
+    "fullName": "John"
+  }
+}
+```
+
+The server also sets the `token` cookie.
+
+### User Not Found
+
+**404 Not Found**
+
+``` json
+{
+  "message": "User not found"
+}
+```
+
+### Invalid Password
+
+**401 Unauthorized**
+
+``` json
+{
+  "message": "Invalid credentials"
+}
+```
+
+------------------------------------------------------------------------
+
+## 3.2 Logout
+
+### POST `/api/v1/auth/logout`
+
+Removes the authentication cookie.
+
+### Authentication
+
+No explicit authentication middleware is attached to this route.
+
+### Request
+
+``` http
+POST /api/v1/auth/logout
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Logout Successfuly"
+}
+```
+
+------------------------------------------------------------------------
+
+## 3.3 Get Current User Information
+
+### GET `/api/v1/auth/info`
+
+Returns the authenticated user's information.
+
+### Authentication
+
+Required.
+
+### Request
+
+``` http
+GET /api/v1/auth/info
+```
+
+The browser/client must send the `token` cookie.
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "user": {
+    "...": "user document"
+  }
+}
+```
+
+### User Not Found
+
+**404 Not Found**
+
+``` json
+{
+  "message": "User not found"
+}
+```
+
+------------------------------------------------------------------------
+
+# 4. Message APIs
+
+Message routes are mounted under:
+
+``` text
+/api/v1/messages
+```
+
+All message REST endpoints require authentication.
+
+## Message Model
+
+A message contains:
+
+``` json
+{
+  "senderId": "USER_ID",
+  "recieverId": "USER_ID",
+  "messageType": "text",
+  "content": "Hello!",
+  "fileId": "FILE_ID",
+  "readStatus": "single_tick"
+}
+```
+
+`fileId` is optional.
+
+### Read Status
+
+The server defines three read states:
+
+  Value                Meaning
+  -------------------- -------------------
+  `single_tick`        Message sent
+  `double_tick`        Message delivered
+  `blue_double_tick`   Message read
+
+------------------------------------------------------------------------
+
+## 4.1 Get Conversation Messages
+
+### GET `/api/v1/messages`
+
+Returns messages exchanged between two users.
+
+### Query Parameters
+
+  Parameter      Type     Required
+  -------------- -------- ----------
+  `senderId`     string   Yes
+  `recieverId`   string   Yes
+
+### Example
+
+``` http
+GET /api/v1/messages?senderId=USER_A&recieverId=USER_B
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Messaged fetched successfully",
+  "data": [
+    {
+      "_id": "MESSAGE_ID",
+      "senderId": "USER_A",
+      "recieverId": "USER_B",
+      "messageType": "text",
+      "content": "Hello!",
+      "readStatus": "single_tick",
+      "createdAt": "2026-08-15T10:00:00.000Z",
+      "updatedAt": "2026-08-15T10:00:00.000Z"
+    }
+  ]
+}
+```
+
+Messages are sorted by `createdAt` in ascending order.
+
+### Missing Query Parameters
+
+The current implementation returns:
+
+**500 Internal Server Error**
+
+``` json
+{
+  "detail": "Please provide me Sender and Reciever id"
+}
+```
+
+------------------------------------------------------------------------
+
+## 4.2 Update Message
+
+### PUT `/api/v1/messages/:id`
+
+Updates a message.
+
+### Authentication
+
+Required.
+
+### Path Parameter
+
+  Parameter   Type               Required
+  ----------- ------------------ ----------
+  `id`        MongoDB ObjectId   Yes
+
+### Request Body
+
+A message object:
+
+``` json
+{
+  "senderId": "USER_ID",
+  "recieverId": "USER_ID",
+  "messageType": "text",
+  "content": "Updated message",
+  "readStatus": "single_tick"
+}
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Message updated successfully",
+  "data": {
+    "...": "updated message"
+  }
+}
+```
+
+The service checks that the message belongs to the authenticated sender
+before updating it.
+
+------------------------------------------------------------------------
+
+## 4.3 Delete One Message
+
+### DELETE `/api/v1/messages/:id`
+
+Deletes a single message.
+
+### Authentication
+
+Required.
+
+### Path Parameter
+
+  Parameter   Type               Required
+  ----------- ------------------ ----------
+  `id`        MongoDB ObjectId   Yes
+
+### Example
+
+``` http
+DELETE /api/v1/messages/MESSAGE_ID
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Message deleted successfully",
+  "data": {
+    "...": "deleted message"
+  }
+}
+```
+
+Only the sender is allowed to delete the message according to the
+service-level ownership check.
+
+------------------------------------------------------------------------
+
+## 4.4 Delete Conversation
+
+### DELETE `/api/v1/messages`
+
+Deletes all messages exchanged between the authenticated user and
+another user.
+
+### Query Parameters
+
+  Parameter      Type     Required
+  -------------- -------- ----------
+  `recieverId`   string   Yes
+
+### Example
+
+``` http
+DELETE /api/v1/messages?recieverId=USER_B
+```
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Message deleted successfully",
+  "data": {
+    "acknowledged": true,
+    "deletedCount": 10
+  }
+}
+```
+
+------------------------------------------------------------------------
+
+# 5. Notification APIs
+
+Notification routes are mounted under:
+
+``` text
+/api/v1/notifications
+```
+
+All notification routes require authentication.
+
+The server stores Web Push subscriptions in an in-memory `Map`, keyed by
+user ID.
+
+------------------------------------------------------------------------
+
+## 5.1 Save Push Subscription
+
+### POST `/api/v1/notifications/subscribe`
+
+Associates a push subscription with the authenticated user.
+
+### Request Body
+
+``` json
+{
+  "subscriptionId": {
+    "...": "Web Push subscription object"
+  }
+}
+```
+
+The implementation accepts the `subscriptionId` value as-is.
+
+### Success Response
+
+**200 OK**
+
+``` json
+{
+  "message": "Subscription saved successfully"
+}
+```
+
+### Missing Subscription
+
+**404 Not Found**
+
+``` json
+{
+  "message": "SubscriptionId not found"
+}
+```
+
+------------------------------------------------------------------------
+
+# 6. Socket.IO API
+
+The server also provides real-time communication through Socket.IO.
+
+The Socket.IO server is attached to the same HTTP server and uses the
+same configured frontend origin.
+
+### Connection
+
+``` text
+http://localhost:5000
+```
+
+The Socket.IO connection requires the `token` cookie.
+
+The socket authentication middleware reads:
+
+``` text
+Cookie: token=JWT_TOKEN
+```
+
+and verifies the JWT before allowing the connection.
+
+------------------------------------------------------------------------
+
+# Socket Events
+
+## 6.1 User Connected
+
+### Server Broadcast Event
+
+``` text
+topic/userConnected
+```
+
+Emitted when a user successfully connects.
+
+### Payload
+
+``` json
+{
+  "userId": "USER_ID"
+}
+```
+
+This event is broadcast to other connected users.
+
+------------------------------------------------------------------------
+
+## 6.2 Send Message
+
+### Client → Server
+
+``` text
+topic/sendMessage
+```
+
+### Payload
+
+``` json
+{
+  "senderId": "USER_A",
+  "recieverId": "USER_B",
+  "messageType": "text",
+  "content": "Hello!",
+  "readStatus": "single_tick"
+}
+```
+
+The server:
+
+1.  Checks whether the receiver is online.
+2.  Sets `readStatus` to `double_tick` when the receiver is connected.
+3.  Saves the message to MongoDB.
+4.  Sends the message to the receiver.
+5.  Sends the saved message back to the sender through
+    `topic/updateMessage`.
+6.  Attempts to send a Web Push notification to the receiver.
+
+### Receiver Event
+
+``` text
+topic/receiveMessage
+```
+
+Payload:
+
+``` json
+{
+  "_id": "MESSAGE_ID",
+  "senderId": "USER_A",
+  "recieverId": "USER_B",
+  "messageType": "text",
+  "content": "Hello!",
+  "readStatus": "double_tick"
+}
+```
+
+### Sender Update Event
+
+``` text
+topic/updateMessage
+```
+
+Payload:
+
+``` json
+{
+  "...": "saved message"
+}
+```
+
+### Failure Event
+
+``` text
+topic/messageFailed
+```
+
+Payload:
+
+``` json
+null
+```
+
+------------------------------------------------------------------------
+
+## 6.3 Typing Indicator
+
+### Client → Server
+
+``` text
+topic/typing
+```
+
+### Payload
+
+``` json
+{
+  "senderId": "USER_A",
+  "recieverId": "USER_B"
+}
+```
+
+### Receiver Event
+
+``` text
+topic/isTyping
+```
+
+When typing starts:
+
+``` json
+{
+  "senderId": "USER_A",
+  "recieverId": "USER_B",
+  "isTyping": true
+}
+```
+
+After approximately **2.5 seconds** without another typing event, the
+server emits:
+
+``` json
+{
+  "senderId": "USER_A",
+  "recieverId": "USER_B",
+  "isTyping": false
+}
+```
+
+------------------------------------------------------------------------
+
+## 6.4 Blue Tick / Read Message
+
+### Client → Server
+
+``` text
+topic/bluetickMessage
+```
+
+### Payload
+
+``` json
+{
+  "recieverId": "USER_A",
+  "ids": [
+    "MESSAGE_ID_1",
+    "MESSAGE_ID_2"
+  ]
+}
+```
+
+The server:
+
+1.  Emits `topic/updateBluetickMessage` to the receiver's socket when
+    available.
+2.  Updates the supplied message IDs to `blue_double_tick` in MongoDB.
+
+### Receiver Event
+
+``` text
+topic/updateBluetickMessage
+```
+
+Payload:
+
+``` json
+{
+  "recieverId": "USER_A",
+  "ids": [
+    "MESSAGE_ID_1",
+    "MESSAGE_ID_2"
+  ]
+}
+```
+
+------------------------------------------------------------------------
+
+## 6.5 Double Tick on Connection
+
+When a user connects, the server looks for received messages that are
+still in `single_tick` state.
+
+For applicable messages it:
+
+1.  Emits `topic/updatedoubletickmessage` to the original sender.
+2.  Updates those messages to `double_tick` in MongoDB.
+
+### Event
+
+``` text
+topic/updatedoubletickmessage
+```
+
+The payload contains grouped message information and message IDs.
+
+------------------------------------------------------------------------
+
+## 6.6 User Disconnected
+
+### Server Broadcast Event
+
+``` text
+topic/userDisconnected
+```
+
+Emitted when a socket disconnects.
+
+### Payload
+
+``` json
+{
+  "userId": "USER_ID",
+  "lastSeenDate": "2026-08-15T10:30:00.000Z"
+}
+```
+
+The server also updates the user's `lastSeen` value in MongoDB.
+
+------------------------------------------------------------------------
+
+# 7. Authentication Flow
+
+A typical client flow is:
+
+``` text
+Register
+   |
+   v
+POST /api/v1/user/register
+   |
+   v
+Login
+   |
+   v
+POST /api/v1/auth/login
+   |
+   +----> JWT token returned
+   |
+   +----> HTTP-only token cookie created
+   |
+   v
+Authenticated REST requests
+   |
+   +----> GET /api/v1/auth/info
+   +----> GET /api/v1/user/all-users
+   +----> GET /api/v1/messages
+   +----> POST /api/v1/notifications/subscribe
+   |
+   v
+Socket.IO connection
+   |
+   +----> token cookie verified
+   |
+   v
+Real-time messaging
+```
+
+------------------------------------------------------------------------
+
+# 8. Complete REST Endpoint Summary
+
+  ----------------------------------------------------------------------------------------------------
+  Method           Endpoint                                                      Auth Purpose
+  ---------------- -------------------------------------------- --------------------- ----------------
+  GET              `/health`                                                       No Health check
+
+  POST             `/api/v1/user/register`                                         No Register user
+
+  POST             `/api/v1/user/forgotpassword`                                   No Request password
+                                                                                      reset
+
+  GET              `/api/v1/user/validate-reset-token/:token`                      No Validate reset
+                                                                                      token
+
+  POST             `/api/v1/user/change-password/:token`                           No Change password
+
+  GET              `/api/v1/user/all-users`                                       Yes Get users/search
+                                                                                      users
+
+  GET              `/api/v1/user/getuserById/:id`                                 Yes Get user by ID
+
+  POST             `/api/v1/auth/login`                                            No Login
+
+  POST             `/api/v1/auth/logout`                                           No Logout
+
+  GET              `/api/v1/auth/info`                                            Yes Get
+                                                                                      authenticated
+                                                                                      user
+
+  GET              `/api/v1/messages`                                             Yes Get conversation
+                                                                                      messages
+
+  PUT              `/api/v1/messages/:id`                                         Yes Update message
+
+  DELETE           `/api/v1/messages`                                             Yes Delete
+                                                                                      conversation
+
+  DELETE           `/api/v1/messages/:id`                                         Yes Delete message
+
+  POST             `/api/v1/notifications/subscribe`                              Yes Save push
+                                                                                      subscription
+  ----------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+# 9. Socket Event Summary
+
+  ---------------------------------------------------------------------------------
+  Direction               Event                             Purpose
+  ----------------------- --------------------------------- -----------------------
+  Server → Client         `topic/userConnected`             Notify users that a
+                                                            user connected
+
+  Client → Server         `topic/sendMessage`               Send a real-time
+                                                            message
+
+  Server → Client         `topic/receiveMessage`            Deliver a message
+
+  Server → Client         `topic/updateMessage`             Update sender with
+                                                            saved message
+
+  Server → Client         `topic/messageFailed`             Notify sender of
+                                                            message failure
+
+  Client → Server         `topic/typing`                    Send typing state
+
+  Server → Client         `topic/isTyping`                  Broadcast typing state
+
+  Client → Server         `topic/bluetickMessage`           Mark messages as read
+
+  Server → Client         `topic/updateBluetickMessage`     Notify read-state
+                                                            update
+
+  Server → Client         `topic/updatedoubletickmessage`   Notify delivery-state
+                                                            update
+
+  Server → Client         `topic/userDisconnected`          Notify users of
+                                                            disconnect
+  ---------------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+# 10. Environment Variables
+
+The `.env.example` file defines the following configuration values:
+
+``` env
+MODE=development
+
+PORT=5001
+
+MONGO_URI=your-mongodb-uri
+
+JWT_SECRET_KEY=your-secret-key
+
+FRONTEND_URI=http://localhost:5173
+
+EMAIL_HOST=
+EMAIL_PORT=
+EMAIL_USER=
+EMAIL_PASS=
+
+VAPID_PUBLIC_KEY=
+VAPID_PRIVATE_KEY=
+VAPID_EMAIL=
+```
+
+### Environment Variable Description
+
+  Variable              Purpose
+  --------------------- ---------------------------
+  `MODE`                Application environment
+  `PORT`                HTTP server port
+  `MONGO_URI`           MongoDB connection string
+  `JWT_SECRET_KEY`      JWT signing secret
+  `FRONTEND_URI`        Allowed frontend origin
+  `EMAIL_HOST`          SMTP server
+  `EMAIL_PORT`          SMTP port
+  `EMAIL_USER`          SMTP username
+  `EMAIL_PASS`          SMTP password
+  `VAPID_PUBLIC_KEY`    Web Push public key
+  `VAPID_PRIVATE_KEY`   Web Push private key
+  `VAPID_EMAIL`         Web Push contact email
+
+------------------------------------------------------------------------
+
+# 11. Example JavaScript Client
+
+## Login
+
+``` javascript
+const response = await fetch(
+  "http://localhost:5000/api/v1/auth/login",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      email: "john@example.com",
+      password: "password123"
+    })
+  }
+);
+
+const data = await response.json();
+console.log(data);
+```
+
+For browser clients, `credentials: "include"` is important when using
+cookie-based authentication across origins.
+
+------------------------------------------------------------------------
+
+## Get Users
+
+``` javascript
+const response = await fetch(
+  "http://localhost:5000/api/v1/user/all-users",
+  {
+    credentials: "include"
+  }
+);
+
+const data = await response.json();
+console.log(data);
+```
+
+------------------------------------------------------------------------
+
+## Get Conversation
+
+``` javascript
+const response = await fetch(
+  "http://localhost:5000/api/v1/messages?senderId=USER_A&recieverId=USER_B",
+  {
+    credentials: "include"
+  }
+);
+
+const data = await response.json();
+console.log(data);
+```
+
+------------------------------------------------------------------------
+
+# 12. Socket.IO Client Example
+
+``` javascript
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5000", {
+  withCredentials: true
+});
+
+socket.on("topic/receiveMessage", (message) => {
+  console.log("New message:", message);
+});
+
+socket.on("topic/isTyping", (data) => {
+  console.log("Typing state:", data);
+});
+
+socket.on("topic/userConnected", (data) => {
+  console.log("User connected:", data);
+});
+```
+
+Send a message:
+
+``` javascript
+socket.emit("topic/sendMessage", {
+  senderId: "USER_A",
+  recieverId: "USER_B",
+  messageType: "text",
+  content: "Hello!",
+  readStatus: "single_tick"
+});
+```
+
+Send typing state:
+
+``` javascript
+socket.emit("topic/typing", {
+  senderId: "USER_A",
+  recieverId: "USER_B"
+});
+```
+
+Mark messages as read:
+
+``` javascript
+socket.emit("topic/bluetickMessage", {
+  recieverId: "USER_A",
+  ids: ["MESSAGE_ID_1", "MESSAGE_ID_2"]
+});
+```
+
+------------------------------------------------------------------------
+
+# 13. Notes About the Current Implementation
+
+This documentation describes the API as it is implemented in the
+repository rather than adding hypothetical endpoints.
+
+A few implementation details are worth knowing:
+
+1.  Authentication is cookie-based for protected REST and Socket.IO
+    operations.
+2.  The login response also exposes the JWT in the JSON response, even
+    though the server stores it in the `token` cookie.
+3.  Web Push subscriptions are stored in an in-memory `Map`, so
+    subscriptions are lost when the server process restarts.
+4.  The Socket.IO layer handles real-time message delivery, typing
+    indicators, online/offline status and read receipts.
+5.  REST message creation is not exposed as a dedicated POST endpoint;
+    message creation is currently handled through `topic/sendMessage`.
+6.  The code uses the spelling `recieverId` consistently in the API and
+    data model. Clients should use that exact field name.
+7.  Password reset tokens are hashed before being stored in MongoDB and
+    expire after 15 minutes.
+8.  The default server port in `src/index.ts` is `5000`, while
+    `.env.example` contains `5001`; the actual environment variable
+    takes precedence.
+9.  The API uses `/api/v1` for REST resources, but `/health` remains
+    outside that prefix.
+10. Socket authentication uses the same JWT secret as REST
+    authentication.
+
+------------------------------------------------------------------------
+
+# 14. Project Architecture
+
+The server is organized roughly as:
+
+``` text
+messangerserver/
+└── src/
+    ├── auth/
+    │   ├── authController.ts
+    │   ├── authService.ts
+    │   └── cookie.ts
+    │
+    ├── config/
+    ├── enums/
+    ├── interface/
+    │
+    ├── messages/
+    │   ├── MessageController.ts
+    │   ├── MessageService.ts
+    │   ├── modals/
+    │   └── Socket/
+    │       ├── SocketProvider.ts
+    │       └── UserSocketStore.ts
+    │
+    ├── middleware/
+    │   ├── authMiddleware.ts
+    │   └── authSocketMiddleware.ts
+    │
+    ├── notifications/
+    │   ├── NotificationController.ts
+    │   └── NotificationService.ts
+    │
+    ├── routes/
+    │   └── mainRoute.ts
+    │
+    ├── users/
+    │   ├── UserController.ts
+    │   ├── UserService.ts
+    │   ├── modals/
+    │   └── validation/
+    │
+    └── index.ts
+```
+
+------------------------------------------------------------------------
+
+## API Prefix
+
+All REST APIs except the health endpoint use:
+
+``` text
+/api/v1
+```
+
+Example:
+
+``` text
+GET http://localhost:5000/api/v1/auth/info
+```
+
 ## 🔮 Future Improvements
 
 The application can be extended with additional communication features.
