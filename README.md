@@ -350,12 +350,6 @@ MONGODB_URI=<MONGODB_CONNECTION_STRING>
 
 The exact API endpoints should be taken directly from the project's backend routes.
 
-| Method     | Endpoint            | Purpose              | Authentication              |
-| ---------- | ------------------- | -------------------- | --------------------------- |
-| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
-| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
-| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
-
 ## Base URL
 
 For local development:
