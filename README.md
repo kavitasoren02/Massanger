@@ -356,151 +356,6 @@ The exact API endpoints should be taken directly from the project's backend rout
 | `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
 | `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
 
-### API Documentation Format
-
-```text
-Method:
-<ACTUAL_METHOD>
-
-Endpoint:
-<ACTUAL_ENDPOINT>
-
-Purpose:
-<Endpoint purpose>
-
-Authentication:
-<Required / Not Required>
-
-Request Body:
-<Actual request body>
-
-Response:
-<Actual response>
-
-Possible Errors:
-<Actual errors>
-```
-
-> Do not add endpoints that are not implemented in the project.
-
----
-
-## 🔄 Socket.IO Events
-
-Document the exact Socket.IO events implemented in the source code.
-
-| Direction       | Event                 | Purpose     | Payload     |
-| --------------- | --------------------- | ----------- | ----------- |
-| Client → Server | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
-| Server → Client | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
-| Client → Server | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
-| Server → Client | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
-
-### Event Documentation Format
-
-```text
-Event:
-<ACTUAL_EVENT_NAME>
-
-Direction:
-Client → Server
-
-Purpose:
-<Describe the event>
-
-Payload:
-<Describe the actual payload>
-```
-
-> Replace placeholders with the exact event names and payload structures used by the application.
-
----
-
-## 🗄️ Database Design
-
-MongoDB is used for persistent application data.
-
-The exact fields should match the Mongoose schemas implemented in the project.
-
-### 👤 Users
-
-| Field     | Type     | Description     |
-| --------- | -------- | --------------- |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-
----
-
-### 💬 Messages
-
-The message collection stores individual messages exchanged between users.
-
-| Field     | Type     | Description     |
-| --------- | -------- | --------------- |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-
-Conceptual relationship:
-
-```text
-User
- │
- ├──── sends ────► Message
- │
- └──── receives ─► Message
-```
-
----
-
-### 🗨️ Conversations
-
-If the application uses a separate conversation collection:
-
-| Field     | Type     | Description     |
-| --------- | -------- | --------------- |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-
-Conceptually:
-
-```text
-User A ───────┐
-              │
-              ▼
-        Conversation
-              ▲
-              │
-User B ───────┘
-              │
-              ▼
-           Messages
-```
-
-> Remove this section if the application does not use a separate conversation collection.
-
----
-
-## 🔐 Authentication & Security
-
-### Authentication
-
-* Protect authenticated routes.
-* Verify authentication before allowing access to private resources.
-* Never expose authentication secrets in frontend code.
-* Store sensitive configuration in environment variables.
-* Validate incoming request data on the backend.
-
-### API Security
-
-* Validate request parameters and request bodies.
-* Restrict access to protected resources.
-* Avoid exposing unnecessary user information.
-* Handle authentication failures consistently.
-
 ## Base URL
 
 For local development:
@@ -1347,7 +1202,91 @@ The implementation accepts the `subscriptionId` value as-is.
 }
 ```
 
-------------------------------------------------------------------------
+
+## 🗄️ Database Design
+
+MongoDB is used for persistent application data.
+
+The exact fields should match the Mongoose schemas implemented in the project.
+
+### 👤 Users
+
+| Field     | Type     | Description     |
+| --------- | -------- | --------------- |
+| `<field>` | `<type>` | `<description>` |
+| `<field>` | `<type>` | `<description>` |
+| `<field>` | `<type>` | `<description>` |
+
+---
+
+### 💬 Messages
+
+The message collection stores individual messages exchanged between users.
+
+| Field     | Type     | Description     |
+| --------- | -------- | --------------- |
+| `<field>` | `<type>` | `<description>` |
+| `<field>` | `<type>` | `<description>` |
+| `<field>` | `<type>` | `<description>` |
+| `<field>` | `<type>` | `<description>` |
+
+Conceptual relationship:
+
+```text
+User
+ │
+ ├──── sends ────► Message
+ │
+ └──── receives ─► Message
+```
+
+---
+
+### 🗨️ Conversations
+
+If the application uses a separate conversation collection:
+
+| Field     | Type     | Description     |
+| --------- | -------- | --------------- |
+| `<field>` | `<type>` | `<description>` |
+| `<field>` | `<type>` | `<description>` |
+| `<field>` | `<type>` | `<description>` |
+
+Conceptually:
+
+```text
+User A ───────┐
+              │
+              ▼
+        Conversation
+              ▲
+              │
+User B ───────┘
+              │
+              ▼
+           Messages
+```
+
+> Remove this section if the application does not use a separate conversation collection.
+
+---
+
+## 🔐 Authentication & Security
+
+### Authentication
+
+* Protect authenticated routes.
+* Verify authentication before allowing access to private resources.
+* Never expose authentication secrets in frontend code.
+* Store sensitive configuration in environment variables.
+* Validate incoming request data on the backend.
+
+### API Security
+
+* Validate request parameters and request bodies.
+* Restrict access to protected resources.
+* Avoid exposing unnecessary user information.
+* Handle authentication failures consistently.
 
 # 6. Socket.IO API
 
