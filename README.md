@@ -41,9 +41,6 @@
 
 ---
 
-> [!NOTE]
-> This documentation is formatted from the project's current documentation/source-derived details. Replace any remaining `<...>` placeholders with project-specific values before publishing.
->
 ## 📌 Project Overview
 
 This project is a ****One-to-One Real-Time Chat Application**** that allows authenticated users to communicate privately through real-time messaging.
