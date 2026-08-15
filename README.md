@@ -1,23 +1,56 @@
 # 💬 One-to-One Real-Time Chat Application
 
-> A modern, responsive, and real-time one-to-one messaging application built with the **MERN Stack, Socket.IO, and Tailwind CSS**.
+> A modern, responsive, real-time one-to-one messaging application built with the **MERN Stack, Socket.IO, and Tailwind CSS**.
 
-[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?logo=mongodb\&logoColor=white)](https://www.mongodb.com/)
-[![Express.js](https://img.shields.io/badge/Express.js-Backend-000000?logo=express\&logoColor=white)](https://expressjs.com/)
-[![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react\&logoColor=black)](https://react.dev/)
-[![Node.js](https://img.shields.io/badge/Node.js-Runtime-339933?logo=node.js\&logoColor=white)](https://nodejs.org/)
-[![Socket.IO](https://img.shields.io/badge/Socket.IO-Realtime-010101?logo=socket.io\&logoColor=white)](https://socket.io/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Styling-06B6D4?logo=tailwindcss\&logoColor=white)](https://tailwindcss.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Express.js](https://img.shields.io/badge/Express.js-Backend-000000?logo=express&logoColor=white)](https://expressjs.com/)
+[![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-Runtime-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Socket.IO](https://img.shields.io/badge/Socket.IO-Realtime-010101?logo=socket.io&logoColor=white)](https://socket.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Styling-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+
+[![Live Demo](https://img.shields.io/badge/Live-Demo-2ea44f)](https://massengers.netlify.app/)
+[![Repository](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/kavitasoren02/Massanger)
+
+## 📚 Table of Contents
+
+- [Project Overview](#-project-overview)
+- [Key Features](#-key-features)
+- [Technology Stack](#️-technology-stack)
+- [Screenshots / Demo](#️-screenshots--demo)
+- [Architecture Overview](#️-architecture-overview)
+- [Real-Time Messaging](#-how-real-time-messaging-works)
+- [Project Structure](#-project-structure)
+- [Installation & Setup](#-installation--setup)
+- [Environment Variables](#-environment-variables)
+- [REST API Documentation](#-api-documentation)
+- [Socket.IO Events](#-socketio-api)
+- [Database Design](#️-database-design)
+- [Authentication & Security](#-authentication--security)
+- [Authentication Flow](#-authentication-flow)
+- [Endpoint Summary](#-complete-rest-endpoint-summary)
+- [Responsive UI](#-responsive-ui)
+- [Future Improvements](#-future-improvements)
+- [Testing](#-testing)
+- [Production Build](#-production-build)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Acknowledgements](#-acknowledgements)
+- [Author](#-author)
+- [Support](#-support)
 
 ---
 
+> [!NOTE]
+> This documentation is formatted from the project's current documentation/source-derived details. Replace any remaining `<...>` placeholders with project-specific values before publishing.
+>
 ## 📌 Project Overview
 
-This project is a **One-to-One Real-Time Chat Application** that allows authenticated users to communicate privately through real-time messaging.
+This project is a ****One-to-One Real-Time Chat Application**** that allows authenticated users to communicate privately through real-time messaging.
 
-The application combines a **MERN Stack frontend and backend** with **Socket.IO** for real-time communication. Users can select another user, open a private conversation, send messages, and receive new messages without manually refreshing the page.
+The application combines a ****MERN Stack frontend and backend**** with ****Socket.IO**** for real-time communication. Users can select another user, open a private conversation, send messages, and receive new messages without manually refreshing the page.
 
-The interface is designed to be **responsive, clean, and user-friendly**, making the application suitable for desktop and mobile devices.
+The interface is designed to be ****responsive, clean, and user-friendly****, making the application suitable for desktop and mobile devices.
 
 ---
 
@@ -41,43 +74,43 @@ The interface is designed to be **responsive, clean, and user-friendly**, making
 
 ## 🛠️ Technology Stack
 
-| Technology                  | Purpose                                               |
-| --------------------------- | ----------------------------------------------------- |
-| **MongoDB**                 | Stores users, messages, and application data          |
-| **Mongoose**                | MongoDB object modeling and schema management         |
-| **Express.js**              | Handles backend HTTP APIs and routing                 |
-| **Node.js**                 | JavaScript runtime for the backend                    |
-| **React.js**                | Builds the interactive frontend                       |
-| **Socket.IO**               | Enables real-time bidirectional communication         |
-| **Tailwind CSS**            | Provides responsive utility-based styling             |
-| **JavaScript / TypeScript** | Application development                               |
-| **Vite**                    | Frontend development and build tooling, if configured |
+\| Technology                  | Purpose                                               |
+\| --------------------------- | ----------------------------------------------------- |
+\| ****MongoDB****                 | Stores users, messages, and application data          |
+\| ****Mongoose****                | MongoDB object modeling and schema management         |
+\| ****Express.js****              | Handles backend HTTP APIs and routing                 |
+\| ****Node.js****                 | JavaScript runtime for the backend                    |
+\| ****React.js****                | Builds the interactive frontend                       |
+\| ****Socket.IO****               | Enables real-time bidirectional communication         |
+\| ****Tailwind CSS****            | Provides responsive utility-based styling             |
+\| ****JavaScript / TypeScript**** | Application development                               |
+\| ****Vite****                    | Frontend development and build tooling, if configured |
 
 ---
 
 ## 🖼️ Screenshots / Demo
+
 ### Login / Authentication
 
-![Login Screen](./screenshots/Login.png)
+![Login Screen]\(./screenshots/Login.png)
 
 ### One-to-One Chat
 
-![Chat Screen](./screenshots/ChatScreen.png)
+![Chat Screen]\(./screenshots/ChatScreen.png)
 
-### Responsive Mobile View
 ### 📱 Mobile View
 
-![Mobile Screenshot 1](./screenshots/Register%20Screen.jpg)
+![Mobile Screenshot 1]\(./screenshots/Register%20Screen.jpg)
 
-![Mobile Screenshot 2](./screenshots/LoginScreen.jpg)
+![Mobile Screenshot 2]\(./screenshots/LoginScreen.jpg)
 
-![Mobile Screenshot 3](./screenshots/MobileChatScreen.jpg)
+![Mobile Screenshot 3]\(./screenshots/MobileChatScreen.jpg)
 
 ### 🎥 Live Demo
 
-**Demo:** `https://massengers.netlify.app`
+****Demo:**** `https://massengers.netlify.app`
 
-**Repository:** `https://github.com/kavitasoren02/Massanger`
+****Repository:**** `https://github.com/kavitasoren02/Massanger`
 
 ---
 
@@ -164,7 +197,7 @@ Node.js + Socket.IO Server
 7. Socket.IO delivers the message to the intended recipient.
 8. User B's interface updates without refreshing the page.
 
-> Exact Socket.IO event names depend on the implementation and should be documented in the event table below.
+*> Exact Socket.IO event names depend on the implementation and should be documented in the event table below.*
 
 ---
 
@@ -220,7 +253,7 @@ project-root/
 └── [Root Configuration Files]
 ```
 
-> Replace bracketed placeholders with the actual files and folders in the repository.
+*> Replace bracketed placeholders with the actual files and folders in the repository.*
 
 ---
 
@@ -229,8 +262,8 @@ project-root/
 ### 1. Clone the Repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-cd <PROJECT_DIRECTORY>
+git clone https://github.com/kavitasoren02/Massanger.git
+cd Massanger
 ```
 
 ---
@@ -323,26 +356,28 @@ Example:
 
 ```env
 # Backend
+
 PORT=<PORT>
 MONGODB_URI=<MONGODB_CONNECTION_STRING>
 <AUTH_SECRET_VARIABLE>=<SECRET>
 
 # Frontend
+
 <VITE_API_VARIABLE>=<BACKEND_API_URL>
 <VITE_SOCKET_VARIABLE>=<SOCKET_SERVER_URL>
 ```
 
 ### Environment Variable Reference
 
-| Variable                 | Application | Description                          |
-| ------------------------ | ----------- | ------------------------------------ |
-| `PORT`                   | Backend     | Backend server port                  |
-| `MONGODB_URI`            | Backend     | MongoDB connection string            |
-| `<AUTH_SECRET_VARIABLE>` | Backend     | Authentication secret, if applicable |
-| `<VITE_API_VARIABLE>`    | Frontend    | Backend API URL, if configured       |
-| `<VITE_SOCKET_VARIABLE>` | Frontend    | Socket.IO server URL, if configured  |
+\| Variable                 | Application | Description                          |
+\| ------------------------ | ----------- | ------------------------------------ |
+\| `PORT`                   | Backend     | Backend server port                  |
+\| `MONGODB_URI`            | Backend     | MongoDB connection string            |
+\| `<AUTH_SECRET_VARIABLE>` | Backend     | Authentication secret, if applicable |
+\| `<VITE_API_VARIABLE>`    | Frontend    | Backend API URL, if configured       |
+\| `<VITE_SOCKET_VARIABLE>` | Frontend    | Socket.IO server URL, if configured  |
 
-> Replace placeholders with the exact environment variable names used by the project.
+*> Replace placeholders with the exact environment variable names used by the project.*
 
 ---
 
@@ -350,11 +385,11 @@ MONGODB_URI=<MONGODB_CONNECTION_STRING>
 
 The exact API endpoints should be taken directly from the project's backend routes.
 
-| Method     | Endpoint            | Purpose              | Authentication              |
-| ---------- | ------------------- | -------------------- | --------------------------- |
-| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
-| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
-| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
+\| Method     | Endpoint            | Purpose              | Authentication              |
+\| ---------- | ------------------- | -------------------- | --------------------------- |
+\| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
+\| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
+\| `<METHOD>` | `<ACTUAL_ENDPOINT>` | `<Endpoint purpose>` | `<Required / Not Required>` |
 
 ### API Documentation Format
 
@@ -381,7 +416,7 @@ Possible Errors:
 <Actual errors>
 ```
 
-> Do not add endpoints that are not implemented in the project.
+*> Do not add endpoints that are not implemented in the project.*
 
 ---
 
@@ -389,12 +424,12 @@ Possible Errors:
 
 Document the exact Socket.IO events implemented in the source code.
 
-| Direction       | Event                 | Purpose     | Payload     |
-| --------------- | --------------------- | ----------- | ----------- |
-| Client → Server | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
-| Server → Client | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
-| Client → Server | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
-| Server → Client | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
+\| Direction       | Event                 | Purpose     | Payload     |
+\| --------------- | --------------------- | ----------- | ----------- |
+\| Client → Server | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
+\| Server → Client | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
+\| Client → Server | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
+\| Server → Client | `<ACTUAL_EVENT_NAME>` | `<Purpose>` | `<Payload>` |
 
 ### Event Documentation Format
 
@@ -412,7 +447,7 @@ Payload:
 <Describe the actual payload>
 ```
 
-> Replace placeholders with the exact event names and payload structures used by the application.
+*> Replace placeholders with the exact event names and payload structures used by the application.*
 
 ---
 
@@ -424,11 +459,11 @@ The exact fields should match the Mongoose schemas implemented in the project.
 
 ### 👤 Users
 
-| Field     | Type     | Description     |
-| --------- | -------- | --------------- |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
+\| Field     | Type     | Description     |
+\| --------- | -------- | --------------- |
+\| `<field>` | `<type>` | `<description>` |
+\| `<field>` | `<type>` | `<description>` |
+\| `<field>` | `<type>` | `<description>` |
 
 ---
 
@@ -436,12 +471,12 @@ The exact fields should match the Mongoose schemas implemented in the project.
 
 The message collection stores individual messages exchanged between users.
 
-| Field     | Type     | Description     |
-| --------- | -------- | --------------- |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
+\| Field     | Type     | Description     |
+\| --------- | -------- | --------------- |
+\| `<field>` | `<type>` | `<description>` |
+\| `<field>` | `<type>` | `<description>` |
+\| `<field>` | `<type>` | `<description>` |
+\| `<field>` | `<type>` | `<description>` |
 
 Conceptual relationship:
 
@@ -459,11 +494,11 @@ User
 
 If the application uses a separate conversation collection:
 
-| Field     | Type     | Description     |
-| --------- | -------- | --------------- |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
-| `<field>` | `<type>` | `<description>` |
+\| Field     | Type     | Description     |
+\| --------- | -------- | --------------- |
+\| `<field>` | `<type>` | `<description>` |
+\| `<field>` | `<type>` | `<description>` |
+\| `<field>` | `<type>` | `<description>` |
 
 Conceptually:
 
@@ -480,7 +515,7 @@ User B ───────┘
            Messages
 ```
 
-> Remove this section if the application does not use a separate conversation collection.
+*> Remove this section if the application does not use a separate conversation collection.*
 
 ---
 
@@ -501,60 +536,6 @@ User B ───────┘
 * Avoid exposing unnecessary user information.
 * Handle authentication failures consistently.
 
-### Socket.IO Security
-
-Socket connections should verify the authenticated user where authentication is required.
-
-Private messages should only be delivered to the intended recipient or authorized conversation.
-
-### MongoDB Security
-
-* Keep MongoDB credentials outside source control.
-* Use environment variables for connection strings.
-* Apply appropriate database permissions.
-* Avoid storing sensitive information unnecessarily.
-
----
-
-## 📱 Responsive UI
-
-The application is designed to provide a responsive chat experience across different screen sizes.
-
-### Supported Layouts
-
-* 🖥️ Desktop
-* 💻 Tablet
-* 📱 Mobile
-* 📋 Responsive sidebar
-* 💬 Responsive message area
-* ⌨️ Mobile-friendly message input
-* 🎨 Responsive Tailwind CSS styling
-
----
-
-# Messenger Server API Documentation
-
-## Overview
-
-This document describes the REST API and Socket.IO events implemented by
-the `messangerserver` application in the `Massanger` repository.
-
--   **Repository:** `https://github.com/kavitasoren02/Massanger`
--   **Server directory:** `messangerserver`
--   **API prefix:** `/api/v1`
--   **Default HTTP port:** `5000` in `src/index.ts`; the example
-    environment file uses `5001`.
--   **Database:** MongoDB / Mongoose
--   **Authentication:** JWT stored in an HTTP-only `token` cookie
--   **Real-time communication:** Socket.IO
--   **Push notifications:** Web Push
--   **Email:** Nodemailer
-
-The server mounts the main router at `/api/v1`, while the health
-endpoint is exposed directly at `/health`.
-
-------------------------------------------------------------------------
-
 ## Base URL
 
 For local development:
@@ -572,7 +553,7 @@ http://localhost:5000/api/v1/...
 If `PORT` is configured differently, replace `5000` with the configured
 port.
 
-------------------------------------------------------------------------
+---
 
 # Authentication
 
@@ -584,14 +565,14 @@ token
 
 After a successful login, the server creates a JWT containing:
 
-``` json
+```json
 {
   "userId": "USER_ID",
   "email": "user@example.com"
 }
 ```
 
-The token expires after **1 day**.
+The token expires after ****1 day****.
 
 Protected REST routes read the JWT from `req.cookies.token`. Socket.IO
 authentication also reads the `token` cookie from the Socket.IO
@@ -599,23 +580,23 @@ handshake.
 
 The server's cookie configuration currently uses:
 
--   `httpOnly: true`
--   `secure: true`
--   `sameSite: "none"`
--   `path: "/"`
--   `maxAge: 9000000`
+\-   `httpOnly: true`
+\-   `secure: true`
+\-   `sameSite: "none"`
+\-   `path: "/"`
+\-   `maxAge: 9000000`
 
 Because `secure` is enabled, HTTPS is required for the cookie to be sent
 by a browser in normal production use.
 
-------------------------------------------------------------------------
+---
 
 # Common HTTP Responses
 
 The API commonly uses these status codes:
 
   Status   Meaning
-  -------- --------------------------------------
+  **-------- --------------------------------------**
   `200`    Request completed successfully
   `201`    Resource created successfully
   `400`    Invalid request or validation error
@@ -623,7 +604,7 @@ The API commonly uses these status codes:
   `404`    Resource or user not found
   `500`    Internal server error
 
-------------------------------------------------------------------------
+---
 
 # 1. Health Check
 
@@ -637,21 +618,21 @@ Not required.
 
 ### Request
 
-``` http
+```http
 GET /health
 ```
 
 ### Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "status": "OK"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 # 2. User APIs
 
@@ -673,7 +654,7 @@ Not required.
 
 ### Request Body
 
-``` json
+```json
 {
   "fullName": "John",
   "email": "john@example.com",
@@ -685,7 +666,7 @@ Not required.
 
 Optional fields accepted by the validation layer include:
 
-``` json
+```json
 {
   "profilePic": "https://example.com/profile.jpg",
   "status": "Available",
@@ -698,16 +679,16 @@ Optional fields accepted by the validation layer include:
 
 The current validation layer requires:
 
--   `fullName` --- required and alphabetic
--   `email` --- required and valid email
--   `mobileNumber` --- required, exactly 10 digits
--   `password` --- required, minimum 8 characters
+\-   `fullName` --- required and alphabetic
+\-   `email` --- required and valid email
+\-   `mobileNumber` --- required, exactly 10 digits
+\-   `password` --- required, minimum 8 characters
 
 ### Success Response
 
-**201 Created**
+****201 Created****
 
-``` json
+```json
 {
   "message": "User registered successfully",
   "user": {
@@ -718,25 +699,25 @@ The current validation layer requires:
 
 ### Error Response
 
-**400 Bad Request**
+****400 Bad Request****
 
-``` json
+```json
 {
   "detail": "Email is required",
   "errors": []
 }
 ```
 
-**500 Internal Server Error**
+****500 Internal Server Error****
 
-``` json
+```json
 {
   "message": "Failed to register user",
   "error": "Error message"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 2.2 Forgot Password
 
@@ -750,7 +731,7 @@ Not required.
 
 ### Request Body
 
-``` json
+```json
 {
   "email": "john@example.com"
 }
@@ -758,9 +739,9 @@ Not required.
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Password reset link sent successfully"
 }
@@ -777,15 +758,15 @@ minutes**.
 
 ### Missing Email
 
-**400 Bad Request**
+****400 Bad Request****
 
-``` json
+```json
 {
   "detail": "Email is required"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 2.3 Validate Password Reset Token
 
@@ -796,20 +777,20 @@ Checks whether a password reset token is valid and has not expired.
 ### Path Parameter
 
   Parameter   Type     Required   Description
-  ----------- -------- ---------- ----------------------
+  **----------- -------- ---------- ----------------------**
   `token`     string   Yes        Password reset token
 
 ### Example
 
-``` http
+```http
 GET /api/v1/user/validate-reset-token/RESET_TOKEN
 ```
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Reset token is valid "
 }
@@ -819,16 +800,16 @@ GET /api/v1/user/validate-reset-token/RESET_TOKEN
 
 The current implementation returns:
 
-**500 Internal Server Error**
+****500 Internal Server Error****
 
-``` json
+```json
 {
   "message": "Invalid or expired token",
   "detail": "Invalid or expired reset token"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 2.4 Change Password
 
@@ -839,12 +820,12 @@ Changes the user's password using a valid password reset token.
 ### Path Parameter
 
   Parameter   Type     Required   Description
-  ----------- -------- ---------- ----------------------
+  **----------- -------- ---------- ----------------------**
   `token`     string   Yes        Password reset token
 
 ### Request Body
 
-``` json
+```json
 {
   "password": "newPassword123"
 }
@@ -852,9 +833,9 @@ Changes the user's password using a valid password reset token.
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Password changed successfully"
 }
@@ -862,16 +843,16 @@ Changes the user's password using a valid password reset token.
 
 ### Error Response
 
-**500 Internal Server Error**
+****500 Internal Server Error****
 
-``` json
+```json
 {
   "message": "Password reset failed",
   "detail": "Invalid or expired reset token"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 2.5 Get All Users
 
@@ -889,26 +870,26 @@ Required.
 ### Query Parameters
 
   Parameter      Type     Required   Description
-  -------------- -------- ---------- ------------------------------
+  **-------------- -------- ---------- ------------------------------**
   `searchTerm`   string   No         Searches users by `fullName`
 
 ### Example
 
-``` http
+```http
 GET /api/v1/user/all-users
 ```
 
 With search:
 
-``` http
+```http
 GET /api/v1/user/all-users?searchTerm=john
 ```
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "data": [
     {
@@ -932,9 +913,9 @@ GET /api/v1/user/all-users?searchTerm=john
 
 ### Response Fields
 
-  -----------------------------------------------------------------------
+---
   Field                               Description
-  ----------------------------------- -----------------------------------
+  **----------------------------------- -----------------------------------**
   `isOnline`                          Whether a socket connection
                                       currently exists for the user
 
@@ -942,9 +923,9 @@ GET /api/v1/user/all-users?searchTerm=john
                                       current user
 
   `count`                             Unseen message count
-  -----------------------------------------------------------------------
+  \-----------------------------------------------------------------------
 
-------------------------------------------------------------------------
+---
 
 ## 2.6 Get User By ID
 
@@ -959,20 +940,20 @@ Required.
 ### Path Parameter
 
   Parameter   Type               Required
-  ----------- ------------------ ----------
+  **----------- ------------------ ----------**
   `id`        MongoDB ObjectId   Yes
 
 ### Example
 
-``` http
+```http
 GET /api/v1/user/getuserById/64f123456789abcdef123456
 ```
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "data": {
     "_id": "64f123456789abcdef123456",
@@ -990,7 +971,7 @@ GET /api/v1/user/getuserById/64f123456789abcdef123456
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 # 3. Authentication APIs
 
@@ -1012,7 +993,7 @@ Not required.
 
 ### Request Body
 
-``` json
+```json
 {
   "email": "john@example.com",
   "password": "password123"
@@ -1021,9 +1002,9 @@ Not required.
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Login successful",
   "token": "JWT_TOKEN",
@@ -1039,9 +1020,9 @@ The server also sets the `token` cookie.
 
 ### User Not Found
 
-**404 Not Found**
+****404 Not Found****
 
-``` json
+```json
 {
   "message": "User not found"
 }
@@ -1049,15 +1030,15 @@ The server also sets the `token` cookie.
 
 ### Invalid Password
 
-**401 Unauthorized**
+****401 Unauthorized****
 
-``` json
+```json
 {
   "message": "Invalid credentials"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 3.2 Logout
 
@@ -1071,21 +1052,21 @@ No explicit authentication middleware is attached to this route.
 
 ### Request
 
-``` http
+```http
 POST /api/v1/auth/logout
 ```
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Logout Successfuly"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 3.3 Get Current User Information
 
@@ -1099,7 +1080,7 @@ Required.
 
 ### Request
 
-``` http
+```http
 GET /api/v1/auth/info
 ```
 
@@ -1107,9 +1088,9 @@ The browser/client must send the `token` cookie.
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "user": {
     "...": "user document"
@@ -1119,15 +1100,15 @@ The browser/client must send the `token` cookie.
 
 ### User Not Found
 
-**404 Not Found**
+****404 Not Found****
 
-``` json
+```json
 {
   "message": "User not found"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 # 4. Message APIs
 
@@ -1143,7 +1124,7 @@ All message REST endpoints require authentication.
 
 A message contains:
 
-``` json
+```json
 {
   "senderId": "USER_ID",
   "recieverId": "USER_ID",
@@ -1161,12 +1142,12 @@ A message contains:
 The server defines three read states:
 
   Value                Meaning
-  -------------------- -------------------
+  **-------------------- -------------------**
   `single_tick`        Message sent
   `double_tick`        Message delivered
   `blue_double_tick`   Message read
 
-------------------------------------------------------------------------
+---
 
 ## 4.1 Get Conversation Messages
 
@@ -1177,21 +1158,21 @@ Returns messages exchanged between two users.
 ### Query Parameters
 
   Parameter      Type     Required
-  -------------- -------- ----------
+  **-------------- -------- ----------**
   `senderId`     string   Yes
   `recieverId`   string   Yes
 
 ### Example
 
-``` http
+```http
 GET /api/v1/messages?senderId=USER_A&recieverId=USER_B
 ```
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Messaged fetched successfully",
   "data": [
@@ -1215,15 +1196,15 @@ Messages are sorted by `createdAt` in ascending order.
 
 The current implementation returns:
 
-**500 Internal Server Error**
+****500 Internal Server Error****
 
-``` json
+```json
 {
   "detail": "Please provide me Sender and Reciever id"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 4.2 Update Message
 
@@ -1238,14 +1219,14 @@ Required.
 ### Path Parameter
 
   Parameter   Type               Required
-  ----------- ------------------ ----------
+  **----------- ------------------ ----------**
   `id`        MongoDB ObjectId   Yes
 
 ### Request Body
 
 A message object:
 
-``` json
+```json
 {
   "senderId": "USER_ID",
   "recieverId": "USER_ID",
@@ -1257,9 +1238,9 @@ A message object:
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Message updated successfully",
   "data": {
@@ -1271,7 +1252,7 @@ A message object:
 The service checks that the message belongs to the authenticated sender
 before updating it.
 
-------------------------------------------------------------------------
+---
 
 ## 4.3 Delete One Message
 
@@ -1286,20 +1267,20 @@ Required.
 ### Path Parameter
 
   Parameter   Type               Required
-  ----------- ------------------ ----------
+  **----------- ------------------ ----------**
   `id`        MongoDB ObjectId   Yes
 
 ### Example
 
-``` http
+```http
 DELETE /api/v1/messages/MESSAGE_ID
 ```
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Message deleted successfully",
   "data": {
@@ -1311,7 +1292,7 @@ DELETE /api/v1/messages/MESSAGE_ID
 Only the sender is allowed to delete the message according to the
 service-level ownership check.
 
-------------------------------------------------------------------------
+---
 
 ## 4.4 Delete Conversation
 
@@ -1323,20 +1304,20 @@ another user.
 ### Query Parameters
 
   Parameter      Type     Required
-  -------------- -------- ----------
+  **-------------- -------- ----------**
   `recieverId`   string   Yes
 
 ### Example
 
-``` http
+```http
 DELETE /api/v1/messages?recieverId=USER_B
 ```
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Message deleted successfully",
   "data": {
@@ -1346,7 +1327,7 @@ DELETE /api/v1/messages?recieverId=USER_B
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 # 5. Notification APIs
 
@@ -1361,7 +1342,7 @@ All notification routes require authentication.
 The server stores Web Push subscriptions in an in-memory `Map`, keyed by
 user ID.
 
-------------------------------------------------------------------------
+---
 
 ## 5.1 Save Push Subscription
 
@@ -1371,7 +1352,7 @@ Associates a push subscription with the authenticated user.
 
 ### Request Body
 
-``` json
+```json
 {
   "subscriptionId": {
     "...": "Web Push subscription object"
@@ -1383,9 +1364,9 @@ The implementation accepts the `subscriptionId` value as-is.
 
 ### Success Response
 
-**200 OK**
+****200 OK****
 
-``` json
+```json
 {
   "message": "Subscription saved successfully"
 }
@@ -1393,15 +1374,15 @@ The implementation accepts the `subscriptionId` value as-is.
 
 ### Missing Subscription
 
-**404 Not Found**
+****404 Not Found****
 
-``` json
+```json
 {
   "message": "SubscriptionId not found"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 # 6. Socket.IO API
 
@@ -1426,9 +1407,13 @@ Cookie: token=JWT_TOKEN
 
 and verifies the JWT before allowing the connection.
 
-------------------------------------------------------------------------
+---
 
-# Socket Events
+### Socket.IO Security
+
+Socket connections should verify the authenticated user where authentication is required.
+
+Private messages should only be delivered to the intended recipient or authorized conversation.
 
 ## 6.1 User Connected
 
@@ -1442,7 +1427,7 @@ Emitted when a user successfully connects.
 
 ### Payload
 
-``` json
+```json
 {
   "userId": "USER_ID"
 }
@@ -1450,7 +1435,7 @@ Emitted when a user successfully connects.
 
 This event is broadcast to other connected users.
 
-------------------------------------------------------------------------
+---
 
 ## 6.2 Send Message
 
@@ -1462,7 +1447,7 @@ topic/sendMessage
 
 ### Payload
 
-``` json
+```json
 {
   "senderId": "USER_A",
   "recieverId": "USER_B",
@@ -1490,7 +1475,7 @@ topic/receiveMessage
 
 Payload:
 
-``` json
+```json
 {
   "_id": "MESSAGE_ID",
   "senderId": "USER_A",
@@ -1509,7 +1494,7 @@ topic/updateMessage
 
 Payload:
 
-``` json
+```json
 {
   "...": "saved message"
 }
@@ -1523,11 +1508,11 @@ topic/messageFailed
 
 Payload:
 
-``` json
+```json
 null
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 6.3 Typing Indicator
 
@@ -1539,7 +1524,7 @@ topic/typing
 
 ### Payload
 
-``` json
+```json
 {
   "senderId": "USER_A",
   "recieverId": "USER_B"
@@ -1554,7 +1539,7 @@ topic/isTyping
 
 When typing starts:
 
-``` json
+```json
 {
   "senderId": "USER_A",
   "recieverId": "USER_B",
@@ -1562,10 +1547,10 @@ When typing starts:
 }
 ```
 
-After approximately **2.5 seconds** without another typing event, the
+After approximately ****2.5 seconds**** without another typing event, the
 server emits:
 
-``` json
+```json
 {
   "senderId": "USER_A",
   "recieverId": "USER_B",
@@ -1573,7 +1558,7 @@ server emits:
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 6.4 Blue Tick / Read Message
 
@@ -1585,7 +1570,7 @@ topic/bluetickMessage
 
 ### Payload
 
-``` json
+```json
 {
   "recieverId": "USER_A",
   "ids": [
@@ -1609,7 +1594,7 @@ topic/updateBluetickMessage
 
 Payload:
 
-``` json
+```json
 {
   "recieverId": "USER_A",
   "ids": [
@@ -1619,7 +1604,7 @@ Payload:
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 6.5 Double Tick on Connection
 
@@ -1639,7 +1624,7 @@ topic/updatedoubletickmessage
 
 The payload contains grouped message information and message IDs.
 
-------------------------------------------------------------------------
+---
 
 ## 6.6 User Disconnected
 
@@ -1653,7 +1638,7 @@ Emitted when a socket disconnects.
 
 ### Payload
 
-``` json
+```json
 {
   "userId": "USER_ID",
   "lastSeenDate": "2026-08-15T10:30:00.000Z"
@@ -1662,7 +1647,7 @@ Emitted when a socket disconnects.
 
 The server also updates the user's `lastSeen` value in MongoDB.
 
-------------------------------------------------------------------------
+---
 
 # 7. Authentication Flow
 
@@ -1701,13 +1686,13 @@ Socket.IO connection
 Real-time messaging
 ```
 
-------------------------------------------------------------------------
+---
 
 # 8. Complete REST Endpoint Summary
 
-  ----------------------------------------------------------------------------------------------------
+---
   Method           Endpoint                                                      Auth Purpose
-  ---------------- -------------------------------------------- --------------------- ----------------
+  **---------------- -------------------------------------------- --------------------- ----------------**
   GET              `/health`                                                       No Health check
 
   POST             `/api/v1/user/register`                                         No Register user
@@ -1745,15 +1730,15 @@ Real-time messaging
 
   POST             `/api/v1/notifications/subscribe`                              Yes Save push
                                                                                       subscription
-  ----------------------------------------------------------------------------------------------------
+  \----------------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------
+---
 
 # 9. Socket Event Summary
 
-  ---------------------------------------------------------------------------------
+---
   Direction               Event                             Purpose
-  ----------------------- --------------------------------- -----------------------
+  **----------------------- --------------------------------- -----------------------**
   Server → Client         `topic/userConnected`             Notify users that a
                                                             user connected
 
@@ -1782,245 +1767,34 @@ Real-time messaging
 
   Server → Client         `topic/userDisconnected`          Notify users of
                                                             disconnect
-  ---------------------------------------------------------------------------------
+  \---------------------------------------------------------------------------------
 
-------------------------------------------------------------------------
+---
 
-# 10. Environment Variables
+### MongoDB Security
 
-The `.env.example` file defines the following configuration values:
+* Keep MongoDB credentials outside source control.
+* Use environment variables for connection strings.
+* Apply appropriate database permissions.
+* Avoid storing sensitive information unnecessarily.
 
-``` env
-MODE=development
+---
 
-PORT=5001
+## 📱 Responsive UI
 
-MONGO_URI=your-mongodb-uri
+The application is designed to provide a responsive chat experience across different screen sizes.
 
-JWT_SECRET_KEY=your-secret-key
+### Supported Layouts
 
-FRONTEND_URI=http://localhost:5173
+* 🖥️ Desktop
+* 💻 Tablet
+* 📱 Mobile
+* 📋 Responsive sidebar
+* 💬 Responsive message area
+* ⌨️ Mobile-friendly message input
+* 🎨 Responsive Tailwind CSS styling
 
-EMAIL_HOST=
-EMAIL_PORT=
-EMAIL_USER=
-EMAIL_PASS=
-
-VAPID_PUBLIC_KEY=
-VAPID_PRIVATE_KEY=
-VAPID_EMAIL=
-```
-
-### Environment Variable Description
-
-  Variable              Purpose
-  --------------------- ---------------------------
-  `MODE`                Application environment
-  `PORT`                HTTP server port
-  `MONGO_URI`           MongoDB connection string
-  `JWT_SECRET_KEY`      JWT signing secret
-  `FRONTEND_URI`        Allowed frontend origin
-  `EMAIL_HOST`          SMTP server
-  `EMAIL_PORT`          SMTP port
-  `EMAIL_USER`          SMTP username
-  `EMAIL_PASS`          SMTP password
-  `VAPID_PUBLIC_KEY`    Web Push public key
-  `VAPID_PRIVATE_KEY`   Web Push private key
-  `VAPID_EMAIL`         Web Push contact email
-
-------------------------------------------------------------------------
-
-# 11. Example JavaScript Client
-
-## Login
-
-``` javascript
-const response = await fetch(
-  "http://localhost:5000/api/v1/auth/login",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    credentials: "include",
-    body: JSON.stringify({
-      email: "john@example.com",
-      password: "password123"
-    })
-  }
-);
-
-const data = await response.json();
-console.log(data);
-```
-
-For browser clients, `credentials: "include"` is important when using
-cookie-based authentication across origins.
-
-------------------------------------------------------------------------
-
-## Get Users
-
-``` javascript
-const response = await fetch(
-  "http://localhost:5000/api/v1/user/all-users",
-  {
-    credentials: "include"
-  }
-);
-
-const data = await response.json();
-console.log(data);
-```
-
-------------------------------------------------------------------------
-
-## Get Conversation
-
-``` javascript
-const response = await fetch(
-  "http://localhost:5000/api/v1/messages?senderId=USER_A&recieverId=USER_B",
-  {
-    credentials: "include"
-  }
-);
-
-const data = await response.json();
-console.log(data);
-```
-
-------------------------------------------------------------------------
-
-# 12. Socket.IO Client Example
-
-``` javascript
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5000", {
-  withCredentials: true
-});
-
-socket.on("topic/receiveMessage", (message) => {
-  console.log("New message:", message);
-});
-
-socket.on("topic/isTyping", (data) => {
-  console.log("Typing state:", data);
-});
-
-socket.on("topic/userConnected", (data) => {
-  console.log("User connected:", data);
-});
-```
-
-Send a message:
-
-``` javascript
-socket.emit("topic/sendMessage", {
-  senderId: "USER_A",
-  recieverId: "USER_B",
-  messageType: "text",
-  content: "Hello!",
-  readStatus: "single_tick"
-});
-```
-
-Send typing state:
-
-``` javascript
-socket.emit("topic/typing", {
-  senderId: "USER_A",
-  recieverId: "USER_B"
-});
-```
-
-Mark messages as read:
-
-``` javascript
-socket.emit("topic/bluetickMessage", {
-  recieverId: "USER_A",
-  ids: ["MESSAGE_ID_1", "MESSAGE_ID_2"]
-});
-```
-
-------------------------------------------------------------------------
-
-# 13. Notes About the Current Implementation
-
-This documentation describes the API as it is implemented in the
-repository rather than adding hypothetical endpoints.
-
-A few implementation details are worth knowing:
-
-1.  Authentication is cookie-based for protected REST and Socket.IO
-    operations.
-2.  The login response also exposes the JWT in the JSON response, even
-    though the server stores it in the `token` cookie.
-3.  Web Push subscriptions are stored in an in-memory `Map`, so
-    subscriptions are lost when the server process restarts.
-4.  The Socket.IO layer handles real-time message delivery, typing
-    indicators, online/offline status and read receipts.
-5.  REST message creation is not exposed as a dedicated POST endpoint;
-    message creation is currently handled through `topic/sendMessage`.
-6.  The code uses the spelling `recieverId` consistently in the API and
-    data model. Clients should use that exact field name.
-7.  Password reset tokens are hashed before being stored in MongoDB and
-    expire after 15 minutes.
-8.  The default server port in `src/index.ts` is `5000`, while
-    `.env.example` contains `5001`; the actual environment variable
-    takes precedence.
-9.  The API uses `/api/v1` for REST resources, but `/health` remains
-    outside that prefix.
-10. Socket authentication uses the same JWT secret as REST
-    authentication.
-
-------------------------------------------------------------------------
-
-# 14. Project Architecture
-
-The server is organized roughly as:
-
-``` text
-messangerserver/
-└── src/
-    ├── auth/
-    │   ├── authController.ts
-    │   ├── authService.ts
-    │   └── cookie.ts
-    │
-    ├── config/
-    ├── enums/
-    ├── interface/
-    │
-    ├── messages/
-    │   ├── MessageController.ts
-    │   ├── MessageService.ts
-    │   ├── modals/
-    │   └── Socket/
-    │       ├── SocketProvider.ts
-    │       └── UserSocketStore.ts
-    │
-    ├── middleware/
-    │   ├── authMiddleware.ts
-    │   └── authSocketMiddleware.ts
-    │
-    ├── notifications/
-    │   ├── NotificationController.ts
-    │   └── NotificationService.ts
-    │
-    ├── routes/
-    │   └── mainRoute.ts
-    │
-    ├── users/
-    │   ├── UserController.ts
-    │   ├── UserService.ts
-    │   ├── modals/
-    │   └── validation/
-    │
-    └── index.ts
-```
-
-------------------------------------------------------------------------
+---
 
 ## API Prefix
 
@@ -2086,7 +1860,7 @@ Add the project's actual testing command once a testing setup is configured.
 npm test
 ```
 
-> Replace this with the actual command defined by the project.
+*> Replace this with the actual command defined by the project.*
 
 ---
 
@@ -2150,7 +1924,7 @@ git push origin feature/your-feature
 
 ## 📄 License
 
-This project is licensed under the **[Choose License]**.
+This project is licensed under the ****[Choose License]****.
 
 Replace this section with the actual license used by the repository.
 
@@ -2166,12 +1940,12 @@ MIT License
 
 This project was built using open-source technologies including:
 
-* [MongoDB](https://www.mongodb.com/)
-* [Express.js](https://expressjs.com/)
-* [React](https://react.dev/)
-* [Node.js](https://nodejs.org/)
-* [Socket.IO](https://socket.io/)
-* [Tailwind CSS](https://tailwindcss.com/)
+* [MongoDB]\(https://www.mongodb.com/)
+* [Express.js]\(https://expressjs.com/)
+* [React]\(https://react.dev/)
+* [Node.js]\(https://nodejs.org/)
+* [Socket.IO]\(https://socket.io/)
+* [Tailwind CSS]\(https://tailwindcss.com/)
 
 Special thanks to the open-source community for the tools and resources that support modern web development.
 
@@ -2181,10 +1955,10 @@ Special thanks to the open-source community for the tools and resources that sup
 
 ### Kavita Soren
 
-* **GitHub:** `<YOUR_GITHUB_PROFILE_URL>`
-* **LinkedIn:** `<YOUR_LINKEDIN_PROFILE_URL>`
-* **Portfolio:** `<YOUR_PORTFOLIO_URL>`
-* **Email:** `<YOUR_EMAIL_ADDRESS>`
+* ****GitHub:**** `<YOUR_GITHUB_PROFILE_URL>`
+* ****LinkedIn:**** `<YOUR_LINKEDIN_PROFILE_URL>`
+* ****Portfolio:**** `<YOUR_PORTFOLIO_URL>`
+* ****Email:**** `<YOUR_EMAIL_ADDRESS>`
 
 ---
 
@@ -2219,4 +1993,4 @@ One-to-One Real-Time Chat Application
     └── Conversations
 ```
 
-> **Built with the MERN Stack and Socket.IO to provide a fast, responsive, and real-time one-to-one messaging experience.**
+*>* ****Built with the MERN Stack and Socket.IO to provide a fast, responsive, and real-time one-to-one messaging experience.****
