@@ -6,7 +6,7 @@ export const saveSubscription = async (userId: string, subscriptionId: any) => {
   notificationIds.set(userId, subscriptionId);
 };
 
-export const sendNotification = async (recieverId: string, message: string) => {
+export const sendNotification = async (recieverId: string, message: string, senderId: string) => {
   const subscriptionId = notificationIds.get(recieverId);
   // console.log(subscriptionId, recieverId);
   
@@ -14,6 +14,6 @@ export const sendNotification = async (recieverId: string, message: string) => {
 
   await webpush.sendNotification(
     subscriptionId,
-    JSON.stringify({ title: "New Message", body:message }),
+    JSON.stringify({ title: "New Message", body:message, chatUserId: senderId }),
   );
 };

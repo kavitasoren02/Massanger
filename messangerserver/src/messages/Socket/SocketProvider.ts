@@ -83,7 +83,7 @@ export const SocketProvider = (io: Server) => {
         if (senderSocketId) {
           io.to(senderSocketId).emit("topic/updateMessage", savedMessage);
         }
-        sendNotification(data.recieverId.toString(), data.content);
+        sendNotification(data.recieverId.toString(), data.content, data.senderId.toString());
       } catch (error) {
         if (senderSocketId) {
           socket.to(senderSocketId).emit("topic/messageFailed", null);
