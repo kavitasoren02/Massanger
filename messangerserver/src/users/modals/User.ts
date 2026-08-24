@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import MessageModel, { IMESSAGE } from "../../messages/modals/Message";
+import  { IMESSAGE } from "../../messages/modals/Message";
 
 export interface IUSER extends Document {
   fullName: string;

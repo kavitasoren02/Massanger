@@ -67,9 +67,9 @@ The interface is designed to be **responsive, clean, and user-friendly**, making
 ### Responsive Mobile View
 ### 📱 Mobile View
 
-![Mobile Screenshot 1](./screenshots/Register%20Screen.jpg)
+<!-- ![Mobile Screenshot 1](./screenshots/Register%20Screen.jpg)
 
-![Mobile Screenshot 2](./screenshots/LoginScreen.jpg)
+![Mobile Screenshot 2](./screenshots/LoginScreen.jpg) -->
 
 ![Mobile Screenshot 3](./screenshots/MobileChatScreen.jpg)
 
