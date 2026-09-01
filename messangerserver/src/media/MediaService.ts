@@ -36,11 +36,16 @@ export const uploadFiles = async (
   files: Express.Multer.File[],
   uploadedBy: string,
 ) => {
-  const result = Promise.all(
-    files.map((file) => {
-      return { ...uploadToCloudinary(file), uploadedBy: uploadedBy };
+  
+  const result = await Promise.all(
+    files.map(async(file) => {
+      const uploadedFile = await uploadToCloudinary(file);
+      return { ...uploadedFile, uploadedBy: uploadedBy };
     }),
   );
+
+  console.log(result);
+  
   const uploadedResult = await MediaModal.insertMany(result);
 
   return uploadedResult;

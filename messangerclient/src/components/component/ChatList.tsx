@@ -1,4 +1,4 @@
-import { Bell, Search, X, ChevronRight, LogOut } from "lucide-react";
+import { Bell, Search, X, ChevronRight, LogOut, User } from "lucide-react";
 import type {
   ApiResponse,
   IMESSAGE,
@@ -158,7 +158,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
 
       socket.off("topic/updateMessage", updateLastMessage);
     };
-  }, [socket, setUserList,id]);
+  }, [socket, setUserList, id]);
 
   //  to update count
 
@@ -308,21 +308,54 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
           <div
             ref={modalRef}
             className="
-        absolute
-        bottom-20
-        left-0
-        right-0
-        mx-2
-        bg-white
-        border border-gray-200
-        rounded-xl
-        shadow-lg
-        p-2
-        z-50
-      "
+      absolute
+      bottom-20
+      left-0
+      right-0
+      mx-2
+      bg-white
+      border border-gray-200
+      rounded-xl
+      shadow-lg
+      p-2
+      z-50
+    "
           >
+            {/* Profile */}
+            <div
+              className="
+        w-full
+        flex
+        items-center
+        gap-3
+        p-3
+        rounded-lg
+        hover:bg-gray-100
+        cursor-pointer
+      "
+            >
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                <User className="w-5 h-5 text-blue-600" />
+              </div>
+
+              <div className="text-left">
+                <h3 className="font-semibold text-gray-800">Profile</h3>
+
+                <p className="text-sm text-gray-500">View your profile</p>
+              </div>
+            </div>
+
+            {/* Logout */}
             <button
-              className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-red-50"
+              className="
+        w-full
+        flex
+        items-center
+        gap-3
+        p-3
+        rounded-lg
+        hover:bg-red-50 cursor-pointer
+      "
               onClick={handleLogout}
             >
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
