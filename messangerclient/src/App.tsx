@@ -12,6 +12,7 @@ import NoAuthRoute from "./ProtectedRoute/NoAuth";
 import { useAuth } from "./ProtectedRoute/AuthProvider";
 import { useEffect } from "react";
 import { subscribedUser } from "./hooks/useNotification";
+import Profile from "./pages/profile/Profile";
 function App() {
   const { user } = useAuth();
 
@@ -90,7 +91,15 @@ function App() {
             </ProtectedRoutes>
           }
         ></Route>
+        <Route
+        path="/profile"
+        element={
+          <ProtectedRoutes>
+            <Profile/>
+          </ProtectedRoutes>
+        }>
 
+        </Route>
         <Route path="*" element={<Navigate to={"/chat"} />}></Route>
       </Routes>
     </>

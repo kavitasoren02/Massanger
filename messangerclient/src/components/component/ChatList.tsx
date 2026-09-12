@@ -322,7 +322,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
     "
           >
             {/* Profile */}
-            <div
+            <button
               className="
         w-full
         flex
@@ -333,6 +333,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
         hover:bg-gray-100
         cursor-pointer
       "
+      onClick={() => navigate('/profile')}
             >
               <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
                 <User className="w-5 h-5 text-blue-600" />
@@ -343,7 +344,7 @@ const ChatList = ({ closeSidebar, setCurrentUser }: Props2) => {
 
                 <p className="text-sm text-gray-500">View your profile</p>
               </div>
-            </div>
+            </button>
 
             {/* Logout */}
             <button
