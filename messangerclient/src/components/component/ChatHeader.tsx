@@ -135,7 +135,7 @@ const ChatHeader = ({
         <div className="flex items-center gap-3">
           {currentUser?.profilePic ? (
             <img
-              src={currentUser?.profilePic}
+              src={currentUser?.profilePic.url}
               alt="Profile pic"
               className="h-8 w-8 md:h-10 md:w-10 rounded-full overflow-hidden flex justify-center items-center cursor-pointer"
             />

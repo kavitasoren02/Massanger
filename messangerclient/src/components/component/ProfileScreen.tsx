@@ -27,7 +27,7 @@ const ProfileScreen = ({ setProfileOpen, currentUser }: ProfileProps) => {
         {/* Profile Image */}
         {currentUser?.profilePic ? (
           <img
-            src={currentUser?.profilePic}
+            src={currentUser?.profilePic.url}
             alt="Profile pic"
             className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full object-cover bg-amber-100"
           />

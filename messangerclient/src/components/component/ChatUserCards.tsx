@@ -19,7 +19,7 @@ const ChatUserCards = ({
         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
           {profilePic ? (
             <img
-              src={profilePic}
+              src={profilePic.url}
               alt={fullName}
               className="w-full h-full object-cover"
             />

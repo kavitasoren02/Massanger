@@ -211,7 +211,7 @@ export interface UserDetails extends User {
 export interface ChatUserCardProps {
   _id: string;
   fullName: string;
-  profilePic?: string;
+  profilePic?: Media;
   isOnline: boolean;
   isSelected: boolean;
   isTyping: boolean;

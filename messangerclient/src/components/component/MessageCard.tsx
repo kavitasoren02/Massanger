@@ -62,7 +62,7 @@ const MessageCard = ({
           <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-400 overflow-hidden flex items-center justify-center">
             {user?.profilePic ? (
               <img
-                src={user.profilePic}
+                src={user.profilePic.url}
                 alt="profile"
                 className="w-full h-full object-cover"
               />
