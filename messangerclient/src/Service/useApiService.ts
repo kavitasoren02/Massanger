@@ -39,3 +39,11 @@ export const DELETE_MESSAGE= "api/v1/messages"
 // Subscribe Notification
 
 export const SUBSCRIBE_NOTIFICATION = "/api/v1/notifications/subscribe";
+
+//  File Upload
+
+export const FILE_UPLOAD = "/api/v1/media/upload";
+
+// Update Profile
+
+export const UPDATE_PROFILE = "api/v1/user/updateProfileById";

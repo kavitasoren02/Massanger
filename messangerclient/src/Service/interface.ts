@@ -13,7 +13,7 @@ export interface User {
   fullName: string;
   countryCode?: string;
   mobileNumber: string;
-  profilePic?: string;
+  profilePic?: Media;
   status?: string;
   isOnline: boolean;
   lastSeen?: string;
@@ -232,4 +232,28 @@ export interface ProfileProps {
 export interface DeleteMessage {
   message: string;
   data: IMESSAGE[];
+}
+
+export interface Media {
+  orgininalName: string;
+  publicId: string;
+  url: string;
+  resourceType: string;
+  format: string;
+  size: number;
+  uploadedBy: string;
+  _id: string;
+}
+
+export interface FileResponse {
+  message: string;
+  data: Media[];
+}
+
+export interface UpdateProfile {
+  fullName: string;
+  email: string;
+  countryCode: string;
+  mobileNumber: string;
+  profilePic?: string;
 }

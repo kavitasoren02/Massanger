@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import  { IMESSAGE } from "../../messages/modals/Message";
+import { IMESSAGE } from "../../messages/modals/Message";
 
 export interface IUSER extends Document {
   fullName: string;
@@ -60,8 +60,8 @@ const UserSchema: Schema<IUSER> = new Schema(
     },
 
     profilePic: {
-      type: String,
-      default: "",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Media",
     },
 
     status: {
@@ -97,8 +97,8 @@ const UserSchema: Schema<IUSER> = new Schema(
     },
     lastMessage: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Message"
-    }
+      ref: "Message",
+    },
   },
   {
     timestamps: true,

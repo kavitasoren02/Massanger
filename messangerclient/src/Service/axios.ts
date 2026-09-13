@@ -90,3 +90,12 @@ export const _delete = async <T>(
   const response = await axiosInstance.delete(url, config);
   return response;
 };
+
+export const _patch = async <T>(
+  url: string,
+  data?: any,
+  config?: AxiosRequestConfig,
+): Promise<CustomAxiosResponse<T>> => {
+  const response = await axiosInstance.patch(url, data, config);
+  return response;
+};

@@ -5,6 +5,7 @@ import {
   getAllUser,
   getUserById,
   registerUser,
+  updateUser,
   validateToken,
 } from "./UserService";
 import { validateUser } from "./validation/validateUser";
@@ -135,12 +136,44 @@ router.get("/getuserById/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await getUserById(id);
-    const isOnline = !! UserSocketStoreInstance.getSocketId(id);
+    const isOnline = !!UserSocketStoreInstance.getSocketId(id);
 
     res.status(200).json({
-      data: {...user?.toObject(), isOnline},
-    })
-    console.log(id);
+      data: { ...user?.toObject(), isOnline },
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: "Internal server error.",
+      details: error.message || "Internal server error.",
+    });
+  }
+});
+
+router.patch("/updateProfileById", authenticate, async (req: any, res) => {
+  try {
+    const currentUserId = req.userId;
+
+    const {
+      fullName,
+      email,
+      countryCode,
+      mobileNumber,
+      profilePic,
+    } = req.body;
+
+    const updatedUser = await updateUser(
+      currentUserId,
+      fullName,
+      email,
+      countryCode,
+      mobileNumber,
+      profilePic,
+    );
+
+    res.status(200).json({
+      message: "User update successfully",
+      data: updatedUser,
+    });
   } catch (error: any) {
     return res.status(500).json({
       message: "Internal server error.",
@@ -150,3 +183,4 @@ router.get("/getuserById/:id", authenticate, async (req, res) => {
 });
 
 export default router;
+

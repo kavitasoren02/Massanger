@@ -3,7 +3,10 @@ import UserModal from "./modals/User";
 import { Types } from "mongoose";
 import crypto from "crypto";
 import { UserSocketStoreInstance } from "../messages/Socket/UserSocketStore";
-import { getUnseenMessageCount, lastMessageByUserId } from "../messages/MessageService";
+import {
+  getUnseenMessageCount,
+  lastMessageByUserId,
+} from "../messages/MessageService";
 
 export const registerUser = async (data: any) => {
   try {
@@ -150,38 +153,68 @@ export const getAllUser = async (currentUserId: string, search?: string) => {
   }
 
   const users = await UserModal.find(filter);
-  
+
   // if (!users || users.length <= 0) {
   //   throw new Error("There is no any registered user.");
   // }
 
- const lastMessages = await Promise.all(users.map(async(user) => {
-    return {
-      message: await lastMessageByUserId(currentUserId, user.id),
-      count: await getUnseenMessageCount(currentUserId, user.id)
-
-    }
-  }));
+  const lastMessages = await Promise.all(
+    users.map(async (user) => {
+      return {
+        message: await lastMessageByUserId(currentUserId, user.id),
+        count: await getUnseenMessageCount(currentUserId, user.id),
+      };
+    }),
+  );
   // console.log(lastMessages);
-  
+
   const onlineOfflineUser = users.map((user, idx) => {
     const isOnline: boolean = !!UserSocketStoreInstance.getSocketId(user.id);
     return {
       ...user.toObject(),
       isOnline: isOnline,
       lastMessage: lastMessages[idx]?.message,
-      count: lastMessages[idx]?.count
+      count: lastMessages[idx]?.count,
     };
   });
   // console.log({ onlineOfflineUser });
   return onlineOfflineUser;
 };
 
-export const updateLastSeen = async(id: string, lastSeen: Date) =>{
-  try{
-    const user = UserModal.findByIdAndUpdate(id, {lastSeen});
+export const updateLastSeen = async (id: string, lastSeen: Date) => {
+  try {
+    const user = UserModal.findByIdAndUpdate(id, { lastSeen });
     return user;
-  }catch(error){
+  } catch (error) {
     throw error;
   }
-}
+};
+
+export const updateUser = async (
+  id: string,
+  fullName: string,
+  email: string,
+  countryCode: string,
+  mobileNumber: string,
+  profilePic?: string,
+) => {
+  try {
+    const updateUser = await UserModal.findByIdAndUpdate(
+      id,
+      {
+        fullName,
+        email,
+        countryCode,
+        mobileNumber,
+        ...(profilePic ? { profilePic } : {}),
+      },
+      {
+        new: true,
+      }
+    );
+
+    return updateUser;
+  } catch (error) {
+    throw error;
+  }
+};
